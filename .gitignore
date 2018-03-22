@@ -1,2 +1,2 @@
-./vscode
-./Client/node_modules
+.vscode/
+/Client/node_modules
