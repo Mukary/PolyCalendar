@@ -11,6 +11,7 @@ class App extends Component {
         <div>
         <Route path='/login' component={LoginPage}/>
         <Route path='/register' component={RegisterPage}/>
+        <Route path='/invite' component ={RegisterPage} />
         </div>
       </Router>      
     );

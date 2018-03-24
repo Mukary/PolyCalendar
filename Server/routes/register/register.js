@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require('express')
+const User = require('../../models/User')
 const router = express.Router();
 
 
@@ -9,7 +10,15 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res, err) {
   console.log('Received data: '+req.body.firstname)
-  res.status(200).send('Firstname received')
+  let user = new User(req.body)
+  user.save(function(err){
+    if(err){
+      console.log(err)
+      res.status(400).send('Uncomplete information')
+    } else {
+      res.status(200).send('User successfully registered')
+    }
+  })
 });
 
 module.exports = router;

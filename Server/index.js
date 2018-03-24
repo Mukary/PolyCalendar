@@ -1,7 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 const app = express()
 const register = require('./routes/register/register')
+require('dotenv').config()
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -27,3 +29,5 @@ app.get('/', function (req, res) {
 app.listen(8080, function () {
   console.log('Example app listening on port 8080!')
 })
+
+mongoose.connect(process.env.DB_URL)
