@@ -1,9 +1,17 @@
 import React from 'react'
-import register from '../../services/Register.services'
+import { register } from '../../services/Register.services'
+import { setToken } from '../../services/Auth.services'
+import {Redirect} from 'react-router-dom'
 import './register.styles.css'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
 
 export default class RegisterPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isRegistered: false
+    }
+  }
   signUp () {
     const payload = {
       firstname: this.firstname.value,
@@ -12,7 +20,14 @@ export default class RegisterPage extends React.Component {
       password: this.passwordA.value
     }
     if(this.checkForm()){
-      register(payload)
+      register(payload).then((res) => {
+        setToken('JIREN')
+        this.setState({
+          isRegistered: true
+        })
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 
@@ -35,6 +50,11 @@ export default class RegisterPage extends React.Component {
   }
 
   render() {
+    if(this.state.isRegistered) {
+      return(
+        <Redirect to={'/login'} />
+      )
+    }
     return(
       <Form horizontal>
       

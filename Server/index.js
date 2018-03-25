@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const app = express()
-const register = require('./routes/register/register')
+const register = require('./routes/User/index')
 require('dotenv').config()
 
 app.use(function(req, res, next) {
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 
-app.use('/register', register)
+app.use('/', require('./routes'))
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
