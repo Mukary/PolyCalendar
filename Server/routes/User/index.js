@@ -17,7 +17,9 @@ router.post('/register', function(req, res, err) {
   router.post('/login', function(req, res, err) {
     let userConnecting = req.body
     userController.login(userConnecting).then(token => {
-      return res.status(201).send(token)
+      return res.status(201).json({
+        token: token
+      })
     }).catch(err => {
       return res.status(err.status).send(err.message)
     })
