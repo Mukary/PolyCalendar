@@ -38,5 +38,21 @@ userController.login = (userConnecting) => {
   })
 }
 
+userController.findByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({"email": email}, (err, user) => {
+      if(user)
+        return reject({
+          status: 403,
+          message: 'This user already exists'
+        })
+      else {
+        console.log('New user')
+        return resolve('Invite')
+      }
+    })
+  })
+}
+
 
 module.exports = userController

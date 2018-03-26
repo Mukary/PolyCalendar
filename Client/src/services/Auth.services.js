@@ -16,3 +16,9 @@ export function login(email, password) {
     })
   })
 }
+
+export function invite(email) {
+    axios.post('http://localhost:8080/invite', {
+      email: email
+    })
+}
