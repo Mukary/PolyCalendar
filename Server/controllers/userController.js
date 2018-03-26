@@ -21,7 +21,6 @@ userController.login = (userConnecting) => {
     User.findOne({"email": userConnecting.email}, (err, user) => {
       if(user){
         if(user.password === sha256(userConnecting.password+process.env.HASH_SECRET) && user.email === userConnecting.email){
-          //TODO: JWT Token
           let token = jwt.sign({"sub":user.email, "name":user.firstname}, process.env.SECRET_KEY)
           return resolve(token)
         } else {
