@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer')
 
 module.exports = (router, userController) => {
 router.post('/register', function(req, res, err) {
-
+  console.log(req.body)
   let user = req.body
   userController.create(user).then( () => {
     return res.status(201).send('User successfully registered.')

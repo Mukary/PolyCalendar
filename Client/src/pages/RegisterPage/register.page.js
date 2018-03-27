@@ -9,16 +9,21 @@ export default class RegisterPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isRegistered: false
+      isRegistered: false,
+      emailValue: ''
     }
   }
+
   signUp () {
-    console.log(window.location.search)
+    const query = new URLSearchParams(window.location.search)
+    const code = query.get('code')
     const payload = {
       firstname: this.firstname.value,
       lastname: this.lastname.value,
       email: this.email.value,
-      password: this.passwordA.value
+      password: this.passwordA.value,
+      code: code
+
     }
     if(this.checkForm()){
       register(payload).then((res) => {
@@ -29,6 +34,12 @@ export default class RegisterPage extends React.Component {
         console.log(err)
       })
     }
+  }
+  checkParams() {
+    const query = new URLSearchParams(window.location.search)
+    const email = query.get('email')
+    const code = query.get('code')
+    return (email !== null && code !== null)
   }
 
   checkPasswordMatch () {
@@ -46,7 +57,7 @@ export default class RegisterPage extends React.Component {
   }
 
   checkForm(){
-    return this.checkEmail() && this.checkPasswordMatch() && this.checkPasswordStrength()
+    return this.checkEmail() && this.checkPasswordMatch() && this.checkPasswordStrength() && this.checkParams()
   }
 
   render() {
@@ -81,7 +92,7 @@ export default class RegisterPage extends React.Component {
           Email
         </Col>
         <Col sm={2}>
-          <FormControl type="email" placeholder="Email" inputRef={ (e) => {this.email = e}}/>
+          <FormControl type="email"  placeholder="Email" inputRef={ (e) => {this.email = e}}/>
         </Col>
       </FormGroup>
     

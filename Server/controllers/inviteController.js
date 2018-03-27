@@ -27,5 +27,19 @@ inviteController.create = (email) => {
   })
 }
 
+inviteController.verify = (email, inviteCode) => {
+  return new Promise((resolve, reject) => {
+    Invite.findOne($and[
+      {"email": email},
+      {"code": code},
+      {"consumed": false}
+    ], (err, invite) => {
+      if(invite)
+        resolve(invite)
+      else reject(err)
+    })
+  })
+}
+
 
 module.exports = inviteController
