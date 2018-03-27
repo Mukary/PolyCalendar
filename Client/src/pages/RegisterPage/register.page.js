@@ -13,6 +13,7 @@ export default class RegisterPage extends React.Component {
     }
   }
   signUp () {
+    console.log(window.location.search)
     const payload = {
       firstname: this.firstname.value,
       lastname: this.lastname.value,
@@ -21,7 +22,6 @@ export default class RegisterPage extends React.Component {
     }
     if(this.checkForm()){
       register(payload).then((res) => {
-        setToken('JIREN')
         this.setState({
           isRegistered: true
         })

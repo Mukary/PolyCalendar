@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const userController = require('../../controllers/userController')
+const inviteController = require('../../controllers/inviteController')
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
 
@@ -28,40 +29,40 @@ router.post('/login', function(req, res, err) {
 
 router.post('/invite', function(req, res, err) {
   let email = req.body.email
-  userController.findByEmail(email).then(res => {
-    // Generate test SMTP service account from ethereal.email
-// Only needed if you don't have a real mail account for testing
-nodemailer.createTestAccount((err, account) => {
+  inviteController.create(email).then(res => {
+  // Generate test SMTP service account from ethereal.email
+  // Only needed if you don't have a real mail account for testing
+    nodemailer.createTestAccount((err, account) => {
 // create reusable transporter object using the default SMTP transport
-let transporter = nodemailer.createTransport({
-    service: 'gmail', // true for 465, false for other ports
-    auth: {
-        user: 'polytechcalendar@gmail.com', // generated ethereal user
-        pass: 'awiproject34' // generated ethereal password
+    let transporter = nodemailer.createTransport({
+        service: 'gmail', // true for 465, false for other ports
+        auth: {
+          user: 'polytechcalendar@gmail.com', // generated ethereal user
+          pass: 'awiproject34' // generated ethereal password
     }
 });
 
-// setup email data with unicode symbols
-let mailOptions = {
+  // setup email data with unicode symbols
+  let mailOptions = {
     from: '"PolyCalendar" <kq5qtgcuyjaczma6@ethereal.email>', // sender address
-    to: 'perso.rahim@gmail.com', // list of receivers
+    to: `${res.email}`, // list of receivers
     subject: 'Overwatch', // Subject line
-    text: 'http://localhost:3000/register', // plain text body
-};
+    text: `http://localhost:3000/register?email=${res.email}&code=${res.code}`, // plain text body
+  };
 
-// send mail with defined transport object
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+  // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
         return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-    // Preview only available when sending through an Ethereal account
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      }
+      console.log('Message sent: %s', info.messageId);
+      // Preview only available when sending through an Ethereal account
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-});
-});
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+      });
+    });
   }).catch(err => {
     console.log(err)
   })
