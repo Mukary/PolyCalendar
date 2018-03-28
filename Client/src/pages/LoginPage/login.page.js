@@ -1,6 +1,6 @@
 import React from 'react'
 import {login, setToken} from '../../services/Auth.services'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
 
 export default class LoginPage extends React.Component {
@@ -51,6 +51,13 @@ export default class LoginPage extends React.Component {
       <FormGroup>
       <Col smOffset={2} sm={2}>
         <Button bsStyle="primary" onClick={this.signIn.bind(this)}>Sign in</Button>
+      </Col>
+    </FormGroup>
+    <FormGroup>
+      <Col smOffset={2} sm={2}>
+      <Link to={`/invite`} activeClassName="active">
+        <Button bsStyle="secondary">Get invite</Button>
+        </Link>
       </Col>
     </FormGroup>
     </Form>

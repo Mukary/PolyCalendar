@@ -13,15 +13,20 @@ export default class RegisterPage extends React.Component {
     }
   }
   signUp () {
-    console.log(window.location.search)
+    const query = new URLSearchParams(window.location.search)
+    const email = query.get('email')
+    const code = query.get('code')
+    const hasParams = (email !== null && code !== null)
     const payload = {
       firstname: this.firstname.value,
       lastname: this.lastname.value,
       email: this.email.value,
-      password: this.passwordA.value
+      password: this.passwordA.value,
+      code: code
     }
-    if(this.checkForm()){
+    if(this.checkForm() && hasParams){
       register(payload).then((res) => {
+        console.log(res)
         this.setState({
           isRegistered: true
         })

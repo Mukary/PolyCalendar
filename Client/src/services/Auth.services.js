@@ -18,7 +18,13 @@ export function login(email, password) {
 }
 
 export function invite(email) {
-    axios.post('http://localhost:8080/invite', {
-      email: email
+    return new Promise((resolve, reject) =>{
+      axios.post('http://localhost:8080/invite', {
+        email: email
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
     })
 }
