@@ -15,7 +15,7 @@ inviteController.create = (email) => {
       else {
         let invite = new Invite({
           email: email,
-          code: sha256(new Date().toString),
+          code: sha256(Date.now().toString()),
           consumed: false
         })
         invite.save((err, item) => {
