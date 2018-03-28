@@ -10,7 +10,8 @@ userController.create = (user) => {
     console.log("userController")
     console.log(user)
     User.findOne({"email": user.email}, (err, item) => {
-      if(user) reject({
+      console.log(item)
+      if(item) reject({
         status: 403,
         message: 'This user already exists'
       })
@@ -18,7 +19,7 @@ userController.create = (user) => {
         console.log(user)
         Invite.findOne({$and:[
           {"email": user.email},
-          {"code": code},
+          {"code": user.code},
           {"consumed": false}
         ]}, (err, invite) => {
           if(invite){
