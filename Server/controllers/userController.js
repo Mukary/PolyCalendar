@@ -1,18 +1,49 @@
 const mongoose = require('mongoose')
 const User = require('../models/User')
+const Invite = require('../models/Invite')
 const jwt = require('jsonwebtoken')
 const sha256 = require('sha256')
 const userController = {}
 
 userController.create = (user) => {
   return new Promise((resolve, reject) => {
-    let hashPassword = sha256(user.password+process.env.HASH_SECRET)
-    user.password = hashPassword
-      let newUser = new User(user)
-      newUser.save(err => {
-        if(err) return reject(err)
-        return resolve(user)
+    console.log("userController")
+    console.log(user)
+    User.findOne({"email": user.email}, (err, item) => {
+      if(user) reject({
+        status: 403,
+        message: 'This user already exists'
       })
+      else {
+        console.log(user)
+        Invite.findOne({$and:[
+          {"email": user.email},
+          {"code": code},
+          {"consumed": false}
+        ]}, (err, invite) => {
+          if(invite){
+            console.log("Invite found")
+            delete user.code
+            let hashPassword = sha256(user.password+process.env.HASH_SECRET)
+            user.password = hashPassword
+            let newUser = new User(user)
+            newUser.save((err, item) => {
+              if(err){
+                reject(err)
+              }
+              resolve(item)
+            })
+            Invite.remove(
+              {"email": user.email}
+            ).exec(function(err, result){
+              if(err) {
+                reject(err)
+              } else resolve(result)
+            })
+          }
+        })
+      }
+    })
   })
 }
 

@@ -29,7 +29,8 @@ router.post('/login', function(req, res, err) {
 
 router.post('/invite', function(req, res, err) {
   let email = req.body.email
-  inviteController.create(email).then(res => {
+  inviteController.create(email).then(invite => {
+    console.log(invite)
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
     nodemailer.createTestAccount((err, account) => {
@@ -45,9 +46,9 @@ router.post('/invite', function(req, res, err) {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"PolyCalendar" <kq5qtgcuyjaczma6@ethereal.email>', // sender address
-    to: `${res.email}`, // list of receivers
+    to: `${invite.email}`, // list of receivers
     subject: 'Overwatch', // Subject line
-    text: `http://localhost:3000/register?email=${res.email}&code=${res.code}`, // plain text body
+    text: `http://localhost:3000/register?email=${invite.email}&code=${invite.code}`, // plain text body
   };
 
   // send mail with defined transport object
@@ -63,8 +64,10 @@ router.post('/invite', function(req, res, err) {
       // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
       });
     });
+    res.status(201).send(`Invitation link sent at ${invite.email}`)
   }).catch(err => {
     console.log(err)
+    res.status(403).send(`User ${res.email} already exists, please use another email`)
   })
 })
 }
