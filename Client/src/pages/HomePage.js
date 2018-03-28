@@ -1,5 +1,7 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+import PNavbar from '../components/Navbar/Navbar'
 
 export default class HomePage extends React.Component {
   constructor(props){
@@ -21,8 +23,7 @@ export default class HomePage extends React.Component {
   render() {
     if(this.state.isLogged){
       return(
-        <div>
-      </div>
+        <PNavbar/>
       )
     } else {
       return(

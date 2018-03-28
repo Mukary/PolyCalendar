@@ -57,7 +57,7 @@ export default class LoginPage extends React.Component {
       <Col smOffset={2} sm={2}>
       <Link to={`/invite`} activeClassName="active">
         <Button bsStyle="secondary">Get invite</Button>
-        </Link>
+      </Link>
       </Col>
     </FormGroup>
     </Form>

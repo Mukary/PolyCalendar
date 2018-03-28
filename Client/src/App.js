@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage/login.page'
 import RegisterPage from './pages/RegisterPage/register.page'
+import ProfilePage from './pages/ProfilePage/profile.page'
 import InvitePage from './pages/InvitePage/invite.page'
 import './App.css'
 
@@ -11,7 +12,8 @@ class App extends Component {
     return (
       <Router>
         <div>
-        <Route path='/' component ={HomePage} />
+        <Route exact path='/' component ={HomePage} />
+        <Route path='/profile' component ={ProfilePage} />
         <Route path='/login' component={LoginPage}/>
         <Route path='/register' component={RegisterPage}/>
         <Route path='/invite' component ={InvitePage} />
