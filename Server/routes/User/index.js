@@ -1,11 +1,13 @@
 const router = require('express').Router()
 const userController = require('../../controllers/userController')
 const inviteController = require('../../controllers/inviteController')
+const middleware = require('../../middleware')
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
 
 module.exports = (router, userController) => {
-router.post('/register', function(req, res, err) {
+
+  router.post('/register', function(req, res, err) {
   console.log(req.body)
   let user = req.body
   userController.create(user).then( () => {
@@ -18,10 +20,8 @@ router.post('/register', function(req, res, err) {
 
 router.post('/login', function(req, res, err) {
   let userConnecting = req.body
-  userController.login(userConnecting).then(token => {
-    return res.status(201).json({
-      token: token
-    })
+  userController.login(userConnecting).then(user => {
+    return res.status(201).json(user)
   }).catch(err => {
     return res.status(err.status).send(err.message)
   })
@@ -70,4 +70,20 @@ router.post('/invite', function(req, res, err) {
     res.status(403).send(`User ${res.email} already exists, please use another email`)
   })
 })
+
+router.get('/users/:userId', middleware.ensureToken ,function(req, res, err){
+  if(req.data._id === req.params.userId) {
+    userController.findById(req.params.userId).then(user => {
+      res.status(200).send({
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        accountCreation: user.accountCreation
+      })
+    }).catch(err => {
+      res.status(404).send('User not found')
+    })
+  } else res.status(403).send('Unauthorized')
+})
+
 }

@@ -28,28 +28,6 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.get('/protected', ensureToken, function(req, res){
-  jwt.verify(req.token, process.env.SECRET_KEY, function(err, data){
-    if(err)
-      res.sendStatus(403)
-    else res.status(200).json({
-      msg: 'protected route',
-      data: data
-    })
-  })
-})
-
-function ensureToken (req, res, next) {
-  const bearerHeader = req.headers["authorization"]
-  console.log(bearerHeader)
-  if(typeof bearerHeader !== 'undefined'){
-    const bearer = bearerHeader.split(' ')
-    const bearerToken = bearer[1]
-    req.token = bearerToken
-    next()
-  } else res.status(403).send('Forbidden') 
-}
-
 app.listen(8080, function () {
   console.log('Example app listening on port 8080!')
 })

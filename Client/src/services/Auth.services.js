@@ -4,6 +4,16 @@ export function setToken (token) {
   window.localStorage.setItem('pcal_token', token)
 }
 
+export function setProfile(id) {
+  window.localStorage.setItem('pcal_profile', JSON.stringify({
+    _id: id
+  }))
+}
+
+export function getToken() {
+  return window.localStorage.getItem('pcal_token')
+}
+
 export function userIsLogged() {
   return window.localStorage.getItem('pcal_token')
 }
@@ -14,7 +24,8 @@ export function login(email, password) {
       email: email,
       password: password
     }).then(res => {
-      resolve(res.data.token)
+      axios.defaults.headers.common['authorization'] = `Bearer ${getToken()}`
+      resolve(res.data)
     }).catch(err => {
       reject(err)
     })

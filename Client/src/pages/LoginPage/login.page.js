@@ -1,5 +1,5 @@
 import React from 'react'
-import {login, setToken} from '../../services/Auth.services'
+import {login, setToken, setProfile} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
 
@@ -14,8 +14,9 @@ export default class LoginPage extends React.Component {
   signIn() {
     const email = this.email.value
     const password = this.password.value
-    login(email, password).then(token => {
-      setToken(token)
+    login(email, password).then(data => {
+      setToken(data.token)
+      setProfile(data._id)
       this.setState({
         isLogged: true
       })

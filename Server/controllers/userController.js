@@ -54,7 +54,10 @@ userController.login = (userConnecting) => {
       if(user){
         if(user.password === sha256(userConnecting.password+process.env.HASH_SECRET) && user.email === userConnecting.email){
           let token = jwt.sign({"_id":user._id, "email":user.email}, process.env.SECRET_KEY)
-          return resolve(token)
+          return resolve({
+            _id: user._id,
+            token: token
+          })
         } else {
           let error = new Error()
           error.message = 'Invalid email or password'
@@ -81,6 +84,21 @@ userController.findByEmail = (email) => {
       else {
         console.log('New user')
         resolve(email)
+      }
+    })
+  })
+}
+
+userController.findById = (id) => {
+  return new Promise((resolve, reject) => {
+    User.findOne({_id: id}, (err, user) => {
+      if(user)
+        resolve(user)
+      else {
+        reject({
+          status: 403,
+          message: 'User not found'
+        })
       }
     })
   })
