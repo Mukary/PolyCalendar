@@ -1,9 +1,8 @@
 import React from 'react'
 import { register } from '../../services/Register.services'
-import { setToken } from '../../services/Auth.services'
 import {Redirect} from 'react-router-dom'
 import './register.styles.css'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
+import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class RegisterPage extends React.Component {
   constructor(props) {

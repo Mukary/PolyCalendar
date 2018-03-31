@@ -1,7 +1,7 @@
 import React from 'react'
 import {login, setToken, setProfile} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
+import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class LoginPage extends React.Component {
   constructor(props){

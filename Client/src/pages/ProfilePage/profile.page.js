@@ -2,9 +2,9 @@ import React from 'react'
 import {Redirect} from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import {userIsLogged} from '../../services/Auth.services'
+import {getUserProfile} from '../../services/User.services'
 import {connect} from 'react-redux'
-import Item from '../../components/Item'
-import { resetWeek } from '../../actions/index'
+import {fetchUserProfile} from '../../actions/index'
 
 class ProfilePage extends React.Component {
   constructor(props){
@@ -15,6 +15,12 @@ class ProfilePage extends React.Component {
   }
 
   componentWillMount(){
+    const pcal_profile = JSON.parse(window.localStorage.getItem('pcal_profile'))
+    getUserProfile(pcal_profile._id).then(profile => {
+      fetchUserProfile(profile.data)
+    }).catch(err => {
+      console.log(err)
+    })
     if(userIsLogged()){
       this.setState({
         isLogged: true
@@ -23,9 +29,6 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const calendars = this.props.days.calendars
-    const views = this.props.days.views
-    console.log(views)
     if(!this.state.isLogged) {
       return(
         <Redirect to={'/login'} />
@@ -34,10 +37,10 @@ class ProfilePage extends React.Component {
     return(
       <div>
         <Navbar />
-        {
-          calendars.map(d => {return(<Item value={d} />)})
-        }
-      <button onClick={resetWeek}>Reset</button>
+        <div>{this.props.user.userProfile.firstname}</div>
+        <div>{this.props.user.userProfile.lastname}</div>
+        <div>{this.props.user.userProfile.email}</div>
+        <div>{this.props.user.userProfile.accountCreation}</div>
       </div>
     )
   }
@@ -45,7 +48,7 @@ class ProfilePage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    days: state.items
+    user: state.items
   }
 }
 

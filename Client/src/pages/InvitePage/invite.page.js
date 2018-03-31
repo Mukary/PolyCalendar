@@ -1,7 +1,6 @@
 import React from 'react'
-import {invite, setToken} from '../../services/Auth.services'
-import {Redirect} from 'react-router-dom'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap'
+import {invite} from '../../services/Auth.services'
+import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class InvitePage extends React.Component {
   constructor(props){

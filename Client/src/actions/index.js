@@ -1,8 +1,8 @@
 import store from '../store/store'
 
-export function resetWeek() {
+export function fetchUserProfile(profile) {
     store.dispatch({
-      type: "ADD_DAY",
-      payload: null
+      type:"FETCH_USER_PROFILE",
+      payload: profile
     })
 }
