@@ -33,7 +33,7 @@ export function login(email, password) {
 }
 
 export function invite(email) {
-    return new Promise((resolve, reject) =>{
+    return new Promise((resolve, reject) => {
       axios.post('http://localhost:8080/invite', {
         email: email
       }).then(res => {

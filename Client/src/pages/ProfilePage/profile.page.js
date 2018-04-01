@@ -29,6 +29,8 @@ class ProfilePage extends React.Component {
   }
 
   render() {
+    const accountCreation = Date.parse(this.props.user.accountCreation)
+    console.log(accountCreation)
     if(!this.state.isLogged) {
       return(
         <Redirect to={'/login'} />
@@ -37,10 +39,10 @@ class ProfilePage extends React.Component {
     return(
       <div>
         <Navbar />
-        <div>{this.props.user.userProfile.firstname}</div>
-        <div>{this.props.user.userProfile.lastname}</div>
-        <div>{this.props.user.userProfile.email}</div>
-        <div>{this.props.user.userProfile.accountCreation}</div>
+        <div>Firstname: {this.props.user.userProfile.firstname}</div>
+        <div>Lastname: {this.props.user.userProfile.lastname}</div>
+        <div>Email: {this.props.user.userProfile.email}</div>
+        <div>Account date creation: {this.props.user.userProfile.accountCreation}</div>
       </div>
     )
   }

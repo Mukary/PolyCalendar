@@ -6,3 +6,17 @@ export function fetchUserProfile(profile) {
       payload: profile
     })
 }
+
+export function addView(view) {
+  store.dispatch({
+    type:"ADD_VIEW",
+    payload: view
+  })
+}
+
+export function fetchViews(views) {
+  store.dispatch({
+    type:"FETCH_VIEWS",
+    payload: views
+  })
+}
