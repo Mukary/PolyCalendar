@@ -15,4 +15,14 @@ viewController.create = (view) => {
   })
 }
 
+viewController.getViews = () => {
+  return new Promise((resolve, reject) => {
+    View.find().then(views => {
+      resolve(views)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 module.exports = viewController

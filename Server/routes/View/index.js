@@ -14,4 +14,14 @@ module.exports = (router, controller) => {
       res.status(500).send('Couldnt create view')
     })
   })
+
+
+  router.get('/views', function(req, res, err){
+    controller.getViews().then(views => {
+      console.log(views)
+      res.status(200).send(views)
+    }).catch(err => {
+      console.log(err)
+    })
+  })
 }
