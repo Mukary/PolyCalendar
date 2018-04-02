@@ -15,7 +15,7 @@ export default class Navbar extends React.Component {
     return(
       <ul>
         <li><a className="active" href="/">Home</a></li>
-        <li><a href="/login">Views</a></li>
+        <li><a href="/views">Views</a></li>
         <li><a href="/invite">Calendars</a></li>
         <li><a href="/profile">Profile</a></li>
         <li><a href="" onClick={this.logout}>Log out</a></li>
