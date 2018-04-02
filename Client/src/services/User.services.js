@@ -27,6 +27,18 @@ export function addViewDistant(view) {
     axios.post(`http://localhost:8080/views`, view, {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export function deleteViewDistant(viewId) {
+  return new Promise((resolve, reject) => {
+    axios.delete(`http://localhost:8080/views/${viewId}`, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)

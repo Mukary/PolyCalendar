@@ -15,7 +15,7 @@ export default function (state = initialState, action) {
   console.log(action)
   switch(action.type) {
     case "ADD_DAY":
-      const newCalendars = state.calendars.slice()
+      let newCalendars = state.calendars.slice()
       newCalendars.push(action.payload)
       return {
         ...state,
@@ -32,11 +32,16 @@ export default function (state = initialState, action) {
         views: action.payload
       }
     case "ADD_VIEW":
-      const newViews = state.views.slice()
+      let newViews = state.views.slice()
       newViews.push(action.payload)
       return {
         ...state,
         views: newViews
+      }
+    case "DELETE_VIEW":
+      return {
+        ...state,
+        views: action.payload
       }
     default:
       return initialState

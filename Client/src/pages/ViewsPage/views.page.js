@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
 import PNavbar from '../../components/Navbar/Navbar'
 import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
-import {getUserViews, addViewDistant} from '../../services/User.services'
-import {fetchViews, addView} from '../../actions/index'
+import {getUserViews, addViewDistant, deleteViewDistant} from '../../services/User.services'
+import {fetchViews, addView, deleteView} from '../../actions/index'
 
 class ViewsPage extends React.Component {
   constructor(props){
@@ -42,10 +42,18 @@ class ViewsPage extends React.Component {
       title: title,
       color: color
     }).then(view => {
-      addView({
-        title:title,
-        color:color
-      })
+      console.log("VIEW OBJECT")
+      console.log(view)
+      addView(view)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  onDeleteView(viewId) {
+    deleteViewDistant(viewId).then(res => {
+      let newViews = this.props.views.slice().filter(view => {return view._id !== viewId})
+      deleteView(newViews)
     }).catch(err => {
       console.log(err)
     })
@@ -68,8 +76,10 @@ class ViewsPage extends React.Component {
         }
         {
           this.props.views.map(view => {
+            console.log("=== VIEW ID ===")
+            console.log(view._id)
             return(
-              <ViewThumbnail title={view.title} color={view.color} />
+              <ViewThumbnail onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} />
             )
           })
         }

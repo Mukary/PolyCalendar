@@ -20,3 +20,10 @@ export function fetchViews(views) {
     payload: views
   })
 }
+
+export function deleteView(views) {
+  store.dispatch({
+    type:"DELETE_VIEW",
+    payload: views
+  })
+}

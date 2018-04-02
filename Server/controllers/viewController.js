@@ -25,4 +25,14 @@ viewController.getViews = () => {
   })
 }
 
+viewController.deleteView = (viewId) => {
+  return new Promise((resolve, reject) => {
+    View.remove({_id: viewId}).then(x => {
+      resolve(x)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 module.exports = viewController
