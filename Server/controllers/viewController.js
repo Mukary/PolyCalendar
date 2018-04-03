@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const View = require('../models/View')
+const Calendar = require('../models/Calendar')
 const viewController = {}
 
 viewController.create = (view) => {
   return new Promise((resolve, reject) => {
     let newView = new View({
       title: view.title,
-      color: view.color
+      color: view.color,
+      calendars: view.calendars
     })
     newView.save((err, item) => {
       if(err) reject(err)
