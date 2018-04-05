@@ -3,9 +3,11 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
 import PNavbar from '../../components/Navbar/Navbar'
+import CheckboxCalendar from '../../components/CheckboxCalendar/CheckboxCalendar'
 import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
 import {getUserViews, addViewDistant, deleteViewDistant} from '../../services/User.services'
-import {fetchViews, addView, deleteView} from '../../actions/index'
+import {getUserCalendars} from '../../services/Calendars.services'
+import {fetchViews, addView, deleteView, fetchCalendars} from '../../actions/index'
 
 class ViewsPage extends React.Component {
   constructor(props){
@@ -19,6 +21,7 @@ class ViewsPage extends React.Component {
 
   componentWillMount() {
     const token = window.localStorage.getItem('pcal_token')
+    this.calendarsToAttach = new Set()
     if(token){
       this.setState({
         isLogged: true
@@ -26,21 +29,39 @@ class ViewsPage extends React.Component {
       getUserViews().then(views => {
         fetchViews(views)
       })
+      getUserCalendars().then(calendars =>  {
+        fetchCalendars(calendars)
+      })
     }
   }
 
+  addCalendar(calendar){
+    this.calendarsToAttach.add(calendar)
+  }
+
+  removeCalendar(calendar){
+    this.calendarsToAttach.forEach(c => {
+      if(c.cal === calendar.cal)
+        this.calendarsToAttach.delete(c)
+    })
+  }
+
   displayViewForm(){
+    this.calendarsToAttach = new Set()
     this.setState({
       displayViewForm: !this.state.displayViewForm
     })
   }
 
   addView() {
+    let arr = []
+    this.calendarsToAttach.forEach(e => arr.push(e))
     const title = this.title.value
     const color = this.color.value
     addViewDistant({
       title: title,
-      color: color
+      color: color,
+      calendars: arr
     }).then(view => {
       console.log("VIEW OBJECT")
       console.log(view)
@@ -71,6 +92,13 @@ class ViewsPage extends React.Component {
           <div>
            <input ref={e => {this.title = e}}></input>
            <input ref={e => {this.color = e}}></input>
+           {
+             this.props.calendars.map(c => {
+               return(
+                 <CheckboxCalendar calName={c.title} id={c._id} addCalendar={this.addCalendar} removeCalendar={this.removeCalendar}/>
+               )
+             })
+           }
            <button onClick={this.addView}>Create</button>
           </div> : null
         }
@@ -95,7 +123,8 @@ class ViewsPage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    views: state.items.views
+    views: state.items.views,
+    calendars: state.items.calendars
   }
 }
 

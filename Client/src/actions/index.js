@@ -27,3 +27,27 @@ export function deleteView(views) {
     payload: views
   })
 }
+
+export function fetchCalendars(calendars) {
+  store.dispatch({
+    type:"FETCH_CAL",
+    payload: calendars
+  })
+}
+
+export function addCalendar(calendar) {
+  store.dispatch({
+    type:"ADD_CAL",
+    payload: calendar
+  })
+}
+
+export function addCalendarsToView(viewId, calendars){
+  store.dispatch({
+    type:"ADD_CALS_VIEW",
+    payload: {
+      viewId: viewId,
+      calendars: calendars
+    }
+  })
+}

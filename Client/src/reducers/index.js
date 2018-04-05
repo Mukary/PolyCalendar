@@ -1,7 +1,7 @@
 import addViewDistant from '../services/User.services'
 
 const initialState = {
-  calendars: ["MON","TUE","WED", "THU", "FRI"],
+  calendars: [],
   views: [],
   userProfile: {
     firstname: '',
@@ -42,6 +42,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         views: action.payload
+      }
+    case "FETCH_CAL":
+      return {
+        ...state,
+        calendars: action.payload
       }
     default:
       return initialState

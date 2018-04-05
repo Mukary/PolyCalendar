@@ -4,8 +4,7 @@ import items from '../reducers/index'
 import views from '../reducers/views.reducer'
 
 const reducer = combineReducers({
-  items,
-  views
+  items
 })
 
 const middleware = applyMiddleware(thunkMiddleware)

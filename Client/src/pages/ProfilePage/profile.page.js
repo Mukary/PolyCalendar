@@ -1,10 +1,12 @@
 import React from 'react'
+import autoBind from 'react-autobind'
 import {Redirect} from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import {userIsLogged} from '../../services/Auth.services'
 import {getUserProfile} from '../../services/User.services'
+import {createCalendarDistant} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
-import {fetchUserProfile} from '../../actions/index'
+import {fetchUserProfile, addCalendar} from '../../actions/index'
 
 class ProfilePage extends React.Component {
   constructor(props){
@@ -12,6 +14,7 @@ class ProfilePage extends React.Component {
     this.state = {
       isLogged: false
     }
+    autoBind(this)
   }
 
   componentWillMount(){
@@ -28,6 +31,18 @@ class ProfilePage extends React.Component {
     }
   }
 
+  addCalendar() {
+    let title = this.title.value
+    let color = this.color.value
+    createCalendarDistant({
+      title: title,
+      color: color
+    }).then(calendar => {
+      addCalendar(calendar)
+    })
+  }
+
+
   render() {
     const accountCreation = Date.parse(this.props.user.accountCreation)
     console.log(accountCreation)
@@ -43,6 +58,11 @@ class ProfilePage extends React.Component {
         <div>Lastname: {this.props.user.userProfile.lastname}</div>
         <div>Email: {this.props.user.userProfile.email}</div>
         <div>Account date creation: {this.props.user.userProfile.accountCreation}</div>
+        <div>
+           <input ref={e => {this.title = e}}></input>
+           <input ref={e => {this.color = e}}></input>
+           <button onClick={this.addCalendar}>Create</button>
+          </div>
       </div>
     )
   }
