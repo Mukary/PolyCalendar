@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage/register.page'
 import ProfilePage from './pages/ProfilePage/profile.page'
 import InvitePage from './pages/InvitePage/invite.page'
 import ViewsPage from './pages/ViewsPage/views.page'
+import './bootstrap/bootstrap.css'
 import './App.css'
 
 class App extends Component {

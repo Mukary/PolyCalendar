@@ -54,14 +54,16 @@ class ProfilePage extends React.Component {
     return(
       <div>
         <Navbar />
-        <div>Firstname: {this.props.user.userProfile.firstname}</div>
+        <div className="label label-primary">Firstname: {this.props.user.userProfile.firstname}</div>
         <div>Lastname: {this.props.user.userProfile.lastname}</div>
         <div>Email: {this.props.user.userProfile.email}</div>
         <div>Account date creation: {this.props.user.userProfile.accountCreation}</div>
         <div>
-           <input ref={e => {this.title = e}}></input>
+           <input className="form-control" ref={e => {this.title = e}}></input>
            <input ref={e => {this.color = e}}></input>
-           <button onClick={this.addCalendar}>Create</button>
+           <button className="btn btn-default" onClick={this.addCalendar}>
+           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>Create
+           </button>
           </div>
       </div>
     )
