@@ -1,15 +1,13 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {Redirect, Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
-import PNavbar from '../../components/Navbar/Navbar'
 import CheckboxCalendar from '../../components/CheckboxCalendar/CheckboxCalendar'
 import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
 import {getUserViews, addViewDistant, deleteViewDistant} from '../../services/User.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {fetchViews, addView, deleteView, fetchCalendars} from '../../actions/index'
 
-class ViewsPage extends React.Component {
+export default class Views extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -81,10 +79,8 @@ class ViewsPage extends React.Component {
   }
 
   render() {
-    if(this.state.isLogged){
       return(
         <div>
-        <PNavbar/>
         <button onClick={this.displayViewForm}>Add View</button>
         {
           this.state.displayViewForm 
@@ -112,21 +108,6 @@ class ViewsPage extends React.Component {
           })
         }
         </div>
-      )
-    } else {
-      return(
-        <Redirect to={'/login'} />
-      )
-    }
+      )    
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    views: state.items.views,
-    calendars: state.items.calendars
-  }
-}
-
-
-export default connect(mapStateToProps)(ViewsPage)

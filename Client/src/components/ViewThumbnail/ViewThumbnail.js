@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
 import style from './ViewThumbnail.css'
 
@@ -13,9 +14,11 @@ export default class ViewThumbnail extends React.Component {
   render() {
     return(
       <div>
+      <Link to={`/views/${this.props.id}`}>
       <div className='view-thumbnail' style={{backgroundColor: this.props.color, float: 'left'}}>
         {this.props.title}
       </div>
+      </Link>
       <div style={{float: 'left'}}><button onClick={this.onDeleteView}>X</button></div>
       </div>
     )

@@ -8,6 +8,9 @@ const initialState = {
     lastname: '',
     email: '',
     accountCreation:''
+  },
+  currentView: {
+    calendars: []
   }
 }
 
@@ -30,6 +33,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         views: action.payload
+      }
+    case "FETCH_CURRENT_VIEW":
+      return {
+        ...state,
+        currentView: action.payload
       }
     case "ADD_VIEW":
       let newViews = state.views.slice()

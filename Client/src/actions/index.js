@@ -21,6 +21,13 @@ export function fetchViews(views) {
   })
 }
 
+export function fetchCurrentView(view) {
+  store.dispatch({
+    type: "FETCH_CURRENT_VIEW",
+    payload: view
+  })
+}
+
 export function deleteView(views) {
   store.dispatch({
     type:"DELETE_VIEW",

@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage/login.page'
 import RegisterPage from './pages/RegisterPage/register.page'
 import ProfilePage from './pages/ProfilePage/profile.page'
 import InvitePage from './pages/InvitePage/invite.page'
-import ViewsPage from './pages/ViewsPage/views.page'
+import ViewPage from './pages/ViewPage/view.page'
 import './bootstrap/bootstrap.css'
 import './App.css'
 
@@ -19,7 +19,7 @@ class App extends Component {
         <Route path='/login' component={LoginPage}/>
         <Route path='/register' component={RegisterPage}/>
         <Route path='/invite' component ={InvitePage} />
-        <Route path='/views' component ={ViewsPage} />
+        <Route path='/views/:id' component ={ViewPage} />
         </div>
       </Router>      
     );

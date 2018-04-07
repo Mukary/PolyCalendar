@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import './Navbar.styles.css'
 
 export default class Navbar extends React.Component {
@@ -13,13 +14,11 @@ export default class Navbar extends React.Component {
 
   render(){
     return(
-      <ul>
-        <li><a className="active" href="/">Home</a></li>
-        <li><a href="/views">Views</a></li>
-        <li><a href="/invite">Calendars</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="" onClick={this.logout}>Log out</a></li>
-      </ul>
+      <div className="topnav">
+        <Link to={'/'} className="active">Home</Link>
+        <Link to={'/profile'} >Profile</Link>
+        <Link to={'/calendars'} >Calendars</Link>
+      </div>
     )
   }
 }
