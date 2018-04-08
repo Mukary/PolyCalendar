@@ -53,6 +53,14 @@ export default class View extends React.Component {
     })
   }
 
+  onDeleteCalendar(calId){
+    let newCalendars = [{cal: calId}]
+    updateViewDistant(this.props.id, newCalendars, 'REMOVE_CALENDAR').then(view => {
+      updateView(view)
+    })
+
+  }
+
   render(){
     const currentView = this.props.currentView
     const calendars = this.props.calendars
@@ -76,7 +84,7 @@ export default class View extends React.Component {
         }
         <button onClick={this.addCalendarToView}>Add Calendars</button>
         {
-          currentView.calendars.map(c => {return(<CalendarItem onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
+          currentView.calendars.map(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
         {
           newEvents.map(e => {return(<div>{e}</div>)})

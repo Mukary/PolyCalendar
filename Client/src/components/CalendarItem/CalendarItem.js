@@ -35,6 +35,10 @@ export default class CalendarItem extends React.Component {
     })
   }
 
+  onDeleteCalendar() {
+    this.props.onDeleteCalendar(this.props.id)
+  }
+
     render(){
       return(
         <div>
@@ -43,6 +47,7 @@ export default class CalendarItem extends React.Component {
             <option>details</option>
             <option>busy</option>
           </select>
+          <button onClick={this.onDeleteCalendar}>X</button>
         </div>
       )
     }

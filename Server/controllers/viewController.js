@@ -75,6 +75,23 @@ viewController.updateView = (viewId, calendars, action) => {
         reject(err)
       })
     }
+    if(action === 'REMOVE_CALENDAR'){
+      let calId = calendars[0].cal
+      View.update({_id: viewId}, {$pull: {calendars: {cal: calId}}}).then(u => {
+        View.findOne({_id: viewId}).populate('calendars.cal').exec().then(v => {
+          resolve(v)
+        }).catch(err => {
+          console.log(err)
+          reject(err)
+        }).catch(err => {
+          console.log(err)
+          reject(err)
+        })
+      }).catch(err => {
+        console.log(err)
+        reject(err)
+      })
+    }
   })
 }
 
