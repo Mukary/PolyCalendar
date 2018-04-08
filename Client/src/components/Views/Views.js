@@ -61,8 +61,6 @@ export default class Views extends React.Component {
       color: color,
       calendars: arr
     }).then(view => {
-      console.log("VIEW OBJECT")
-      console.log(view)
       addView(view)
     }).catch(err => {
       console.log(err)
@@ -100,8 +98,6 @@ export default class Views extends React.Component {
         }
         {
           this.props.views.map(view => {
-            console.log("=== VIEW ID ===")
-            console.log(view._id)
             return(
               <ViewThumbnail onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} />
             )

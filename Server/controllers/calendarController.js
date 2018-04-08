@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const Calendar = require('../models/Calendar')
+const View = require('../models/View')
 const calendarController = {}
 
 calendarController.create = (calendar) => {
   return new Promise((resolve, reject) => {
     let newCalendar = new Calendar({
       title: calendar.title,
-      color: calendar.color
+      color: calendar.color,
+      events: ["A", "B", "C"]
     })
     newCalendar.save((err, item) => {
       if(err) reject(err)
@@ -25,7 +27,7 @@ calendarController.getCalendars = () => {
   })
 }
 
-calendarController.deleteView = (calId) => {
+calendarController.deleteCalendar = (calId) => {
   return new Promise((resolve, reject) => {
     Calendar.remove({_id: calId}).then(x => {
       resolve(x)

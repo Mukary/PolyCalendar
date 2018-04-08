@@ -22,6 +22,22 @@ module.exports = (router, controller) => {
     })
   })
 
+  router.get('/views/:viewId', function(req, res, err){
+    controller.getView(req.params.viewId).then(view => {
+      res.status(200).send(view)
+    }).catch(err => {
+      res.status(404).send('View not found')
+    })
+  })
+
+  router.put('/views/:viewId', function(req, res, err){
+    controller.updateView(req.params.viewId, req.body.calendars, req.body.action).then(view => {
+      res.status(200).send(view)
+    }).catch(err => {
+      res.status(404).send('Couldnt update view, not found')
+    })
+  })
+
   router.delete('/views/:viewId', function(req, res, err){
     console.log(req.params.viewId)
     controller.deleteView(req.params.viewId).then(x => {

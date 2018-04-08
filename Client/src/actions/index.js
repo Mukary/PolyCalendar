@@ -14,6 +14,13 @@ export function addView(view) {
   })
 }
 
+export function updateView(view) {
+  store.dispatch({
+    type:"UPDATE_VIEW",
+    payload: view
+  })
+}
+
 export function fetchViews(views) {
   store.dispatch({
     type:"FETCH_VIEWS",

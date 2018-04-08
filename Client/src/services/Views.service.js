@@ -24,7 +24,7 @@ export function getView(viewId) {
   })
 }
 
-export function updateView(viewId, calendars, action){
+export function updateViewDistant(viewId, calendars, action){
   return new Promise((resolve, reject) => {
     axios.put(`http://localhost:8080/views/${viewId}`, {
       calendars: calendars,

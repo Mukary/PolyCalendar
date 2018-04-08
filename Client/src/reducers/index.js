@@ -56,6 +56,12 @@ export default function (state = initialState, action) {
         ...state,
         calendars: action.payload
       }
+    case "UPDATE_VIEW":
+      return {
+        ...state,
+        currentView: action.payload
+      }
+
     default:
       return initialState
   }

@@ -1,7 +1,9 @@
 import React from 'react'
 import autoBind from 'react-autobind'
 import CheckboxCalendar from '../CheckboxCalendar/CheckboxCalendar'
-import {updateView} from '../../services/Views.service'
+import CalendarItem from '../CalendarItem/CalendarItem'
+import {updateViewDistant} from '../../services/Views.service'
+import {updateView} from '../../actions/index'
 
 export default class View extends React.Component {
   constructor(props) {
@@ -30,11 +32,24 @@ export default class View extends React.Component {
   addCalendarToView(){
     let newCalendars = []
     this.calendarsToAttach.forEach(c => newCalendars.push(c))
-    updateView(this.props.id, newCalendars,'ADD_CALENDARS').then(view => {
+    updateViewDistant(this.props.id, newCalendars,'ADD_CALENDARS').then(view => {
       console.log("VIEW UPDATED")
       console.log(view)
+      updateView(view)
     }).catch(err => {
       console.log(err)
+    })
+  }
+
+  updateCalendarMode(calId, mode){
+    let visible = (mode === 'details')
+    let newCalendars = [{cal: calId, visible: visible}]
+    console.log("UPDATE MODE")
+    console.log(newCalendars)
+    updateViewDistant(this.props.id, newCalendars, 'UPDATE_CALENDAR_MODE').then(view => {
+      console.log("VIEW UPDATED")
+      console.log(view)
+      updateView(view)
     })
   }
 
@@ -49,6 +64,7 @@ export default class View extends React.Component {
         else newEvents.push(e)
       })
     })
+
     return(
       <div>
         {
@@ -58,9 +74,9 @@ export default class View extends React.Component {
             )
           })
         }
-        <button onClick={this.addCalendarToView}>Update View</button>
+        <button onClick={this.addCalendarToView}>Add Calendars</button>
         {
-          currentView.calendars.map(c => {return(<div>{c.cal.title}</div>)})
+          currentView.calendars.map(c => {return(<CalendarItem onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
         {
           newEvents.map(e => {return(<div>{e}</div>)})
