@@ -5,18 +5,17 @@ export default class CalendarItem extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      mode: 'details'
+      mode: this.props.mode
     }
     autoBind(this)
   }
 
   componentWillMount(){
-    let mode = ''
-    if(this.props.mode)
-      mode = 'details'
-    else mode = 'busy'
+    console.log("TEST TERNAIRE")
+    let a = this.props.mode ? 'details' : 'busy'
+    console.log(a)
     this.setState({
-      mode: this.props.mode
+      mode: a
     })
   }
 

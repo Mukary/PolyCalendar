@@ -61,24 +61,17 @@ viewController.updateView = (viewId, calendars, action) => {
       })
     }
     if(action === 'UPDATE_CALENDAR_MODE'){
-      View.findOne({_id:viewId}).then(view => {
-        calendars.map(c => {
-          view.calendars.pull({cal: c.cal})
-          view.calendars.push({cal: c.cal, visible: c.visible})
-        })
-        view.save().then(view => {
-          View.findOne({_id: view._id}).populate('calendars.cal').exec().then(pView => {
-            resolve(pView)
-          }).catch(err => {
-            console.log('Could not populate view')
-            reject(err)
-          })
+      let calId = calendars[0].cal
+      let visible = calendars[0].visible
+      View.update({_id: viewId, 'calendars.cal':calId}, {$set:{
+        "calendars.$.visible": visible
+      }}).then(view => {
+        View.findOne({_id: viewId}).populate('calendars.cal').exec().then(v => {
+          resolve(v)
         }).catch(err => {
-          console.log('Could not udpate calendars view')
           reject(err)
         })
       }).catch(err => {
-        console.log('Could not find view')
         reject(err)
       })
     }
