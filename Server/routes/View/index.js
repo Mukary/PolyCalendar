@@ -26,6 +26,7 @@ module.exports = (router, controller) => {
     controller.getView(req.params.viewId).then(view => {
       res.status(200).send(view)
     }).catch(err => {
+      console.log(err)
       res.status(404).send('View not found')
     })
   })

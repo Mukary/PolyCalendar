@@ -41,7 +41,7 @@ calendarController.addEventToCalendar = (calId, event) => {
 
 calendarController.getCalendars = () => {
   return new Promise((resolve, reject) => {
-    Calendar.find().then(calendars => {
+    Calendar.find().populate('events').then(calendars => {
       resolve(calendars)
     }).catch(err => {
       reject(err)

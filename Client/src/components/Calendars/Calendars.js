@@ -43,6 +43,7 @@ export default class Calendars extends React.Component {
   }
 
   render() {
+    console.log(this.props.calendars)
     return(
       <div>
         <button onClick={this.displayCalendarForm}>Add Calendar</button>

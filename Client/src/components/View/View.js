@@ -67,8 +67,11 @@ export default class View extends React.Component {
     let newEvents = []
     this.props.currentView.calendars.map(calendar => {
       calendar.cal.events.map(e => {
-        if(!calendar.visible)
-          newEvents.push("BUSY"+e)
+        console.log(e['summary'])
+        if(!calendar.visible){
+          e['summary'] = "Busy"
+          newEvents.push(e)
+        }
         else newEvents.push(e)
       })
     })
@@ -87,7 +90,7 @@ export default class View extends React.Component {
           currentView.calendars.map(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
         {
-          newEvents.map(e => {return(<div>{e}</div>)})
+          newEvents.map(e => {return(<div>{e.summary}</div>)})
         }
       </div>
     )

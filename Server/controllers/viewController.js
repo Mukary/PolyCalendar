@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const View = require('../models/View')
 const Calendar = require('../models/Calendar')
+const Event = require('../models/Event')
 const viewController = {}
 
 viewController.create = (view) => {
@@ -29,10 +30,12 @@ viewController.getViews = () => {
 
 viewController.getView = (viewId) => {
   return new Promise((resolve, reject) => {
-    View.findOne({_id: viewId}).populate('calendars.cal').exec().then(view => {
-      resolve(view)
-    }).catch(err => {
-      reject(err)
+    View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
+      if(err) reject(err)
+      Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+        if(err) reject(err)
+        else resolve(res)
+      })
     })
   })
 }
@@ -45,11 +48,12 @@ viewController.updateView = (viewId, calendars, action) => {
           view.calendars.push({cal:c.cal, visible: c.visible})
         })
         view.save().then(view => {
-          View.findOne({_id:view._id}).populate('calendars.cal').exec().then(pView => {
-            resolve(pView)
-          }).catch(err => {
-            console.log('Error while populating view')
-            reject(err)
+          View.findOne({_id:view._id}).populate('calendars.cal').exec(function(err, res){
+            if(err) reject(err)
+            Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+              if(err) reject(err)
+              else resolve(res)
+            })
           })
         }).catch(err => {
           console.log('Error while updating view')
@@ -66,10 +70,12 @@ viewController.updateView = (viewId, calendars, action) => {
       View.update({_id: viewId, 'calendars.cal':calId}, {$set:{
         "calendars.$.visible": visible
       }}).then(view => {
-        View.findOne({_id: viewId}).populate('calendars.cal').exec().then(v => {
-          resolve(v)
-        }).catch(err => {
-          reject(err)
+        View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
+          if(err) reject(err)
+          Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+            if(err) reject(err)
+            else resolve(res)
+          })
         })
       }).catch(err => {
         reject(err)
@@ -78,14 +84,12 @@ viewController.updateView = (viewId, calendars, action) => {
     if(action === 'REMOVE_CALENDAR'){
       let calId = calendars[0].cal
       View.update({_id: viewId}, {$pull: {calendars: {cal: calId}}}).then(u => {
-        View.findOne({_id: viewId}).populate('calendars.cal').exec().then(v => {
-          resolve(v)
-        }).catch(err => {
-          console.log(err)
-          reject(err)
-        }).catch(err => {
-          console.log(err)
-          reject(err)
+        View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
+          if(err) reject(err)
+          Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+            if(err) reject(err)
+            else resolve(res)
+          })
         })
       }).catch(err => {
         console.log(err)
