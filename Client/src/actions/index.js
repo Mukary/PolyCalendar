@@ -65,3 +65,10 @@ export function addCalendarsToView(viewId, calendars){
     }
   })
 }
+
+export function deleteCalendar(calId) {
+  store.dispatch({
+    type:"DELETE_CALENDAR",
+    payload: calId
+  })
+}

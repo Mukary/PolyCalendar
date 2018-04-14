@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
+    "ical": "^0.5.0",
     "moment": "^2.21.0",
     "react": "^16.2.0",
     "react-autobind": "^1.0.6",

@@ -24,12 +24,6 @@ export default class Views extends React.Component {
       this.setState({
         isLogged: true
       })
-      getUserViews().then(views => {
-        fetchViews(views)
-      })
-      getUserCalendars().then(calendars =>  {
-        fetchCalendars(calendars)
-      })
     }
   }
 

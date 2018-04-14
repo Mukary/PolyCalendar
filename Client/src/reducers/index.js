@@ -61,6 +61,21 @@ export default function (state = initialState, action) {
         ...state,
         currentView: action.payload
       }
+    case "ADD_CAL": {
+      let newCalendars = state.calendars.slice()
+      newCalendars.push(action.payload)
+      return {
+        ...state,
+        calendars: newCalendars
+      }
+    }
+    case "DELETE_CALENDAR": {
+      let newCalendars = state.calendars.filter(x => x._id !== action.payload)
+      return {
+        ...state,
+        calendars: newCalendars
+      }
+    }
 
     default:
       return initialState

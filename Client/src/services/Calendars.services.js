@@ -24,3 +24,15 @@ export function createCalendarDistant(calendar) {
   })
 }
 
+export function deleteCalendarDistant(calId) {
+  return new Promise((resolve, reject) => {
+    axios.delete(`http://localhost:8080/calendars/${calId}`, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+

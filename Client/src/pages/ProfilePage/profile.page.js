@@ -6,10 +6,10 @@ import Views from '../../components/Views/Views'
 import Calendars from '../../components/Calendars/Calendars'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {userIsLogged} from '../../services/Auth.services'
-import {getUserProfile} from '../../services/User.services'
-import {createCalendarDistant} from '../../services/Calendars.services'
+import {getUserProfile,getUserViews} from '../../services/User.services'
+import {createCalendarDistant, getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
-import {fetchUserProfile, addCalendar} from '../../actions/index'
+import {fetchUserProfile, addCalendar, fetchCalendars, fetchViews} from '../../actions/index'
 import 'react-tabs/style/react-tabs.css'
 
 class ProfilePage extends React.Component {
@@ -33,6 +33,15 @@ class ProfilePage extends React.Component {
         isLogged: true
       })
     }
+  }
+
+  componentDidMount() {
+    getUserViews().then(views => {
+      fetchViews(views)
+    })
+    getUserCalendars().then(calendars =>  {
+      fetchCalendars(calendars)
+    })
   }
 
   render() {
@@ -65,7 +74,7 @@ class ProfilePage extends React.Component {
     </TabPanel>
     
     <TabPanel>
-    <Calendars />
+    <Calendars calendars={this.props.calendars} />
     </TabPanel>
   </Tabs>
       </div>
