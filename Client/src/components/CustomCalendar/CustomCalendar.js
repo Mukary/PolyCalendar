@@ -16,15 +16,38 @@ export default class CustomCalendar extends React.Component {
       float: 'left'
     }
 
+
+function Event({ event }) {
+  return (
+    <span>
+      <span>
+        <strong>{event.title}</strong>
+      </span>
+      <br/>
+      <span>
+        <strong>Description:</strong>
+        {' '+event.desc}
+      </span>
+      <br />
+      <span>
+        <strong>Location:</strong>
+        {' '+event.location}
+      </span>
+    </span>
+  )
+}
+
     return(
         <BigCalendar
           style={styles}
-          selectable
+          components={{
+            event: Event
+          }}
+          popup
           events={this.props.events}
           defaultView="month"
           scrollToTime={new Date('1970-1-1')}
           defaultDate={new Date('2018-4-15')}
-          onSelectEvent={event => alert(event.title)}
       />
     )
   }

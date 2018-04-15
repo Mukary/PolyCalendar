@@ -44,9 +44,12 @@ class ProfilePage extends React.Component {
     })
   }
 
+  logout(){
+    
+  }
+
   render() {
-    const accountCreation = Date.parse(this.props.user.accountCreation)
-    console.log(accountCreation)
+    const accountCreation = new Date(this.props.user.accountCreation)
     if(!this.state.isLogged) {
       return(
         <Redirect to={'/login'} />
@@ -63,10 +66,19 @@ class ProfilePage extends React.Component {
     </TabList>
 
     <TabPanel>
-    <div className="label label-primary">Firstname: {this.props.user.userProfile.firstname}</div>
-      <div>Lastname: {this.props.user.userProfile.lastname}</div>
-      <div>Email: {this.props.user.userProfile.email}</div>
-    <div>Account date creation: {this.props.user.userProfile.accountCreation}</div>
+    <div class="row">
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <div class="caption">
+        <p>Firstname: {this.props.user.userProfile.firstname}</p>
+        <p>Lastname: {this.props.user.userProfile.lastname}</p>
+        <p>Email: {this.props.user.userProfile.email}</p>
+        <p>Account date creation: {this.props.user.userProfile.accountCreation}</p>
+        <p class="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
+      </div>
+    </div>
+  </div>
+</div>
     </TabPanel>
     
     <TabPanel>

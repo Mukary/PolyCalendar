@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage/register.page'
 import ProfilePage from './pages/ProfilePage/profile.page'
 import InvitePage from './pages/InvitePage/invite.page'
 import ViewPage from './pages/ViewPage/view.page'
+import CalendarPage from './pages/CalendarPage/calendar.page'
 import './bootstrap/bootstrap.css'
 import './App.css'
 
@@ -20,6 +21,7 @@ class App extends Component {
         <Route path='/register' component={RegisterPage}/>
         <Route path='/invite' component ={InvitePage} />
         <Route path='/views/:id' component ={ViewPage} />
+        <Route path='/calendars/:id' component ={CalendarPage} />
         </div>
       </Router>      
     );

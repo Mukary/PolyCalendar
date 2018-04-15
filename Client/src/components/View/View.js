@@ -75,7 +75,8 @@ export default class View extends React.Component {
             title: e['summary'],
             allDay: false,
             start: new Date(e['start']),
-            end: new Date(e['end'])
+            end: new Date(e['end']),
+            desc:'DESC'
           })
         }
         else{
@@ -83,7 +84,8 @@ export default class View extends React.Component {
             title: e['summary'],
             allDay: false,
             start: new Date(e['start']),
-            end: new Date(e['end'])
+            end: new Date(e['end']),
+            desc: 'DESC'
           })
         }
       })

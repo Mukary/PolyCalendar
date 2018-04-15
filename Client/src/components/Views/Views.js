@@ -6,13 +6,15 @@ import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
 import {getUserViews, addViewDistant, deleteViewDistant} from '../../services/User.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {fetchViews, addView, deleteView, fetchCalendars} from '../../actions/index'
+import './Views.css'
 
 export default class Views extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       isLogged: false,
-      displayViewForm: false
+      displayViewForm: false,
+      addButton: 'Add View'
     }
     autoBind(this)
   }
@@ -40,8 +42,10 @@ export default class Views extends React.Component {
 
   displayViewForm(){
     this.calendarsToAttach = new Set()
+    let addButtonLabel = this.state.displayViewForm ? 'Add View' : 'Cancel'
     this.setState({
-      displayViewForm: !this.state.displayViewForm
+      displayViewForm: !this.state.displayViewForm,
+      addButton: addButtonLabel
     })
   }
 
@@ -73,7 +77,7 @@ export default class Views extends React.Component {
   render() {
       return(
         <div>
-        <button onClick={this.displayViewForm}>Add View</button>
+        <button className='btn btn-warning' onClick={this.displayViewForm} >{this.state.addButton}</button>
         {
           this.state.displayViewForm 
           ?
@@ -90,13 +94,15 @@ export default class Views extends React.Component {
            <button onClick={this.addView}>Create</button>
           </div> : null
         }
+        <ul class='views'>
         {
-          this.props.views.map(view => {
+          this.props.views.map((view, index) => {
             return(
-              <ViewThumbnail onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} />
+               <ViewThumbnail style={{float:'left'}} onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} calendars={view.calendars}/>
             )
           })
         }
+        </ul>
         </div>
       )    
   }

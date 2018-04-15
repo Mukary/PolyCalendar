@@ -1,0 +1,8 @@
+ul.views {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center;
+  padding-left: 25%;
+  margin-top: 20px;
+  justify-content: center;
+}
