@@ -23,7 +23,8 @@
 }
 
 body {
-  background-color: #d3d9e2;
+  /*background-color: #d3d9e2;*/
+  background-color: #ffffff;
 }
 
 @keyframes App-logo-spin {

@@ -8,6 +8,7 @@ import {getView} from '../../services/Views.service'
 import {fetchCurrentView, fetchCalendars} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
 import View from '../../components/View/View'
+import Popup from 'react-popup'
 
 class ViewPage extends React.Component {
   constructor(props){

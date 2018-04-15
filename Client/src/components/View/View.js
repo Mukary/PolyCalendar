@@ -2,6 +2,7 @@ import React from 'react'
 import autoBind from 'react-autobind'
 import CheckboxCalendar from '../CheckboxCalendar/CheckboxCalendar'
 import CalendarItem from '../CalendarItem/CalendarItem'
+import CustomCalendar from '../CustomCalendar/CustomCalendar'
 import {updateViewDistant} from '../../services/Views.service'
 import {updateView} from '../../actions/index'
 
@@ -64,20 +65,42 @@ export default class View extends React.Component {
   render(){
     const currentView = this.props.currentView
     const calendars = this.props.calendars
-    let newEvents = []
+    let calEvents = []
     this.props.currentView.calendars.map(calendar => {
       calendar.cal.events.map(e => {
         console.log(e['summary'])
         if(!calendar.visible){
           e['summary'] = "Busy"
-          newEvents.push(e)
+          calEvents.push({
+            title: e['summary'],
+            allDay: false,
+            start: new Date(e['start']),
+            end: new Date(e['end'])
+          })
         }
-        else newEvents.push(e)
+        else{
+          calEvents.push({
+            title: e['summary'],
+            allDay: false,
+            start: new Date(e['start']),
+            end: new Date(e['end'])
+          })
+        }
       })
     })
-
     return(
       <div>
+        <div className='page-header'>
+          <h1>{this.props.currentView.title}</h1>
+        </div>
+        <CustomCalendar events={calEvents}/>
+        <div style={{
+          float: 'left', 
+          height:'800px', 
+          backgroundColor:'pink',
+          width:'200px',
+          marginLeft:'5%'
+          }}>
         {
           this.props.calendars.map(c => {
             return(
@@ -89,9 +112,7 @@ export default class View extends React.Component {
         {
           currentView.calendars.map(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
-        {
-          newEvents.map(e => {return(<div>{e.summary}</div>)})
-        }
+        </div>
       </div>
     )
   }
