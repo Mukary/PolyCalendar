@@ -1,5 +1,5 @@
 import React from 'react'
-import {login, setToken, setProfile} from '../../services/Auth.services'
+import {login, setToken, setProfile, userIsLogged, verifyUser} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
 import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
@@ -8,6 +8,14 @@ export default class LoginPage extends React.Component {
     super(props)
     this.state = {
       isLogged: false
+    }
+  }
+
+  componentWillMount() {
+    if(userIsLogged()){
+      this.setState({
+        isLogged: true
+      })
     }
   }
 

@@ -49,6 +49,16 @@ calendarController.getCalendars = () => {
   })
 }
 
+calendarController.getCalendar = (calId) => {
+  return new Promise((resolve, reject) => {
+    Calendar.findOne({_id: calId}).populate('events').then(calendar => {
+      resolve(calendar)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 calendarController.deleteCalendar = (calId) => {
   return new Promise((resolve, reject) => {
     Calendar.remove({_id: calId}).then(x => {

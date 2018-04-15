@@ -17,7 +17,6 @@ export default class Navbar extends React.Component {
       <div className="topnav">
         <Link to={'/'} className="active">Home</Link>
         <Link to={'/profile'} >Profile</Link>
-        <Link to={'/calendars'} >Calendars</Link>
       </div>
     )
   }

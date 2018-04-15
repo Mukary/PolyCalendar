@@ -11,6 +11,9 @@ const initialState = {
   },
   currentView: {
     calendars: []
+  },
+  currentCalendar: {
+    events: []
   }
 }
 
@@ -55,6 +58,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         calendars: action.payload
+      }
+    case "FETCH_CURRENT_CALENDAR":
+      return {
+        ...state,
+        currentCalendar: action.payload
       }
     case "UPDATE_VIEW":
       return {

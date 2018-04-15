@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
 
 export default class CalendarItem extends React.Component {
@@ -41,13 +42,17 @@ export default class CalendarItem extends React.Component {
 
     render(){
       return(
-        <div>
-          <p>{this.props.calName}</p>
-          <select onChange={this.handleModeChange} value={this.state.mode}>
+        <div style={{marginBottom:'10px'}}>
+          <div>
+          <Link to={`/calendars/${this.props.id}`}>
+            <p className="label label-info" style={{fontSize: '15px'}}>{this.props.calName}</p>
+          </Link>
+          <select style={{marginLeft: '10px', width:'100px', textAlign:'center'}} onChange={this.handleModeChange} value={this.state.mode}>
             <option>details</option>
             <option>busy</option>
           </select>
-          <button onClick={this.onDeleteCalendar}>X</button>
+          <button style={{marginLeft: '10px'}} className="btn btn-danger btn-xs" onClick={this.onDeleteCalendar}><span className="glyphicon glyphicon-trash"/></button>
+          </div>
         </div>
       )
     }

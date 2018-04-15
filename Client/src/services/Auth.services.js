@@ -18,6 +18,21 @@ export function userIsLogged() {
   return window.localStorage.getItem('pcal_token')
 }
 
+export function verifyUser() {
+    axios.get(`http://localhost:8080/verify`, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }, function(err, res){
+      if(err){
+        console.log("ERR")
+        return false
+      } 
+      else {
+        console.log("RES")
+        return true
+      }
+    })
+}
+
 export function login(email, password) {
   return new Promise((resolve, reject) => {
     axios.post('http://localhost:8080/login', {

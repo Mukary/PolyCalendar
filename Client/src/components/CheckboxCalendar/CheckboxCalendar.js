@@ -42,9 +42,10 @@ export default class CheckboxCalendar extends React.Component {
 
     render(){
       return(
-        <div>
-          <input type="checkbox" onChange={this.handleChange}/> {this.props.calName}
-          <select onChange={this.handleModeChange}>
+        <div style={{width:'300px', marginBottom:'10px'}}>
+          <input type="checkbox" onChange={this.handleChange}/>
+          <p className="label label-info" style={{fontSize: '15px', marginLeft:'5px'}}>{this.props.calName}</p>
+          <select style={{width: '100px', marginLeft:'10px'}}onChange={this.handleModeChange}>
             <option>details</option>
             <option>busy</option>
           </select>

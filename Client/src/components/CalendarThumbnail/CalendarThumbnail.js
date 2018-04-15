@@ -14,9 +14,11 @@ export default class CalendarThumbnail extends React.Component {
   render() {
     return(
       <div>
+      <Link to={`/calendars/${this.props.id}`}>
       <div className='calendar-thumbnail' style={{backgroundColor: this.props.color, float: 'left'}}>
         {this.props.title}
       </div>
+      </Link>
       <div style={{float: 'left'}}><button onClick={this.onDeleteCalendar}>X</button></div>
       </div>
     )

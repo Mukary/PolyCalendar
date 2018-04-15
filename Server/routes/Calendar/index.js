@@ -29,6 +29,15 @@ module.exports = (router, controller) => {
       res.status(200).send(calendars)
     }).catch(err => {
       console.log(err)
+      res.status(404).send('Calendars not found')
+    })
+  })
+
+  router.get('/calendars/:calId', function(req, res, err){
+    controller.getCalendar(req.params.calId).then(calendar => {
+      res.status(200).send(calendar)
+    }).catch(err => {
+      res.status(404).send('Calendar not found')
     })
   })
 

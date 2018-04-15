@@ -3,10 +3,10 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
 import {userIsLogged} from '../../services/Auth.services'
-import {getUserCalendars} from '../../services/Calendars.services'
-import {getView} from '../../services/Views.service'
-import {fetchCurrentView, fetchCalendars} from '../../actions/index'
+import {getUserCalendar} from '../../services/Calendars.services'
+import {fetchCurrentCalendar} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
+import CustomCalendar from '../../components/CustomCalendar/CustomCalendar'
 //import Calendar from '../../components/Calendar/Calendar'
 
 class CalendarPage extends React.Component {
@@ -19,19 +19,11 @@ class CalendarPage extends React.Component {
   }
 
   componentWillMount() {
-    getView(this.props.match.params.id).then(view => {
-      fetchCurrentView(view)
+    getUserCalendar(this.props.match.params.id).then(calendar => {
+      fetchCurrentCalendar(calendar)
     }).catch(err => {
       console.log(err)
     })
-    getUserCalendars().then(calendars => {
-      fetchCalendars(calendars)
-    }).catch(err => {
-      console.log(err)
-    })
-    this.viewEvents = new Set()
-    this.viewId = this.props.match.params.id
-    this.viewCalendars = this.props.currentView.calendars
     if(userIsLogged()){
       this.setState({
         isLogged: true
@@ -40,10 +32,28 @@ class CalendarPage extends React.Component {
   }
 
   render() {
+    console.log("CALENDAR PAGE")
+    console.log(this.props.currentCalendar)
+    let events = []
+    this.props.currentCalendar.events.map(e => {
+        console.log(e['summary'])
+          events.push({
+            title: e['summary'],
+            allDay: false,
+            start: new Date(e['start']),
+            end: new Date(e['end']),
+            desc: 'DESC'
+          })
+      
+    })
     if(this.state.isLogged){
       return(
         <div>
-        <PNavbar/> rktkejtjert
+        <PNavbar/>
+        <div className='page-header'>
+          <h1>{this.props.currentCalendar.title}</h1>
+        </div>
+        <CustomCalendar events={events} />
         </div>
       )
     } else {

@@ -5,13 +5,11 @@ import CalendarItem from '../CalendarItem/CalendarItem'
 import CustomCalendar from '../CustomCalendar/CustomCalendar'
 import {updateViewDistant} from '../../services/Views.service'
 import {updateView} from '../../actions/index'
+import './View.css'
 
 export default class View extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      events:[]
-    }
     autoBind(this)
   }
 
@@ -98,11 +96,14 @@ export default class View extends React.Component {
         <CustomCalendar events={calEvents}/>
         <div style={{
           float: 'left', 
-          height:'800px', 
-          backgroundColor:'pink',
-          width:'200px',
+          height:'800px',
+          width:'400px',
           marginLeft:'5%'
-          }}>
+          }}
+          className="panel panel-info">
+          <p class="panel-heading" style={{fontSize: '25px'}}>Settings</p>
+          <div className="panel-body">
+          <div className='scrollable' style={{marginBottom:'5px'}}>
         {
           this.props.calendars.map(c => {
             return(
@@ -110,10 +111,13 @@ export default class View extends React.Component {
             )
           })
         }
-        <button onClick={this.addCalendarToView}>Add Calendars</button>
+        </div>
+        <button className='btn btn-success' onClick={this.addCalendarToView}>Add Calendars</button>
+        <h4>List of calendars</h4>
         {
           currentView.calendars.map(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
+        </div>
         </div>
       </div>
     )

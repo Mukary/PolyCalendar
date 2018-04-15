@@ -49,6 +49,13 @@ export function fetchCalendars(calendars) {
   })
 }
 
+export function fetchCurrentCalendar(calendar) {
+  store.dispatch({
+    type:"FETCH_CURRENT_CALENDAR",
+    payload: calendar
+  })
+}
+
 export function addCalendar(calendar) {
   store.dispatch({
     type:"ADD_CAL",
