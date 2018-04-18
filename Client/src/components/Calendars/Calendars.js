@@ -46,6 +46,7 @@ export default class Calendars extends React.Component {
     console.log(this.props.calendars)
     return(
       <div>
+        <div>
         <button onClick={this.displayCalendarForm}>Add Calendar</button>
         {
           this.state.displayCalendarForm
@@ -59,11 +60,14 @@ export default class Calendars extends React.Component {
            </button>
           </div> : null
         }
+        </div>
+        <div style={{float:'left'}}>
         {
           this.props.calendars.map(x =>{
             return(<CalendarThumbnail id={x._id} title={x.title} color={x.color} onDeleteCalendar={this.onDeleteCalendar}/>)
           })
         }
+        </div>
       </div>
     )
   }

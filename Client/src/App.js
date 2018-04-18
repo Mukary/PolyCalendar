@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage/profile.page'
 import InvitePage from './pages/InvitePage/invite.page'
 import ViewPage from './pages/ViewPage/view.page'
 import CalendarPage from './pages/CalendarPage/calendar.page'
+import SharedViewPage from './pages/SharedViewPage/shared-view.page'
 import {verifyUser} from './services/Auth.services'
 import './bootstrap/bootstrap.css'
 import './App.css'
@@ -23,6 +24,7 @@ class App extends Component {
         <Route path='/invite' component ={InvitePage} />
         <Route path='/views/:id' component ={ViewPage} />
         <Route path='/calendars/:id' component ={CalendarPage} />
+        <Route path='/views/share/:id' component={SharedViewPage} />
         </div>
       </Router>      
     );

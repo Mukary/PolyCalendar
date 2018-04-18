@@ -2,19 +2,15 @@ import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
-import {userIsLogged} from '../../services/Auth.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {getView} from '../../services/Views.service'
 import {fetchCurrentView, fetchCalendars} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
-import View from '../../components/View/View'
+import SharedView from '../../components/SharedView/SharedView'
 
-class ViewPage extends React.Component {
+class SharedViewPage extends React.Component {
   constructor(props){
     super(props)
-    this.state = {
-      isLogged: false
-    }
     autoBind(this)
   }
 
@@ -29,29 +25,17 @@ class ViewPage extends React.Component {
     }).catch(err => {
       console.log(err)
     })
-    this.viewEvents = new Set()
     this.viewId = this.props.match.params.id
     this.viewCalendars = this.props.currentView.calendars
-    if(userIsLogged()){
-      this.setState({
-        isLogged: true
-      })
-    }
   }
 
   render() {
-    if(this.state.isLogged){
       return(
         <div>
         <PNavbar/>
-        <View  id={this.viewId} currentView={this.props.currentView} calendars={this.props.calendars}/>
+        <SharedView  id={this.viewId} currentView={this.props.currentView} calendars={this.props.calendars}/>
         </div>
       )
-    } else {
-      return(
-        <Redirect to={'/login'} />
-      )
-    }
   }
 }
 
@@ -63,4 +47,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(ViewPage)
+export default connect(mapStateToProps)(SharedViewPage)
