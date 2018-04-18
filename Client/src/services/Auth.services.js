@@ -19,7 +19,7 @@ export function userIsLogged() {
 }
 
 export function verifyUser() {
-    axios.get(`http://localhost:8080/verify`, {
+    axios.get(`${process.env.REACT_APP_API_URL}/verify`, {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }, function(err, res){
       if(err){
@@ -35,7 +35,7 @@ export function verifyUser() {
 
 export function login(email, password) {
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/login', {
+    axios.post(`${process.env.REACT_APP_API_URL}/login`, {
       email: email,
       password: password
     }).then(res => {
@@ -49,7 +49,7 @@ export function login(email, password) {
 
 export function invite(email) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:8080/invite', {
+      axios.post(`${process.env.REACT_APP_API_URL}/invite`, {
         email: email
       }).then(res => {
         resolve(res)

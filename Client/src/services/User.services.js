@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export function getUserProfile(userId) {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/users/${userId}`,{
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res)
@@ -14,7 +14,7 @@ export function getUserProfile(userId) {
 
 export function getUserViews() {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/views`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URL}/views`).then(res => {
       resolve(res.data)
     }).catch(err => {
       reject(err)
@@ -24,7 +24,7 @@ export function getUserViews() {
 
 export function addViewDistant(view) {
   return new Promise((resolve,reject) => {
-    axios.post(`http://localhost:8080/views`, view, {
+    axios.post(`${process.env.REACT_APP_API_URL}/views`, view, {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res.data)
@@ -36,7 +36,7 @@ export function addViewDistant(view) {
 
 export function deleteViewDistant(viewId) {
   return new Promise((resolve, reject) => {
-    axios.delete(`http://localhost:8080/views/${viewId}`, {
+    axios.delete(`${process.env.REACT_APP_API_URL}/views/${viewId}`, {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res)

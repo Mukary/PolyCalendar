@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export function getViews() {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/views`,{
+    axios.get(`${process.env.REACT_APP_API_URL}/views`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res)
@@ -14,7 +14,7 @@ export function getViews() {
 
 export function getView(viewId) {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:8080/views/${viewId}`,{
+    axios.get(`${process.env.REACT_APP_API_URL}/views/${viewId}`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res.data)
@@ -26,7 +26,7 @@ export function getView(viewId) {
 
 export function updateViewDistant(viewId, calendars, action){
   return new Promise((resolve, reject) => {
-    axios.put(`http://localhost:8080/views/${viewId}`, {
+    axios.put(`${process.env.REACT_APP_API_URL}/views/${viewId}`, {
       calendars: calendars,
       action: action
     }, {
@@ -41,7 +41,7 @@ export function updateViewDistant(viewId, calendars, action){
 
 export function addView(view){
   return new Promise((resolve, reject) => {
-    axios.post('http://localhost:8080/views', view).then(res => {
+    axios.post(`${process.env.REACT_APP_API_URL}/views`, view).then(res => {
       resolve(res)
     }).catch(err => {
       reject(err)
