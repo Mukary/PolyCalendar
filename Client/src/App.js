@@ -24,7 +24,7 @@ class App extends Component {
         <Route path='/invite' component ={InvitePage} />
         <Route path='/views/:id' component ={ViewPage} />
         <Route path='/calendars/:id' component ={CalendarPage} />
-        <Route path='/views/share/:id' component={SharedViewPage} />
+        <Route path='/share/view/:id' component={SharedViewPage} />
         </div>
       </Router>      
     );

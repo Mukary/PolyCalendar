@@ -10,7 +10,6 @@ export default class SharedView extends React.Component {
 
   render(){
     const currentView = this.props.currentView
-    const calendars = this.props.calendars
     let calEvents = []
     this.props.currentView.calendars.map(calendar => {
       calendar.cal.events.map(e => {
@@ -41,7 +40,7 @@ export default class SharedView extends React.Component {
         <div className='page-header'>
           <h1>{this.props.currentView.title}</h1>
         </div>
-        <CustomCalendar events={calEvents}/>
+        <CustomCalendar width='100%' events={calEvents}/>
       </div>
     )
   }

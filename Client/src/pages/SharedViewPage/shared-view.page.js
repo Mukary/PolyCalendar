@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
 import {getUserCalendars} from '../../services/Calendars.services'
-import {getView} from '../../services/Views.service'
+import {getSharedView} from '../../services/Views.service'
 import {fetchCurrentView, fetchCalendars} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
 import SharedView from '../../components/SharedView/SharedView'
@@ -15,7 +15,7 @@ class SharedViewPage extends React.Component {
   }
 
   componentWillMount() {
-    getView(this.props.match.params.id).then(view => {
+    getSharedView(this.props.match.params.id).then(view => {
       fetchCurrentView(view)
     }).catch(err => {
       console.log(err)
@@ -32,7 +32,6 @@ class SharedViewPage extends React.Component {
   render() {
       return(
         <div>
-        <PNavbar/>
         <SharedView  id={this.viewId} currentView={this.props.currentView} calendars={this.props.calendars}/>
         </div>
       )

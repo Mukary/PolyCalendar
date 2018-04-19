@@ -24,6 +24,16 @@ export function getView(viewId) {
   })
 }
 
+export function getSharedView(viewId) {
+  return new Promise((resolve, reject) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/views/share/${viewId}`).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export function updateViewDistant(viewId, calendars, action){
   return new Promise((resolve, reject) => {
     axios.put(`${process.env.REACT_APP_API_URL}/views/${viewId}`, {

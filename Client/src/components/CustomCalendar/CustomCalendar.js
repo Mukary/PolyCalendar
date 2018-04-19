@@ -8,8 +8,8 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 export default class CustomCalendar extends React.Component {
   render(){
     const styles={
-      height: '800px',
-      width: '1200px',
+      height: this.props.height ? this.props.height : '800px',
+      width: this.props.width ? this.props.width : '1200px',
       borderStyle: 'solid',
       borderWidth: '2px',
       borderColor:'#fff',
