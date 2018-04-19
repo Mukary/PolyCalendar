@@ -85,6 +85,13 @@ export default function (state = initialState, action) {
       }
     }
 
+    case "UPDATE_CAL": {
+      return {
+        ...state,
+        currentCalendar: action.payload
+      }
+    }
+
     default:
       return initialState
   }

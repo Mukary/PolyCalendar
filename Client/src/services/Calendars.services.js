@@ -36,6 +36,20 @@ export function createCalendarDistant(calendar) {
   })
 }
 
+export function updateCalendarTitle(calId, title){
+  return new Promise((resolve, reject) => {
+    axios.put(`${process.env.REACT_APP_API_URL}/calendars/${calId}`,{
+      name: title
+    }, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export function deleteCalendarDistant(calId) {
   return new Promise((resolve, reject) => {
     axios.delete(`${process.env.REACT_APP_API_URL}/calendars/${calId}`, {

@@ -3,9 +3,9 @@ import {Redirect, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import autoBind from 'react-autobind'
 import {userIsLogged} from '../../services/Auth.services'
-import {getUserCalendar} from '../../services/Calendars.services'
+import {getUserCalendar, updateCalendarTitle} from '../../services/Calendars.services'
 import {getUserViews} from '../../services/User.services'
-import {fetchCurrentCalendar, fetchViews} from '../../actions/index'
+import {fetchCurrentCalendar, fetchViews, updateCalendar} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
 import CustomCalendar from '../../components/CustomCalendar/CustomCalendar'
 
@@ -13,7 +13,8 @@ class CalendarPage extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isLogged: false
+      isLogged: false,
+      showTitleInput: false
     }
     autoBind(this)
   }
@@ -36,6 +37,24 @@ class CalendarPage extends React.Component {
     }
   }
 
+  showTitleInput(){
+    this.setState({
+      showTitleInput: !this.state.showTitleInput
+    })
+  }
+
+  updateTitle(){
+    console.log(this.title.value)
+    updateCalendarTitle(this.props.match.params.id,this.title.value).then(calendar => {
+      updateCalendar(calendar)
+      this.setState({
+        showTitleInput: !this.state.showTitleInput
+      })
+    }).catch(err => {
+      alert('Couldnt update title')
+    })
+  }
+
   render() {
     let calendarViews = []
     this.props.views.map(view => {
@@ -46,13 +65,9 @@ class CalendarPage extends React.Component {
         })
       })
     })
-    console.log("CLEAN VIEWS")
-    console.log(calendarViews)
-    console.log("CALENDAR PAGE")
     console.log(this.props.currentCalendar)
     let events = []
     this.props.currentCalendar.events.map(e => {
-        console.log(e['summary'])
           events.push({
             title: e['summary'],
             allDay: false,
@@ -67,7 +82,17 @@ class CalendarPage extends React.Component {
         <div>
         <PNavbar/>
         <div className='page-header'>
-          <h1>{this.props.currentCalendar.title}</h1>
+              <h1>{this.props.currentCalendar.title}</h1>
+              {
+                this.state.showTitleInput
+                ? 
+                <div>
+                  <input type='text' className='form-control' style={{width:'150px', marginBottom:'10px', float:'left'}} ref={e => {this.title = e}}/>
+                  <button style={{marginLeft: '10px'}} className="btn btn-success btn-xs" onClick={this.updateTitle}><span className="glyphicon glyphicon-ok"/></button>
+                </div>
+                : null
+              }
+              <button style={{marginLeft: '10px'}} className="btn btn-primary btn-xs" onClick={this.showTitleInput}><span className="glyphicon glyphicon-pencil"/></button>
         </div>
         <CustomCalendar events={events} />
         <div style={{

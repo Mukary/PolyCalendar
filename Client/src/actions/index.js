@@ -63,6 +63,13 @@ export function addCalendar(calendar) {
   })
 }
 
+export function updateCalendar(calendar) {
+  store.dispatch({
+    type:"UPDATE_CAL",
+    payload: calendar
+  })
+}
+
 export function addCalendarsToView(viewId, calendars){
   store.dispatch({
     type:"ADD_CALS_VIEW",
