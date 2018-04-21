@@ -49,7 +49,6 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const accountCreation = new Date(this.props.user.accountCreation)
     if(!this.state.isLogged) {
       return(
         <Redirect to={'/login'} />

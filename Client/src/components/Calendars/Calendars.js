@@ -4,13 +4,17 @@ import ical from 'ical'
 import CalendarThumbnail from '../CalendarThumbnail/CalendarThumbnail'
 import {createCalendarDistant, deleteCalendarDistant} from '../../services/Calendars.services'
 import {addCalendar, deleteCalendar} from '../../actions/index'
+import Dropzone from 'react-dropzone'
 
 export default class Calendars extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       isLogged: false,
-      displayCalendarForm: false
+      displayCalendarForm: false,
+      uploadMode: 'URL',
+      fileContent: '',
+      uploadedFile: false
     }
     autoBind(this)
   }
@@ -21,16 +25,33 @@ export default class Calendars extends React.Component {
     })
   }
 
+  changeUploadMode(event){
+    const form = event.target.value
+    this.setState({
+      uploadMode: form
+    })
+  }
+
   addCalendar() {
-    let title = this.title.value
-    let color = this.color.value
-    let url = this.url.value
+    const title = this.title.value
+    const color = this.color.value
+    const url = this.url.value
+    const fileContent = this.state.fileContent
+    const isFile = (this.state.uploadMode === 'File' && this.state.uploadedFile)
+    console.log("IS FILE")
+    console.log(isFile)
     createCalendarDistant({
       title: title,
       color: color,
-      url: url
+      url: url,
+      fileContent: this.state.fileContent,
+      isFile: isFile
     }).then(calendar => {
       addCalendar(calendar)
+      this.setState({
+        uploadedFile: false,
+        fileContent: ''
+      })
     })
   }
 
@@ -42,22 +63,48 @@ export default class Calendars extends React.Component {
     })
   }
 
+  onDrop(files){
+    const calendarFile = files[0]
+    const blobURL = calendarFile.preview
+    this.fetchCalendarFile(blobURL)
+  }
+
+  fetchCalendarFile(blobURL){
+    return fetch(blobURL)
+    .then((response) => {
+      return response.text()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .then((content) => {
+      this.setState({
+        fileContent: content,
+        uploadedFile: true
+      })
+    })
+  }
+
   render() {
-    console.log(this.props.calendars)
     return(
       <div>
         <div>
-        <button onClick={this.displayCalendarForm}>Add Calendar</button>
+        <button className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
         {
           this.state.displayCalendarForm
           ?
           <div>
-           <input className="form-control" ref={e => {this.title = e}}></input>
-           <input ref={e => {this.color = e}}></input>
-           <input ref={e => {this.url = e}}></input>
-           <button className="btn btn-default" onClick={this.addCalendar}>
-           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>Create
-           </button>
+            <div>
+              <input type='radio' name='type' value='URL' ref={e => {this.fileURL}} onChange={this.changeUploadMode}/> URL
+              <input type='radio' name='type' value='File'ref={e => {this.file}} onChange={this.changeUploadMode}/> File
+            </div>
+            <input className="form-control" ref={e => {this.title = e}} placeholder='Title'/>
+            <input ref={e => {this.color = e}} placeholder=''/>
+            <input ref={e => {this.url = e}} placeholder='URL'></input>
+            <Dropzone onDrop={this.onDrop} accept='text/calendar'>
+              <p>Drop calendar file or click here to select one</p>
+            </Dropzone>
+            <button className="btn btn-success" onClick={this.addCalendar}>Create</button>
           </div> : null
         }
         </div>

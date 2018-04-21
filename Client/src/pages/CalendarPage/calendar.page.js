@@ -97,13 +97,16 @@ class CalendarPage extends React.Component {
         <CustomCalendar events={events} />
         <div style={{
           float: 'left', 
-          height:'400px',
+          height:'600px',
           width:'400px',
           marginLeft:'5%'
           }}
           className="panel panel-info">
-          <p class="panel-heading" style={{fontSize: '25px'}}>Views using this calendar</p>
+          <p class="panel-heading" style={{fontSize: '25px'}}>Information</p>
           <div className="panel-body">
+            <p>URL of the calendar: <input value={this.props.currentCalendar.url} type='text'/></p>
+            <p>Download file at: <input type='text'/></p>
+            <h4>Views using this calendar</h4>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
           calendarViews.map(v => {

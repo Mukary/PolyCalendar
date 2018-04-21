@@ -13,6 +13,7 @@
     "react-big-calendar": "^0.19.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.9",
     "react-notifications": "^1.4.3",
     "react-popup": "^0.9.2",
     "react-redux": "^5.0.7",
