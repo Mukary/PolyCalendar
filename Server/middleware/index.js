@@ -10,7 +10,7 @@ middleware.ensureToken = (req, res, next) => {
     jwt.verify(req.token, process.env.SECRET_KEY, function(err, data){
       if(err){
         console.log(err)
-        res.status(403).send('Forbidden')
+        res.status(403).send('Malformed token')
       }
       else {
         req.data = data
@@ -18,7 +18,7 @@ middleware.ensureToken = (req, res, next) => {
       }
     })
   } else {
-    res.status(403).send('Forbidden') 
+    res.status(403).send('Forbidden: no token provided') 
   }
 }
 

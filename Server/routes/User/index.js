@@ -70,7 +70,7 @@ router.post('/invite', function(req, res, err) {
     res.status(201).send(`Invitation link sent at ${invite.email}`)
   }).catch(err => {
     console.log(err)
-    res.status(403).send(`User ${res.email} already exists, please use another email`)
+    res.status(404).send(`User ${res.email} already exists, please use another email`)
   })
 })
 
