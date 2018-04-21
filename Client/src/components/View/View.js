@@ -107,7 +107,7 @@ export default class View extends React.Component {
           <p>Public URL: <input defaultValue={`${window.location.origin}/share/view/${this.props.id}`} type='text'/></p>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
-          this.props.calendars.forEach(c => {
+          this.props.calendars.map(c => {
             return(
               <CheckboxCalendar calName={c.title} id={c._id} addCalendar={this.addCalendar} removeCalendar={this.removeCalendar}/>
             )
@@ -117,7 +117,7 @@ export default class View extends React.Component {
         <button className='btn btn-success' onClick={this.addCalendarToView}>Add Calendars</button>
         <h4>List of calendars</h4>
         {
-          currentView.calendars.forEach(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
+          currentView.calendars.map(c => {return(<CalendarItem onDeleteCalendar={this.onDeleteCalendar} onUpdateMode={this.updateCalendarMode} calName={c.cal.title} mode={c.visible} id={c.cal._id}/>)})
         }
         </div>
         </div>

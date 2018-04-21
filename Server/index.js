@@ -8,7 +8,7 @@ const register = require('./routes/User/index')
 require('dotenv').config()
 
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Origin','*')
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, authorization, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers')
@@ -28,8 +28,10 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.listen(8080, function () {
-  console.log('Example app listening on port 8080!')
+const port = process.env.PORT || 8080
+
+app.listen(port, function () {
+  console.log('Example app listening on port '+port)
 })
 
 mongoose.connect(process.env.DB_URL)

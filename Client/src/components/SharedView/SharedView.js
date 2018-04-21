@@ -20,7 +20,7 @@ export default class SharedView extends React.Component {
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
-            desc:'DESC'
+            desc:e['description']
           })
         }
         else{
@@ -29,7 +29,7 @@ export default class SharedView extends React.Component {
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
-            desc: 'DESC'
+            desc: e['description']
           })
         }
       })
