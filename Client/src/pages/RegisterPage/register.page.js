@@ -17,7 +17,7 @@ export default class RegisterPage extends React.Component {
     const query = new URLSearchParams(window.location.search)
     const email = query.get('email')
     const code = query.get('code')
-    const hasParams = (email !== null && code !== null)
+    const hasParams = (email !== null && code !== null && this.firstname.value !== '' && this.lastname.value !== '')
     const payload = {
       firstname: this.firstname.value,
       lastname: this.lastname.value,
@@ -33,7 +33,10 @@ export default class RegisterPage extends React.Component {
         })
       }).catch(err => {
         console.log(err)
+        alert('User already exists')
       })
+    } else {
+      alert('Please match the registration requirements')
     }
   }
   checkParams() {
@@ -50,7 +53,9 @@ export default class RegisterPage extends React.Component {
   }
 
   checkPasswordStrength() {
-    return this.passwordA.value.length >= 6
+    const toLowerPwd = this.passwordA.value.toLowerCase()
+    const hasNumber = this.passwordA.value.match(/\d+/g)
+    return this.passwordA.value.length >= 6 && hasNumber !== null && toLowerPwd === this.passwordA.value
   }
 
   checkEmail() {
@@ -68,59 +73,38 @@ export default class RegisterPage extends React.Component {
       )
     }
     return(
-      <Form horizontal>
-      
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Firstname
-        </Col>
-        <Col sm={2}>
-          <FormControl type="text" placeholder="Firstname" inputRef={ (e) => {this.firstname = e}}/>
-        </Col>
-      </FormGroup>
-
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Lastname
-        </Col>
-        <Col sm={2}>
-          <FormControl type="text" placeholder="Lastname" inputRef={ (e) => {this.lastname = e}}/>
-        </Col>
-      </FormGroup>
-      
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Email
-        </Col>
-        <Col sm={2}>
-          <FormControl type="email"  placeholder="Email" inputRef={ (e) => {this.email = e}}/>
-        </Col>
-      </FormGroup>
-    
-      <FormGroup controlId="formHorizontalPassword">
-        <Col componentClass={ControlLabel} sm={2}>
-          Password
-        </Col>
-        <Col sm={2}>
-          <FormControl type="password" placeholder="Password" inputRef={e => {this.passwordA = e}}/>
-        </Col>
-      </FormGroup>
-
-      <FormGroup controlId="formHorizontalPassword">
-        <Col componentClass={ControlLabel} sm={2}>
-         Confirm Password
-        </Col>
-        <Col sm={2}>
-          <FormControl type="password" placeholder="Confirm Password" inputRef={e => {this.passwordB = e}}/>
-        </Col>
-      </FormGroup>
-    
-      <FormGroup>
-        <Col smOffset={2} sm={2}>
-          <Button bsStyle="primary" onClick={this.signUp.bind(this)}>Sign up</Button>
-        </Col>
-      </FormGroup>
-    </Form>
+      <div style={{
+        width:'400px', 
+        height:'600px', 
+        backgroundColor:'#4285f4', 
+        marginLeft:'35%', 
+        marginRight:'35%',
+        marginTop:'10%',
+        borderRadius:'10px'}}>
+        <div style={{color:'white', fontSize:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Firstname:</p>
+          <input type='text' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='John'ref={ (e) => {this.firstname = e}}/>
+        </div>
+        <div style={{color:'white', fontSize:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Lastname:</p>
+          <input type='text' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='Snow'ref={ (e) => {this.lastname = e}}/>
+        </div>
+        <div style={{color:'white', fontSize:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Email:</p>
+          <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com'ref={ (e) => {this.email = e}}/>
+        </div>
+        <div style={{color:'white', fontSize:'20px', marginTop:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Password:</p>
+          <input type='password' title='Password length is a least 6 characters and it should contain at least one uppercase letter & one number' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='password'ref={ (e) => {this.passwordA = e}}/>
+        </div>
+        <div style={{color:'white', fontSize:'20px', marginTop:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Confirm Password:</p>
+          <input type='password' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='password'ref={ (e) => {this.passwordB = e}}/>
+        </div>
+        <div style={{marginLeft:'20%', marginTop:'5%'}}>
+          <button className='btn btn-warning'  ref={e => {this.password = e}} onClick={this.signUp.bind(this)}>Register</button>
+        </div>
+      </div>
     )
   }
 }

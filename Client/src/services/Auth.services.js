@@ -39,7 +39,6 @@ export function login(email, password) {
       email: email,
       password: password
     }).then(res => {
-      axios.defaults.headers.common['authorization'] = `Bearer ${getToken()}`
       resolve(res.data)
     }).catch(err => {
       reject(err)

@@ -1,6 +1,9 @@
 import axios from 'axios'
 
 export function getUserProfile(userId) {
+  console.log("PCAL ID")
+  console.log(userId)
+  console.log(window.localStorage.getItem('pcal_token'))
   return new Promise((resolve, reject) => {
     axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}

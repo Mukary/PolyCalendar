@@ -23,6 +23,7 @@ export default class LoginPage extends React.Component {
     const email = this.email.value
     const password = this.password.value
     login(email, password).then(data => {
+      console.log(data)
       setToken(data.token)
       setProfile(data._id)
       this.setState({
@@ -39,40 +40,6 @@ export default class LoginPage extends React.Component {
         <Redirect to={'/'} />
       )
     }
-    /*return(
-      <Form horizontal>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Email
-        </Col>
-        <Col sm={2}>
-          <FormControl type="email" placeholder="Email" inputRef={e => {this.email = e}}/>
-        </Col>
-      </FormGroup>
-    
-      <FormGroup controlId="formHorizontalPassword">
-        <Col componentClass={ControlLabel} sm={2}>
-          Password
-        </Col>
-        <Col sm={2}>
-          <FormControl type="password" placeholder="Password" inputRef={e => {this.password = e}}/>
-        </Col>
-      </FormGroup>
-    
-      <FormGroup>
-      <Col smOffset={2} sm={2}>
-        <Button bsStyle="primary" onClick={this.signIn.bind(this)}>Sign in</Button>
-      </Col>
-    </FormGroup>
-    <FormGroup>
-      <Col smOffset={2} sm={2}>
-      <Link to={`/invite`} activeClassName="active">
-        <Button bsStyle="secondary">Get invite</Button>
-      </Link>
-      </Col>
-    </FormGroup>
-    </Form>
-    )*/
     return(
       <div style={{
         width:'400px', 
@@ -84,15 +51,17 @@ export default class LoginPage extends React.Component {
         borderRadius:'10px'}}>
         <div style={{color:'white', fontSize:'20px'}}>
           <p style={{marginLeft:'20%'}}>Email:</p>
-          <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com'/>
+          <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com' ref={e => {this.email = e}}/>
         </div>
         <div style={{color:'white', fontSize:'20px', marginTop:'20px'}}>
           <p style={{marginLeft:'20%'}}>Password:</p>
-          <input type='password' style={{width:'250px', margin:'0 auto'}} className='form-control'/>
+          <input type='password' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='password' ref={e => {this.password = e}}/>
         </div>
         <div style={{marginLeft:'20%', marginTop:'5%'}}>
-          <button className='btn btn-success' onClick={this.signIn.bind(this)} ref={e => {this.email = e}}>Sign in</button>
-          <button className='btn btn-warning' style={{marginLeft:'20px'}} ref={e => {this.password = e}}>Sign up</button>
+          <button className='btn btn-success' onClick={this.signIn.bind(this)}>Sign in</button>
+          <Link to={'/invite'}>
+            <button className='btn btn-warning' style={{marginLeft:'20px'}}>Sign up</button>
+          </Link>
         </div>
       </div>
     )

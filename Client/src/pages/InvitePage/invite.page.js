@@ -13,19 +13,18 @@ export default class InvitePage extends React.Component {
 
   invite() {
     const email = this.email.value
+    console.log("EMAIL")
+    console.log(email)
     invite(email).then(res => {
       alert(`An email with inviation link has been sent at ${email}`)
-      console.log("HELLO")
-      console.log(res.status)
     }).catch(err => {
       alert("User already exists, please use another email")
-      console.log("BYE")
-      console.log(err.status)
+      console.log(err)
     })
   }
 
   render() {
-    return(
+    /*return(
       <Form horizontal>
       <FormGroup controlId="formHorizontalEmail">
         <Col componentClass={ControlLabel} sm={2}>
@@ -42,6 +41,25 @@ export default class InvitePage extends React.Component {
       </Col>
     </FormGroup>
     </Form>
+    )*/
+
+    return(
+      <div style={{
+        width:'400px', 
+        height:'150px', 
+        backgroundColor:'#4285f4', 
+        marginLeft:'35%', 
+        marginRight:'35%',
+        marginTop:'10%',
+        borderRadius:'10px'}}>
+        <div style={{color:'white', fontSize:'20px'}}>
+          <p style={{marginLeft:'20%'}}>Email:</p>
+          <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com' ref={e => {this.email = e}}/>
+        </div>
+        <div style={{marginLeft:'20%', marginTop:'5%'}}>
+          <button className='btn btn-success' onClick={this.invite.bind(this)}>Send</button>
+        </div>
+      </div>
     )
   }
 }
