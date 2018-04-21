@@ -27,8 +27,6 @@ export function getView(viewId) {
 export function getSharedView(viewId) {
   return new Promise((resolve, reject) => {
     axios.get(`${process.env.REACT_APP_API_URL}/views/share/${viewId}`).then(res => {
-      console.log("GET SHARED VIEW")
-      console.log(res.data)
       resolve(res.data)
     }).catch(err => {
       reject(err)

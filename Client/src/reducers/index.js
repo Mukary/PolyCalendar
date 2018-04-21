@@ -1,5 +1,3 @@
-import addViewDistant from '../services/User.services'
-
 const initialState = {
   calendars: [],
   views: [],
@@ -18,7 +16,6 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-  console.log(action)
   switch(action.type) {
     case "ADD_DAY":
       let newCalendars = state.calendars.slice()

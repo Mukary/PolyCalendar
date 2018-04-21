@@ -2,7 +2,6 @@ import React from 'react'
 import { register } from '../../services/Register.services'
 import {Redirect} from 'react-router-dom'
 import './register.styles.css'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class RegisterPage extends React.Component {
   constructor(props) {
@@ -27,7 +26,6 @@ export default class RegisterPage extends React.Component {
     }
     if(this.checkForm() && hasParams){
       register(payload).then((res) => {
-        console.log(res)
         this.setState({
           isRegistered: true
         })

@@ -28,11 +28,9 @@ export function verifyUser() {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }, function(err, res){
       if(err){
-        console.log("ERR")
         return false
       } 
       else {
-        console.log("RES")
         return true
       }
     })

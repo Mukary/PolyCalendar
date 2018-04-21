@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
-import style from './ViewThumbnail.css'
 
 export default class ViewThumbnail extends React.Component {
   constructor(props) {
@@ -12,7 +11,6 @@ export default class ViewThumbnail extends React.Component {
     this.props.onDeleteView(this.props.id)
   }
   render() {
-    const numberOfCalendars = this.props.calendars.length
     return(
       <div className="row" style={{marginRight:'50px', float:'left'}}>
         <div className="col-sm-0 col-md-0">

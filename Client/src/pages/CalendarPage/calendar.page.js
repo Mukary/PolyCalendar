@@ -44,7 +44,6 @@ class CalendarPage extends React.Component {
   }
 
   updateTitle(){
-    console.log(this.title.value)
     updateCalendarTitle(this.props.match.params.id,this.title.value).then(calendar => {
       updateCalendar(calendar)
       this.setState({
@@ -57,17 +56,16 @@ class CalendarPage extends React.Component {
 
   render() {
     let calendarViews = []
-    this.props.views.map(view => {
-      view.calendars.map(c => {
+    this.props.views.forEach(view => {
+      view.calendars.forEach(c => {
         if(c.cal === this.props.match.params.id) calendarViews.push({
           id: view._id,
           title: view.title
         })
       })
     })
-    console.log(this.props.currentCalendar)
     let events = []
-    this.props.currentCalendar.events.map(e => {
+    this.props.currentCalendar.events.forEach(e => {
           events.push({
             title: e['summary'],
             allDay: false,
@@ -109,9 +107,9 @@ class CalendarPage extends React.Component {
             <h4>Views using this calendar</h4>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
-          calendarViews.map(v => {
+          calendarViews.map((v,index) => {
             return(
-              <Link to={`/views/${v.id}`}>
+              <Link to={`/views/${v.id}`} key={index}>
               <div style={{float:'left', width:'300px', marginBottom:'10px'}}>
                 <p className="label label-info" style={{fontSize:'15px'}}>{v.title}</p>
               </div>

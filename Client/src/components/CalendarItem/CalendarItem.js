@@ -12,9 +12,7 @@ export default class CalendarItem extends React.Component {
   }
 
   componentWillMount(){
-    console.log("TEST TERNAIRE")
     let a = this.props.mode ? 'details' : 'busy'
-    console.log(a)
     this.setState({
       mode: a
     })

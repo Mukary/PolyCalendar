@@ -1,7 +1,6 @@
 import React from 'react'
-import {login, setToken, setProfile, userIsLogged, verifyUser} from '../../services/Auth.services'
+import {login, setToken, setProfile, userIsLogged} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class LoginPage extends React.Component {
   constructor(props){
@@ -23,7 +22,6 @@ export default class LoginPage extends React.Component {
     const email = this.email.value
     const password = this.password.value
     login(email, password).then(data => {
-      console.log(data)
       setToken(data.token)
       setProfile(data._id)
       this.setState({

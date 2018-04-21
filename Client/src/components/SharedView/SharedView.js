@@ -9,10 +9,9 @@ export default class SharedView extends React.Component {
   }
 
   render(){
-    const currentView = this.props.currentView
     let calEvents = []
-    this.props.currentView.calendars.map(calendar => {
-      calendar.cal.events.map(e => {
+    this.props.currentView.calendars.forEach(calendar => {
+      calendar.cal.events.forEach(e => {
         console.log(e['summary'])
         if(!calendar.visible){
           e['summary'] = "Busy"

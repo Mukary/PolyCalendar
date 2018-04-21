@@ -1,6 +1,5 @@
 import React from 'react'
 import autoBind from 'react-autobind'
-import ical from 'ical'
 import CalendarThumbnail from '../CalendarThumbnail/CalendarThumbnail'
 import {createCalendarDistant, deleteCalendarDistant} from '../../services/Calendars.services'
 import {addCalendar, deleteCalendar} from '../../actions/index'
@@ -35,10 +34,7 @@ export default class Calendars extends React.Component {
   addCalendar() {
     const title = this.title.value
     const url = this.url.value
-    const fileContent = this.state.fileContent
     const isFile = (this.state.uploadMode === 'File' && this.state.uploadedFile)
-    console.log("IS FILE")
-    console.log(isFile)
     createCalendarDistant({
       title: title,
       url: url,

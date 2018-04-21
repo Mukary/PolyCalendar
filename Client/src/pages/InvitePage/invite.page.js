@@ -1,6 +1,5 @@
 import React from 'react'
 import {invite} from '../../services/Auth.services'
-import {Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap'
 
 export default class InvitePage extends React.Component {
   constructor(props){
@@ -13,8 +12,6 @@ export default class InvitePage extends React.Component {
 
   invite() {
     const email = this.email.value
-    console.log("EMAIL")
-    console.log(email)
     invite(email).then(res => {
       alert(`An email with inviation link has been sent at ${email}`)
     }).catch(err => {
@@ -24,24 +21,6 @@ export default class InvitePage extends React.Component {
   }
 
   render() {
-    /*return(
-      <Form horizontal>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
-          Email
-        </Col>
-        <Col sm={2}>
-          <FormControl type="email" placeholder="Email" inputRef={e => {this.email = e}}/>
-        </Col>
-      </FormGroup>
-    
-      <FormGroup>
-      <Col smOffset={2} sm={2}>
-        <Button bsStyle="primary" onClick={this.invite.bind(this)}>Send invite</Button>
-      </Col>
-    </FormGroup>
-    </Form>
-    )*/
 
     return(
       <div style={{

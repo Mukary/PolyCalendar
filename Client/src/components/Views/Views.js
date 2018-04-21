@@ -1,11 +1,9 @@
 import React from 'react'
-import {Redirect, Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
 import CheckboxCalendar from '../../components/CheckboxCalendar/CheckboxCalendar'
 import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
-import {getUserViews, addViewDistant, deleteViewDistant} from '../../services/User.services'
-import {getUserCalendars} from '../../services/Calendars.services'
-import {fetchViews, addView, deleteView, fetchCalendars} from '../../actions/index'
+import {addViewDistant, deleteViewDistant} from '../../services/User.services'
+import {addView, deleteView} from '../../actions/index'
 import './Views.css'
 
 export default class Views extends React.Component {
@@ -83,9 +81,9 @@ export default class Views extends React.Component {
            <input className='form-control' style={{width:'200px'}} ref={e => {this.title = e}} placeholder='Title'/>
            <div className='scrollable' style={{marginTop:'10px', width:'350px', height:'100px'}}>
            {
-             this.props.calendars.map(c => {
+             this.props.calendars.map((c, index) => {
                return(
-                 <CheckboxCalendar calName={c.title} id={c._id} addCalendar={this.addCalendar} removeCalendar={this.removeCalendar}/>
+                 <CheckboxCalendar key={index} calName={c.title} id={c._id} addCalendar={this.addCalendar} removeCalendar={this.removeCalendar}/>
                )
              })
            }
@@ -97,7 +95,7 @@ export default class Views extends React.Component {
         {
           this.props.views.map((view, index) => {
             return(
-               <ViewThumbnail onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} calendars={view.calendars}/>
+               <ViewThumbnail key={index} onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} calendars={view.calendars}/>
             )
           })
         }

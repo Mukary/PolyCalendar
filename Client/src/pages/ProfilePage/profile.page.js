@@ -7,9 +7,9 @@ import Calendars from '../../components/Calendars/Calendars'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {userIsLogged, resetCredentials} from '../../services/Auth.services'
 import {getUserProfile,getUserViews} from '../../services/User.services'
-import {createCalendarDistant, getUserCalendars} from '../../services/Calendars.services'
+import {getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
-import {fetchUserProfile, addCalendar, fetchCalendars, fetchViews} from '../../actions/index'
+import {fetchUserProfile, fetchCalendars, fetchViews} from '../../actions/index'
 import 'react-tabs/style/react-tabs.css'
 
 class ProfilePage extends React.Component {
@@ -65,16 +65,16 @@ class ProfilePage extends React.Component {
     </TabList>
 
     <TabPanel>
-    <div class="row">
-  <div class="col-sm-6 col-md-4">
-    <div class="thumbnail">
-      <div class="caption">
+    <div className="row">
+  <div className="col-sm-6 col-md-4">
+    <div className="thumbnail">
+      <div className="caption">
         <p>Firstname: {this.props.user.userProfile.firstname}</p>
         <p>Lastname: {this.props.user.userProfile.lastname}</p>
         <p>Email: {this.props.user.userProfile.email}</p>
         <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
         <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
-        <p class="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
+        <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
       </div>
     </div>
   </div>

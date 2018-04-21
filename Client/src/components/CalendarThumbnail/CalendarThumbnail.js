@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import autoBind from 'react-autobind'
-import style from './CalendarThumbnail.css'
 
 export default class CalendarThumbnail extends React.Component {
   constructor(props) {
@@ -11,18 +10,6 @@ export default class CalendarThumbnail extends React.Component {
   onDeleteCalendar () {
     this.props.onDeleteCalendar(this.props.id)
   }
-  /*render() {
-    return(
-      <div>
-      <Link to={`/calendars/${this.props.id}`}>
-      <div className='calendar-thumbnail' style={{backgroundColor: this.props.color, float: 'left'}}>
-        {this.props.title}
-      </div>
-      </Link>
-      <div style={{float: 'left'}}><button onClick={this.onDeleteCalendar}>X</button></div>
-      </div>
-    )
-  }*/
   render() {
     return(
       <div className="row" style={{marginRight:'50px',float:'left'}}>
