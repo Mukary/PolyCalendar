@@ -105,7 +105,7 @@ class CalendarPage extends React.Component {
           <p class="panel-heading" style={{fontSize: '25px'}}>Information</p>
           <div className="panel-body">
             <p>URL of the calendar: <input value={this.props.currentCalendar.url} type='text'/></p>
-            <p>Download file at: <input type='text'/></p>
+            <p>Download file at: <input type='text' value={`${process.env.REACT_APP_API_URL}/calendars/${this.props.currentCalendar._id}/download`}/></p>
             <h4>Views using this calendar</h4>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {

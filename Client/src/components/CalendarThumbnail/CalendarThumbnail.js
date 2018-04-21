@@ -25,8 +25,8 @@ export default class CalendarThumbnail extends React.Component {
   }*/
   render() {
     return(
-      <div className="row" style={{width:'1000px', float:'left'}}>
-        <div className="col-sm-6 col-md-4">
+      <div className="row" style={{marginRight:'50px',float:'left'}}>
+        <div className="col-sm-0 col-md-0">
           <div className="thumbnail">
             <div className="caption">
               <h3>{this.props.title}</h3>

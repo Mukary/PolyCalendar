@@ -53,10 +53,8 @@ export default class Views extends React.Component {
     let arr = []
     this.calendarsToAttach.forEach(e => arr.push(e))
     const title = this.title.value
-    const color = this.color.value
     addViewDistant({
       title: title,
-      color: color,
       calendars: arr
     }).then(view => {
       addView(view)
@@ -77,13 +75,13 @@ export default class Views extends React.Component {
   render() {
       return(
         <div>
-        <button className='btn btn-warning' onClick={this.displayViewForm} >{this.state.addButton}</button>
+        <button style={{marginBottom: '10px'}} className='btn btn-warning' onClick={this.displayViewForm} >{this.state.addButton}</button>
         {
           this.state.displayViewForm 
           ?
           <div>
-           <input ref={e => {this.title = e}}></input>
-           <input ref={e => {this.color = e}}></input>
+           <input className='form-control' style={{width:'200px'}} ref={e => {this.title = e}} placeholder='Title'/>
+           <div className='scrollable' style={{marginTop:'10px', width:'350px'}}>
            {
              this.props.calendars.map(c => {
                return(
@@ -91,14 +89,15 @@ export default class Views extends React.Component {
                )
              })
            }
-           <button onClick={this.addView}>Create</button>
+           </div>
+           <button className='btn btn-success' onClick={this.addView}>Create</button>
           </div> : null
         }
-        <ul class='views'>
+        <ul>
         {
           this.props.views.map((view, index) => {
             return(
-               <ViewThumbnail style={{float:'left'}} onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} calendars={view.calendars}/>
+               <ViewThumbnail onDeleteView={this.onDeleteView} id={view._id} title={view.title} color={view.color} calendars={view.calendars}/>
             )
           })
         }

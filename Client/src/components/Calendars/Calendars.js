@@ -34,7 +34,6 @@ export default class Calendars extends React.Component {
 
   addCalendar() {
     const title = this.title.value
-    const color = this.color.value
     const url = this.url.value
     const fileContent = this.state.fileContent
     const isFile = (this.state.uploadMode === 'File' && this.state.uploadedFile)
@@ -42,7 +41,6 @@ export default class Calendars extends React.Component {
     console.log(isFile)
     createCalendarDistant({
       title: title,
-      color: color,
       url: url,
       fileContent: this.state.fileContent,
       isFile: isFile
@@ -89,7 +87,7 @@ export default class Calendars extends React.Component {
     return(
       <div>
         <div>
-        <button className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
+        <button style={{marginBottom:'10px'}} className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
         {
           this.state.displayCalendarForm
           ?
@@ -98,17 +96,16 @@ export default class Calendars extends React.Component {
               <input type='radio' name='type' value='URL' ref={e => {this.fileURL}} onChange={this.changeUploadMode}/> URL
               <input type='radio' name='type' value='File'ref={e => {this.file}} onChange={this.changeUploadMode}/> File
             </div>
-            <input className="form-control" ref={e => {this.title = e}} placeholder='Title'/>
-            <input ref={e => {this.color = e}} placeholder=''/>
-            <input ref={e => {this.url = e}} placeholder='URL'></input>
-            <Dropzone onDrop={this.onDrop} accept='text/calendar'>
+            <input style={{width: '200px'}} className="form-control" ref={e => {this.title = e}} placeholder='Title'/>
+            <input style={{width: '200px', marginTop:'10px', marginBottom:'10px'}} className="form-control" ref={e => {this.url = e}} placeholder='URL'></input>
+            <Dropzone style={{height:'100px', width:'100px', borderStyle:'solid', borderWidth:'1px'}} onDrop={this.onDrop} accept='text/calendar'>
               <p>Drop calendar file or click here to select one</p>
             </Dropzone>
             <button className="btn btn-success" onClick={this.addCalendar}>Create</button>
           </div> : null
         }
         </div>
-        <div style={{float:'left'}}>
+        <div>
         {
           this.props.calendars.map(x =>{
             return(<CalendarThumbnail id={x._id} title={x.title} color={x.color} onDeleteCalendar={this.onDeleteCalendar}/>)
