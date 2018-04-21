@@ -7,23 +7,18 @@ const userController = {}
 
 userController.create = (user) => {
   return new Promise((resolve, reject) => {
-    console.log("userController")
-    console.log(user)
     User.findOne({"email": user.email}, (err, item) => {
-      console.log(item)
       if(item) reject({
         status: 403,
         message: 'This user already exists'
       })
       else {
-        console.log(user)
         Invite.findOne({$and:[
           {"email": user.email},
           {"code": user.code},
           {"consumed": false}
         ]}, (err, invite) => {
           if(invite){
-            console.log("Invite found")
             delete user.code
             let hashPassword = sha256(user.password+process.env.HASH_SECRET)
             user.password = hashPassword
@@ -54,6 +49,10 @@ userController.login = (userConnecting) => {
       if(user){
         if(user.password === sha256(userConnecting.password+process.env.HASH_SECRET) && user.email === userConnecting.email){
           let token = jwt.sign({"_id":user._id, "email":user.email}, process.env.SECRET_KEY)
+          User.findOneAndUpdate({"email": userConnecting.email}, 
+            {$set:{lastConnection: new Date()}}, function(err, d){
+              if(err) console.log(err)
+            })
           return resolve({
             _id: user._id,
             token: token
@@ -82,7 +81,6 @@ userController.findByEmail = (email) => {
           message: 'This user already exists'
         })
       else {
-        console.log('New user')
         resolve(email)
       }
     })

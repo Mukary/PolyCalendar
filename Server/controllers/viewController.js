@@ -4,11 +4,11 @@ const Calendar = require('../models/Calendar')
 const Event = require('../models/Event')
 const viewController = {}
 
-viewController.create = (view) => {
+viewController.create = (view, owner) => {
   return new Promise((resolve, reject) => {
     let newView = new View({
       title: view.title,
-      color: view.color,
+      owner: owner,
       calendars: view.calendars
     })
     newView.save((err, item) => {
@@ -18,9 +18,9 @@ viewController.create = (view) => {
   })
 }
 
-viewController.getViews = () => {
+viewController.getViews = (owner) => {
   return new Promise((resolve, reject) => {
-    View.find().then(views => {
+    View.find({owner: owner}).then(views => {
       resolve(views)
     }).catch(err => {
       reject(err)
@@ -28,7 +28,19 @@ viewController.getViews = () => {
   })
 }
 
-viewController.getView = (viewId) => {
+viewController.getView = (viewId, owner) => {
+  return new Promise((resolve, reject) => {
+    View.findOne({_id: viewId, owner: owner}).populate('calendars.cal').exec(function(err, res){
+      if(err) reject(err)
+      Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+        if(err) reject(err)
+        else resolve(res)
+      })
+    })
+  })
+}
+
+viewController.getSharedView = (viewId) => {
   return new Promise((resolve, reject) => {
     View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
       if(err) reject(err)
@@ -40,10 +52,10 @@ viewController.getView = (viewId) => {
   })
 }
 
-viewController.updateView = (viewId, calendars, action) => {
+viewController.updateView = (viewId, calendars,owner, action) => {
   return new Promise((resolve, reject) => {
     if(action === 'ADD_CALENDARS'){
-      View.findOne({_id:viewId}).then(view => {
+      View.findOne({_id:viewId, owner}).then(view => {
         calendars.map(c => {
           view.calendars.push({cal:c.cal, visible: c.visible})
         })
@@ -67,7 +79,7 @@ viewController.updateView = (viewId, calendars, action) => {
     if(action === 'UPDATE_CALENDAR_MODE'){
       let calId = calendars[0].cal
       let visible = calendars[0].visible
-      View.update({_id: viewId, 'calendars.cal':calId}, {$set:{
+      View.update({_id: viewId, 'calendars.cal':calId, owner: owner}, {$set:{
         "calendars.$.visible": visible
       }}).then(view => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
@@ -83,7 +95,7 @@ viewController.updateView = (viewId, calendars, action) => {
     }
     if(action === 'REMOVE_CALENDAR'){
       let calId = calendars[0].cal
-      View.update({_id: viewId}, {$pull: {calendars: {cal: calId}}}).then(u => {
+      View.update({_id: viewId, owner: owner}, {$pull: {calendars: {cal: calId}}}).then(u => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
           if(err) reject(err)
           Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
@@ -99,9 +111,9 @@ viewController.updateView = (viewId, calendars, action) => {
   })
 }
 
-viewController.deleteView = (viewId) => {
+viewController.deleteView = (viewId, owner) => {
   return new Promise((resolve, reject) => {
-    View.remove({_id: viewId}).then(x => {
+    View.remove({_id: viewId, owner:owner}).then(x => {
       resolve(x)
     }).catch(err => {
       reject(err)

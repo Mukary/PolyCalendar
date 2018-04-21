@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   password: {type: String, required: true},
   accessToken: {type: String, default: ''},
   accountCreation: {type: Date, default: new Date()},
-  lastConnection: {type: Date, default: new Date()} 
+  lastConnection: {type: Date} 
 })
 
 module.exports = mongoose.model('User', UserSchema)

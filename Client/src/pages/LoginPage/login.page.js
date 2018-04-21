@@ -37,7 +37,7 @@ export default class LoginPage extends React.Component {
   render() {
     if(this.state.isLogged) {
       return(
-        <Redirect to={'/'} />
+        <Redirect to={'/profile'} />
       )
     }
     return(

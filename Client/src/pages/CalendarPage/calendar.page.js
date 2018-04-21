@@ -73,7 +73,7 @@ class CalendarPage extends React.Component {
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
-            desc: 'DESC'
+            desc: e['description']
           })
       
     })

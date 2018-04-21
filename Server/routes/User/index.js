@@ -3,18 +3,22 @@ const inviteController = require('../../controllers/inviteController')
 const middleware = require('../../middleware')
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
+const Utils = require('../../utils/utils')
 
 module.exports = (router, controller) => {
 
   router.post('/register', function(req, res, err) {
-  console.log(req.body)
   let user = req.body
-  controller.create(user).then( () => {
-    return res.status(201).send('User successfully registered.')
-  }).catch(err => {
-    console.log(err)
+  if(Utils.passwordMatcher(user.password) && user.firstname !== '' && user.lastname !== ''){
+    controller.create(user).then( () => {
+      return res.status(201).send('User successfully registered.')
+    }).catch(err => {
+      console.log(err)
+      return res.status(404).send('Not invitation found for this email')
+    })
+  } else {
     return res.status(400).send('Bad request')
-  })
+  }
 })
 
 router.post('/login', function(req, res, err) {
@@ -47,7 +51,7 @@ router.post('/invite', function(req, res, err) {
     from: '"PolyCalendar" <kq5qtgcuyjaczma6@ethereal.email>', // sender address
     to: `${invite.email}`, // list of receivers
     subject: 'Overwatch', // Subject line
-    text: `http://localhost:3000/register?email=${invite.email}&code=${invite.code}`, // plain text body
+    text: `Hello new user! You can complete your registration at this link: ${process.env.CLIENT_URL}/register?email=${invite.email}&code=${invite.code}`, // plain text body
   };
 
   // send mail with defined transport object
@@ -77,7 +81,8 @@ router.get('/users/:userId', middleware.ensureToken ,function(req, res, err){
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        accountCreation: user.accountCreation
+        accountCreation: user.accountCreation,
+        lastConnection: user.lastConnection
       })
     }).catch(err => {
       res.status(404).send('User not found')

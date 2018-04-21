@@ -63,10 +63,15 @@ export default class View extends React.Component {
   render(){
     const currentView = this.props.currentView
     const calendars = this.props.calendars
+    let availableCalendars = []
+    calendars.map(c => {
+      this.props.currentView.calendars.map(c2 => {
+        if(c._id !== c2.cal._id) availableCalendars.push(c)
+      })
+    })
     let calEvents = []
     this.props.currentView.calendars.map(calendar => {
       calendar.cal.events.map(e => {
-        console.log(e['summary'])
         if(!calendar.visible){
           e['summary'] = "Busy"
           calEvents.push({
@@ -74,7 +79,7 @@ export default class View extends React.Component {
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
-            desc:'DESC'
+            desc:e['description']
           })
         }
         else{
@@ -83,7 +88,7 @@ export default class View extends React.Component {
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
-            desc: 'DESC'
+            desc: e['description']
           })
         }
       })
@@ -103,6 +108,7 @@ export default class View extends React.Component {
           className="panel panel-info">
           <p class="panel-heading" style={{fontSize: '25px'}}>Settings</p>
           <div className="panel-body">
+          <p>Public URL: <input defaultValue={`${window.location.origin}/share/view/${this.props.id}`} type='text'/></p>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
           this.props.calendars.map(c => {

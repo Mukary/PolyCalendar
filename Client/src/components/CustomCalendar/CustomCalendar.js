@@ -29,10 +29,6 @@ function Event({ event }) {
         {' '+event.desc}
       </span>
       <br />
-      <span>
-        <strong>Location:</strong>
-        {' '+event.location}
-      </span>
     </span>
   )
 }

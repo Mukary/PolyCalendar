@@ -4,11 +4,14 @@ const View = require('../models/View')
 const Event = require('../models/Event')
 const calendarController = {}
 
-calendarController.create = (calendar, events) => {
+calendarController.create = (calendar, events, owner) => {
   return new Promise((resolve, reject) => {
     let newCalendar = new Calendar({
       title: calendar.title,
-      color: calendar.color,
+      url: calendar.url,
+      owner: owner,
+      fileContent: calendar.fileContent,
+      isFile: calendar.isFile,
       events: []
     })
     newCalendar.save((err, cal) => {
@@ -31,6 +34,16 @@ calendarController.create = (calendar, events) => {
   })
 }
 
+calendarController.download = (calId) => {
+  return new Promise((resolve, reject) => {
+    Calendar.findOne({_id: calId, isFile:true}).then(calendar => {
+      resolve(calendar.fileContent)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 calendarController.addEventToCalendar = (calId, event) => {
   return new Promise((resolve, reject) => {
     Calendar.findOneAndUpdate({_id: calId}, {$push: {events: event}}, {new: true}, function(err, res){
@@ -39,9 +52,9 @@ calendarController.addEventToCalendar = (calId, event) => {
   })
 }
 
-calendarController.getCalendars = () => {
+calendarController.getCalendars = (owner) => {
   return new Promise((resolve, reject) => {
-    Calendar.find().populate('events').then(calendars => {
+    Calendar.find({owner: owner}).populate('events').then(calendars => {
       resolve(calendars)
     }).catch(err => {
       reject(err)
@@ -49,9 +62,9 @@ calendarController.getCalendars = () => {
   })
 }
 
-calendarController.getCalendar = (calId) => {
+calendarController.getCalendar = (calId, owner) => {
   return new Promise((resolve, reject) => {
-    Calendar.findOne({_id: calId}).populate('events').then(calendar => {
+    Calendar.findOne({_id: calId, owner: owner}).populate('events').then(calendar => {
       resolve(calendar)
     }).catch(err => {
       reject(err)
@@ -59,9 +72,21 @@ calendarController.getCalendar = (calId) => {
   })
 }
 
-calendarController.deleteCalendar = (calId) => {
+calendarController.update = (newName, calId, owner) => {
   return new Promise((resolve, reject) => {
-    Calendar.remove({_id: calId}).then(x => {
+    Calendar.findOneAndUpdate({_id: calId, owner: owner}, {$set:{title: newName}}).then(res => {
+      Calendar.findOne({_id: calId}).populate('events').then(calendar => {
+        resolve(calendar)
+      })
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+calendarController.deleteCalendar = (calId, owner) => {
+  return new Promise((resolve, reject) => {
+    Calendar.remove({_id: calId, owner}).then(x => {
       View.find({'calendars.cal': calId}).then(views => {
         views.map(view => {
           View.update({_id: view._id}, {$pull: {calendars: {cal: calId}}}).exec()

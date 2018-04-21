@@ -15,7 +15,8 @@ export default class Navbar extends React.Component {
   render(){
     return(
       <div className="topnav">
-        <Link to={'/'} className="active">Home</Link>
+        <Link to={'#'} className='logo'>PolyCalendar</Link>
+        <Link to={'/'}>Home</Link>
         <Link to={'/profile'} >Profile</Link>
       </div>
     )

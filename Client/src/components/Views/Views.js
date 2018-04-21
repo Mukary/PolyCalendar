@@ -81,7 +81,7 @@ export default class Views extends React.Component {
           ?
           <div>
            <input className='form-control' style={{width:'200px'}} ref={e => {this.title = e}} placeholder='Title'/>
-           <div className='scrollable' style={{marginTop:'10px', width:'350px'}}>
+           <div className='scrollable' style={{marginTop:'10px', width:'350px', height:'100px'}}>
            {
              this.props.calendars.map(c => {
                return(

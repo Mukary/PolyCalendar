@@ -30,6 +30,8 @@ class SharedViewPage extends React.Component {
   }
 
   render() {
+      console.log("CURRENT SHARED VIEW")
+      console.log(this.props.currentView)
       return(
         <div>
         <SharedView  id={this.viewId} currentView={this.props.currentView} calendars={this.props.calendars}/>

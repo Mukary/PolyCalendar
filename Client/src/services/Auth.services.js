@@ -10,6 +10,11 @@ export function setProfile(id) {
   }))
 }
 
+export function resetCredentials() {
+  window.localStorage.removeItem('pcal_token')
+  window.localStorage.removeItem('pcal_profile')
+}
+
 export function getToken() {
   return window.localStorage.getItem('pcal_token')
 }

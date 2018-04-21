@@ -17,7 +17,9 @@ export function getUserProfile(userId) {
 
 export function getUserViews() {
   return new Promise((resolve, reject) => {
-    axios.get(`${process.env.REACT_APP_API_URL}/views`).then(res => {
+    axios.get(`${process.env.REACT_APP_API_URL}/views`,{
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
       resolve(res.data)
     }).catch(err => {
       reject(err)

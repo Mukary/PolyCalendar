@@ -5,7 +5,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import Views from '../../components/Views/Views'
 import Calendars from '../../components/Calendars/Calendars'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import {userIsLogged} from '../../services/Auth.services'
+import {userIsLogged, resetCredentials} from '../../services/Auth.services'
 import {getUserProfile,getUserViews} from '../../services/User.services'
 import {createCalendarDistant, getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
@@ -28,6 +28,12 @@ class ProfilePage extends React.Component {
     }).catch(err => {
       console.log(err)
     })
+    getUserViews().then(views => {
+      fetchViews(views)
+    })
+    getUserCalendars().then(calendars =>  {
+      fetchCalendars(calendars)
+    })
     if(userIsLogged()){
       this.setState({
         isLogged: true
@@ -35,17 +41,11 @@ class ProfilePage extends React.Component {
     }
   }
 
-  componentDidMount() {
-    getUserViews().then(views => {
-      fetchViews(views)
-    })
-    getUserCalendars().then(calendars =>  {
-      fetchCalendars(calendars)
-    })
-  }
-
   logout(){
-    
+    resetCredentials()
+    this.setState({
+      isLogged: false
+    })
   }
 
   render() {
@@ -72,7 +72,8 @@ class ProfilePage extends React.Component {
         <p>Firstname: {this.props.user.userProfile.firstname}</p>
         <p>Lastname: {this.props.user.userProfile.lastname}</p>
         <p>Email: {this.props.user.userProfile.email}</p>
-        <p>Account date creation: {this.props.user.userProfile.accountCreation}</p>
+        <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
+        <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
         <p class="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
       </div>
     </div>

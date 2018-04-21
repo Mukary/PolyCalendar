@@ -3,7 +3,10 @@ const Schema = mongoose.Schema
 
 const CalendarSchema = new Schema({
   title: {type: String, required: true},
-  color: {type: String, default: 'yellow'},
+  url: {type: String, default: ''},
+  fileContent:{type: String, default: ''},
+  owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+  isFile: {type: Boolean, default:'false'},
   events: [{type: Schema.Types.ObjectId, ref: 'Event'}]
 })
 
