@@ -49,6 +49,20 @@ export function login(email, password) {
   })
 }
 
+export function linkGoogleAccount(code) {
+  return new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/oauth`, {
+      code: code
+    }, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export function invite(email) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.REACT_APP_API_URL}/invite`, {

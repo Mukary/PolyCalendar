@@ -13,4 +13,11 @@ module.exports = (router, controller) => {
       res.status(403).send('Access forbidden')
     })
   })
+
+  router.post('/oauth', middleware.ensureToken, function(req, res, err){
+    controller.googleOAuth(req).then(res => {
+      console.log("GOOGLE")
+      console.log(res)
+    })
+  })
 }

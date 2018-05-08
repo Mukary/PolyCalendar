@@ -4,8 +4,9 @@ import {Redirect} from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import Views from '../../components/Views/Views'
 import Calendars from '../../components/Calendars/Calendars'
+import GoogleLogin from 'react-google-login'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import {userIsLogged, resetCredentials} from '../../services/Auth.services'
+import {userIsLogged, resetCredentials, linkGoogleAccount} from '../../services/Auth.services'
 import {getUserProfile,getUserViews} from '../../services/User.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
@@ -48,6 +49,12 @@ class ProfilePage extends React.Component {
     })
   }
 
+  googleLogin(response) {
+    console.log("GOOGLE RESPONSE")
+    console.log(response)
+    linkGoogleAccount(response.code)
+  }
+
   render() {
     if(!this.state.isLogged) {
       return(
@@ -75,6 +82,13 @@ class ProfilePage extends React.Component {
         <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
         <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
         <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
+        <GoogleLogin 
+          clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
+          buttonText='Link google account'
+          responseType='code'
+          scope='https://www.googleapis.com/auth/calendar.readonly'
+          onSuccess={this.googleLogin}
+        />
       </div>
     </div>
   </div>
