@@ -50,9 +50,13 @@ class ProfilePage extends React.Component {
   }
 
   googleLogin(response) {
-    console.log("GOOGLE RESPONSE")
-    console.log(response)
-    linkGoogleAccount(response.code)
+    linkGoogleAccount(response.code).then(res => {
+      console.log(res)
+      //get new calendars then add them to the current state, retrive the accessToken to store in localstorage
+      window.location.reload()
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
   render() {

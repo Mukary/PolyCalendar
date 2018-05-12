@@ -15,9 +15,11 @@ module.exports = (router, controller) => {
   })
 
   router.post('/oauth', middleware.ensureToken, function(req, res, err){
-    controller.googleOAuth(req).then(res => {
+    controller.googleOAuth(req).then(response => {
       console.log("GOOGLE")
-      console.log(res)
+      res.status(response.code).send(response.message)
+    }).catch(err => {
+      res.status(401).send('Unauthorized')
     })
   })
 }
