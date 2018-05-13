@@ -1,6 +1,7 @@
 import React from 'react'
-import {login, setToken, setProfile, userIsLogged} from '../../services/Auth.services'
+import {login, setToken, setProfile, userIsLogged, loginWithGoogle} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
+import GoogleLogin from 'react-google-login'
 
 export default class LoginPage extends React.Component {
   constructor(props){
@@ -32,6 +33,19 @@ export default class LoginPage extends React.Component {
     })
   }
 
+  googleLogin(response) {
+    loginWithGoogle(response.code).then(data => {
+      setToken(data.token)
+      setProfile(data._id, data.googleEmail)
+      this.setState({
+        isLogged: true
+      })
+    }).catch(err => {
+      console.log(err)
+      alert('No user found with this google account')
+    })
+  }
+
   render() {
     if(this.state.isLogged) {
       return(
@@ -57,6 +71,14 @@ export default class LoginPage extends React.Component {
         </div>
         <div style={{marginLeft:'20%', marginTop:'5%'}}>
           <button className='btn btn-success' onClick={this.signIn.bind(this)}>Sign in</button>
+          <GoogleLogin 
+          className="btn btn-danger"
+          clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
+          buttonText='Link google account'
+          responseType='code'
+          scope='profile'
+          onSuccess={this.googleLogin.bind(this)}
+        />
           <Link to={'/invite'}>
             <button className='btn btn-warning' style={{marginLeft:'20px'}}>Sign up</button>
           </Link>

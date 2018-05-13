@@ -30,6 +30,19 @@ router.post('/login', function(req, res, err) {
   })
 })
 
+router.post('/loginGoogle', function(req, res, err){
+  if(req.body.code){
+    controller.loginWithGoogle(req).then(user => {
+      return res.status(201).json(user)
+    }).catch(err => {
+      console.log(err)
+      return res.status(err.status).send(err.message)
+    })
+  } else {
+    return res.status(400).send('Missing Google OAuth code')
+  }
+})
+
 router.post('/invite', function(req, res, err) {
   let email = req.body.email
   inviteController.create(email).then(invite => {
@@ -50,7 +63,7 @@ router.post('/invite', function(req, res, err) {
   let mailOptions = {
     from: '"PolyCalendar" <kq5qtgcuyjaczma6@ethereal.email>', // sender address
     to: `${invite.email}`, // list of receivers
-    subject: 'Overwatch', // Subject line
+    subject: 'PolyCalendar registration', // Subject line
     text: `Hello new user! You can complete your registration at this link: ${process.env.CLIENT_URL}/register?email=${invite.email}&code=${invite.code}`, // plain text body
   };
 

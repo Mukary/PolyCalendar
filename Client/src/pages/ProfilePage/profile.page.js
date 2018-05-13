@@ -55,7 +55,7 @@ class ProfilePage extends React.Component {
     })
   }
 
-  googleLogin(response) {
+  linkGoogle(response) {
     linkGoogleAccount(response.code).then(res => {
       const oldProfile = getProfile()
       setProfile(oldProfile._id, res.data.email)
@@ -75,6 +75,7 @@ class ProfilePage extends React.Component {
       this.setState({
         hasLinkedGoogle: false
       })
+      
     }).catch(err => {
       console.log(err)
     })
@@ -118,7 +119,7 @@ class ProfilePage extends React.Component {
           buttonText='Link google account'
           responseType='code'
           scope='profile https://www.googleapis.com/auth/calendar.readonly'
-          onSuccess={this.googleLogin}
+          onSuccess={this.linkGoogle}
         />
         }
       </div>

@@ -61,6 +61,18 @@ export function login(email, password) {
   })
 }
 
+export function loginWithGoogle(code) {
+  return new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/loginGoogle`, {
+      code: code
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export function linkGoogleAccount(code) {
   return new Promise((resolve, reject) => {
     axios.post(`${process.env.REACT_APP_API_URL}/oauth`, {

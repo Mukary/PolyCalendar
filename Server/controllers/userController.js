@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Invite = require('../models/Invite')
 const jwt = require('jsonwebtoken')
 const sha256 = require('sha256')
+const request = require('request')
 const userController = {}
 
 userController.create = (user) => {
@@ -68,6 +69,74 @@ userController.login = (userConnecting) => {
         let error = new Error('User '+userConnecting.email+' does not exist')
         error.status = 404
         return reject(error)
+      }
+    })
+  })
+}
+
+userController.loginWithGoogle = (req) => {
+  return new Promise((resolve, reject) => {
+    const data = {
+      code: req.body.code,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      redirect_uri: req.headers.origin,
+      scope: ['people'],
+      grant_type: 'authorization_code'
+    }
+    request({
+      method:'post',
+      url:'https://www.googleapis.com/oauth2/v4/token',
+      form: data
+    },(err, response) => {
+      if(err) {
+        let error = new Error()
+        error.message = 'Invalid credentials'
+        error.status = 401
+        return reject(error)
+      }
+      else {
+        const resBody = JSON.parse(response.body)
+        const access_token = resBody.access_token
+        request({
+          method:'get',
+          url: `https://www.googleapis.com/plus/v1/people/me?access_token=${access_token}`
+        }, (err, profileResponse) => {
+          if(err) {
+            let errorProfile = new Error()
+            errorProfile.message = 'Invalid token'
+            errorProfile.status = 401
+            return reject(errorProfile)
+          }
+          else {
+            const profileBody = JSON.parse(profileResponse.body)
+            const primaryEmail = profileBody.emails[0].value
+            User.findOne({googleEmail: primaryEmail}, (err, user) => {
+              if(user) {
+                let token = jwt.sign({"_id":user._id, "email":user.email}, process.env.SECRET_KEY)
+                User.findOneAndUpdate({"email": user.email}, 
+                  {$set:{lastConnection: new Date()}}, function(err, d){
+                    if(err){
+                      let errorUpdate = new Error()
+                      errorUpdate.message = 'Error updating user information'
+                      errorUpdate.status = 500
+                      return reject(errorUpdate)
+                    }
+                    else return resolve({
+                      _id: user._id,
+                      googleEmail: user.googleEmail,
+                      token: token
+                    })
+                })
+              } else {
+                let errorUser = new Error()
+                errorUser.message = 'User not found'
+                errorUser.status = 405
+                return reject(errorUser)
+              }
+            })
+          }
+        })
       }
     })
   })
