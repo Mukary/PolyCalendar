@@ -5,6 +5,7 @@ const UserSchema = new Schema({
   firstname: {type: String, required: true},
   lastname: {type: String, required: true},
   email: {type: String, required: true, unique: true},
+  googleEmail: {type: String, default: ''},
   password: {type: String, required: true},
   accountCreation: {type: Date, default: new Date()},
   lastConnection: {type: Date} 

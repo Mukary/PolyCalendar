@@ -23,7 +23,7 @@ export default class LoginPage extends React.Component {
     const password = this.password.value
     login(email, password).then(data => {
       setToken(data.token)
-      setProfile(data._id)
+      setProfile(data._id, data.googleEmail)
       this.setState({
         isLogged: true
       })

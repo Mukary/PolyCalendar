@@ -16,10 +16,17 @@ module.exports = (router, controller) => {
 
   router.post('/oauth', middleware.ensureToken, function(req, res, err){
     controller.googleOAuth(req).then(response => {
-      console.log("GOOGLE")
-      res.status(response.code).send(response.message)
+      res.status(response.code).send(response)
     }).catch(err => {
       res.status(401).send('Unauthorized')
+    })
+  })
+
+  router.post('/logoutGoogle', middleware.ensureToken, function(req, res, err){
+    controller.unlinkGoogleAccount(req).then(response => {
+      res.status(response.code).send(response.message)
+    }).catch(err => {
+      res.status(400).send('Bad Request')
     })
   })
 }

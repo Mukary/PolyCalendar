@@ -6,7 +6,7 @@ import Views from '../../components/Views/Views'
 import Calendars from '../../components/Calendars/Calendars'
 import GoogleLogin from 'react-google-login'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import {userIsLogged, resetCredentials, linkGoogleAccount} from '../../services/Auth.services'
+import {userIsLogged, setProfile, getProfile, unlinkGoogleAccount ,userHasLinkedGoogle, resetCredentials, linkGoogleAccount} from '../../services/Auth.services'
 import {getUserProfile,getUserViews} from '../../services/User.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
@@ -17,7 +17,8 @@ class ProfilePage extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isLogged: false
+      isLogged: false,
+      hasLinkedGoogle: false
     }
     autoBind(this)
   }
@@ -40,6 +41,11 @@ class ProfilePage extends React.Component {
         isLogged: true
       })
     }
+    if(userHasLinkedGoogle()) {
+      this.setState({
+        hasLinkedGoogle: true
+      })
+    }
   }
 
   logout(){
@@ -51,9 +57,24 @@ class ProfilePage extends React.Component {
 
   googleLogin(response) {
     linkGoogleAccount(response.code).then(res => {
-      console.log(res)
-      //get new calendars then add them to the current state, retrive the accessToken to store in localstorage
+      const oldProfile = getProfile()
+      setProfile(oldProfile._id, res.data.email)
+      this.setState({
+        hasLinkedGoogle: true
+      })
       window.location.reload()
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  logoutGoogle() {
+    unlinkGoogleAccount().then(res => {
+      const oldProfile = getProfile()
+      setProfile(oldProfile._id, '')
+      this.setState({
+        hasLinkedGoogle: false
+      })
     }).catch(err => {
       console.log(err)
     })
@@ -86,13 +107,20 @@ class ProfilePage extends React.Component {
         <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
         <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
         <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
-        <GoogleLogin 
+        {
+          this.state.hasLinkedGoogle
+          ?
+          <p className="btn btn-danger" role="button" onClick={this.logoutGoogle}>Google Log out</p>
+          :
+          <GoogleLogin 
+          className="btn btn-primary"
           clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
           buttonText='Link google account'
           responseType='code'
-          scope='https://www.googleapis.com/auth/calendar.readonly'
+          scope='profile https://www.googleapis.com/auth/calendar.readonly'
           onSuccess={this.googleLogin}
         />
+        }
       </div>
     </div>
   </div>

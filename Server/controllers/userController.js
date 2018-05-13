@@ -55,6 +55,7 @@ userController.login = (userConnecting) => {
             })
           return resolve({
             _id: user._id,
+            googleEmail: user.googleEmail,
             token: token
           })
         } else {

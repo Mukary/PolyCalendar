@@ -4,10 +4,15 @@ export function setToken (token) {
   window.localStorage.setItem('pcal_token', token)
 }
 
-export function setProfile(id) {
+export function setProfile(id, googleEmail) {
   window.localStorage.setItem('pcal_profile', JSON.stringify({
-    _id: id
+    _id: id,
+    googleEmail: googleEmail
   }))
+}
+
+export function getProfile() {
+  return JSON.parse(window.localStorage.getItem('pcal_profile'))
 }
 
 export function resetCredentials() {
@@ -21,6 +26,13 @@ export function getToken() {
 
 export function userIsLogged() {
   return window.localStorage.getItem('pcal_token')
+}
+
+export function userHasLinkedGoogle() {
+  const profile = JSON.parse(window.localStorage.getItem('pcal_profile'))
+  const b = profile.googleEmail !== undefined && profile.googleEmail !== '' && profile.googleEmail !== null
+  //return false
+  return profile.googleEmail !== undefined && profile.googleEmail !== '' && profile.googleEmail !== null
 }
 
 export function verifyUser() {
@@ -54,6 +66,19 @@ export function linkGoogleAccount(code) {
     axios.post(`${process.env.REACT_APP_API_URL}/oauth`, {
       code: code
     }, {
+      headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
+    }).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export function unlinkGoogleAccount() {
+  console.log(window.localStorage.getItem('pcal_token'))
+  return new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/logoutGoogle`, {} , {
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
       resolve(res)

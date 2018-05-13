@@ -21,7 +21,7 @@ authController.googleOAuth = (req) => {
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       redirect_uri: req.headers.origin,
-      scope: ['https://www.googleapis.com/auth/calendar.readonly'],
+      scope: ['people','https://www.googleapis.com/auth/calendar.readonly'],
       grant_type: 'authorization_code'
     }
     request({
@@ -31,7 +31,25 @@ authController.googleOAuth = (req) => {
     }, (err, response) => {
         if(err) reject(err)
         const jBody = JSON.parse(response.body)
-        const access_token = jBody.access_token        
+        const access_token = jBody.access_token
+        request({
+          method:'get',
+          url:`https://www.googleapis.com/plus/v1/people/me?access_token=${access_token}`
+        }, (err, profileResponse) => {
+          if (err) reject(err)
+          else {
+            const profileBody = JSON.parse(profileResponse.body)
+            const email = profileBody.emails[0].value
+            User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: email}}, {new: true}, (err, user) =>{
+              if(err) reject(err)
+              else resolve({
+                code: 201,
+                message: 'Successfully linked account',
+                email: user.googleEmail
+              })
+            })
+          }
+        })        
         request({
           method:'get',
           url:`https://www.googleapis.com/calendar/v3/users/me/calendarList?minAccessRole=owner&access_token=${access_token}`
@@ -40,11 +58,10 @@ authController.googleOAuth = (req) => {
          else {
           const body2 = JSON.parse(responseToken.body)
           const calendars = body2.items
-          console.log("================= LISTING ALL EVENTS FOR EACH CALENDAR =================")
           if(calendars == undefined) reject('Unauthorized')
           else {
+            let newCalendars = []
             calendars.forEach(calendar => {
-              console.log("=========== CALENDAR - "+calendar.id+" ===========")
               request({
                 method:'get',
                 url:`https://www.googleapis.com/calendar/v3/calendars/${calendar.id}/events?&access_token=${access_token}`
@@ -69,18 +86,24 @@ authController.googleOAuth = (req) => {
                     eventsToSave.push(ev)
                     if(event.description != undefined) ev.description = event.description
                   })
-                  //console.log(eventsToSave)
-                  //console.log(calendarToSave)
                   calendarController.create(calendarToSave, eventsToSave, req.data._id)
               })
-            })
-            resolve({
-              code: 201,
-              message: 'Successfully linked account'
             })
           }
          }
         })
+    })
+  })
+}
+
+authController.unlinkGoogleAccount = (req) => {
+  return new Promise((resolve, reject) => {
+    User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: ''}}, {new: true}, (err, user) => {
+      if(err) reject(err)
+      else resolve({
+        code: 201,
+        message: 'Account successfully unlinked'
+      })
     })
   })
 }
