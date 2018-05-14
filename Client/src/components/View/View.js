@@ -5,6 +5,7 @@ import CalendarItem from '../CalendarItem/CalendarItem'
 import CustomCalendar from '../CustomCalendar/CustomCalendar'
 import {updateViewDistant} from '../../services/Views.service'
 import {updateView} from '../../actions/index'
+import icalToolkit from 'ical-toolkit'
 import './View.css'
 
 export default class View extends React.Component {
@@ -56,6 +57,39 @@ export default class View extends React.Component {
 
   }
 
+  exportView() {
+    let builder = icalToolkit.createIcsFileBuilder()
+    builder.spacers = false //Add space in ICS file, better human reading. Default: true
+    builder.NEWLINE_CHAR = '\r\n' //Newline char to use.
+    builder.throwError = false //If true throws errors, else returns error when you do .toString() to generate the file contents.
+    builder.ignoreTZIDMismatch = true
+
+    builder.calname = this.props.currentView.title;
+    builder.timezone = 'america/new_york';
+    builder.tzid = 'america/new_york';
+    builder.method = 'REQUEST';
+
+    this.props.currentView.calendars.forEach(calendar => {
+      calendar.cal.events.forEach(e => {
+        let eventTransparency = 'OPAQUE' //default value
+        if(calendar.visible) eventTransparency = 'TRANSPARENT'
+        builder.events.push({
+          summary: e['summary'],
+          start: new Date(e['start']),
+          end: new Date(e['end']),
+          description: e['description'],
+          transp: eventTransparency
+        })
+      })
+    })
+    
+    let element = document.createElement('a')
+    let icalFile = new Blob([builder.toString()], {type: 'text/calendar'})
+    element.href = URL.createObjectURL(icalFile)
+    element.download = this.props.currentView.title+'.ics'
+    element.click()
+  }
+
   render(){
     const currentView = this.props.currentView
     const calendars = this.props.calendars
@@ -69,9 +103,9 @@ export default class View extends React.Component {
     this.props.currentView.calendars.forEach(calendar => {
       calendar.cal.events.forEach(e => {
         if(!calendar.visible){
-          e['summary'] = "Busy"
+          let eventSummary = "Busy"
           calEvents.push({
-            title: e['summary'],
+            title: eventSummary,
             allDay: false,
             start: new Date(e['start']),
             end: new Date(e['end']),
@@ -105,6 +139,7 @@ export default class View extends React.Component {
           <p className="panel-heading" style={{fontSize: '25px'}}>Settings</p>
           <div className="panel-body">
           <p>Public URL: <input defaultValue={`${window.location.origin}/share/view/${this.props.id}`} type='text'/></p>
+          <button className='btn btn-success' onClick={this.exportView}>Export ICAL</button>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
           this.props.calendars.map(c => {
