@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const View = require('../models/View')
 const Calendar = require('../models/Calendar')
 const Event = require('../models/Event')
+const icalToolkit = require('ical-toolkit')
 const viewController = {}
 
 viewController.create = (view, owner) => {
@@ -35,6 +36,44 @@ viewController.getView = (viewId, owner) => {
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
         if(err) reject(err)
         else resolve(res)
+      })
+    })
+  })
+}
+
+viewController.exportView = (viewId) => {
+  return new Promise((resolve, reject) => {
+    View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
+      if(err) reject(err)
+      Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
+        if(err) reject(err)
+        else {
+          let builder = icalToolkit.createIcsFileBuilder()
+          builder.spacers = false //Add space in ICS file, better human reading. Default: true
+          builder.NEWLINE_CHAR = '\r\n' //Newline char to use.
+          builder.throwError = false //If true throws errors, else returns error when you do .toString() to generate the file contents.
+          builder.ignoreTZIDMismatch = true
+
+          builder.calname = res.title;
+          builder.timezone = 'america/new_york';
+          builder.tzid = 'america/new_york';
+          builder.method = 'REQUEST';
+
+          res.calendars.forEach(calendar => {
+            calendar.cal.events.forEach(e => {
+              let eventTransparency = 'OPAQUE' //default value
+              if(calendar.visible) eventTransparency = 'TRANSPARENT'
+              builder.events.push({
+                summary: e['summary'],
+                start: new Date(e['start']),
+                end: new Date(e['end']),
+                description: e['description'],
+                transp: eventTransparency
+              })
+            })
+          })
+          resolve(builder.toString())
+        }
       })
     })
   })

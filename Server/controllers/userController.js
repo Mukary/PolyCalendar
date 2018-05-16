@@ -131,7 +131,7 @@ userController.loginWithGoogle = (req) => {
               } else {
                 let errorUser = new Error()
                 errorUser.message = 'User not found'
-                errorUser.status = 405
+                errorUser.status = 404
                 return reject(errorUser)
               }
             })

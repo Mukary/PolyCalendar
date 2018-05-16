@@ -31,6 +31,13 @@ module.exports = (router, controller) => {
     })
   })
 
+  router.get('/views/:viewId/export', function(req, res, err){
+    controller.exportView(req.params.viewId).then(view => {
+      res.setHeader('content-type', 'text/calendar')
+      res.status(200).send(view)
+    })
+  })
+
   router.put('/views/:viewId', middleware.ensureToken, function(req, res, err){
     controller.updateView(req.params.viewId, req.body.calendars, req.data._id, req.body.action).then(view => {
       res.status(200).send(view)
