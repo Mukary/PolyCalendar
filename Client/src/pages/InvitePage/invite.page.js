@@ -1,5 +1,7 @@
 import React from 'react'
 import {invite} from '../../services/Auth.services'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 
 export default class InvitePage extends React.Component {
   constructor(props){
@@ -13,10 +15,10 @@ export default class InvitePage extends React.Component {
   invite() {
     const email = this.email.value
     invite(email).then(res => {
-      alert(`An email with inviation link has been sent at ${email}`)
+      notify('SUCCESS', `An email with inviation link has been sent at ${email}`)
     }).catch(err => {
-      alert("User already exists, please use another email")
       console.log(err)
+      notify('ERROR','User already exists, please use another email')
     })
   }
 
@@ -31,6 +33,7 @@ export default class InvitePage extends React.Component {
         marginRight:'35%',
         marginTop:'10%',
         borderRadius:'10px'}}>
+        <ToastContainer />
         <div style={{color:'white', fontSize:'20px'}}>
           <p style={{marginLeft:'20%'}}>Email:</p>
           <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com' ref={e => {this.email = e}}/>

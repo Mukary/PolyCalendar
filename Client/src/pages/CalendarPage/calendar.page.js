@@ -8,6 +8,8 @@ import {getUserViews} from '../../services/User.services'
 import {fetchCurrentCalendar, fetchViews, updateCalendar} from '../../actions/index'
 import PNavbar from '../../components/Navbar/Navbar'
 import CustomCalendar from '../../components/CustomCalendar/CustomCalendar'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 
 class CalendarPage extends React.Component {
   constructor(props){
@@ -49,8 +51,9 @@ class CalendarPage extends React.Component {
       this.setState({
         showTitleInput: !this.state.showTitleInput
       })
+      notify('SUCCESS','Calendar title updated!')
     }).catch(err => {
-      alert('Couldnt update title')
+      notify('ERROR', 'Couldnt update title')
     })
   }
 
@@ -78,6 +81,7 @@ class CalendarPage extends React.Component {
     if(this.state.isLogged){
       return(
         <div>
+        <ToastContainer />
         <PNavbar/>
         <div className='page-header'>
               <h1>{this.props.currentCalendar.title}</h1>
@@ -102,8 +106,8 @@ class CalendarPage extends React.Component {
           className="panel panel-info">
           <p class="panel-heading" style={{fontSize: '25px'}}>Information</p>
           <div className="panel-body">
-            <p>URL of the calendar: <input value={this.props.currentCalendar.url} type='text'/></p>
-            <p>Download file at: <input type='text' value={`${process.env.REACT_APP_API_URL}/calendars/${this.props.currentCalendar._id}/download`}/></p>
+            <p>URL of the calendar: <input className='form-control' value={this.props.currentCalendar.url} type='text'/></p>
+            <p>Download file at: <input className='form-control' type='text' value={`${process.env.REACT_APP_API_URL}/calendars/${this.props.currentCalendar._id}/download`}/></p>
             <h4>Views using this calendar</h4>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {

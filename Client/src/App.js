@@ -10,6 +10,7 @@ import CalendarPage from './pages/CalendarPage/calendar.page'
 import SharedViewPage from './pages/SharedViewPage/shared-view.page'
 import './bootstrap/bootstrap.css'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 class App extends Component {
   render() {

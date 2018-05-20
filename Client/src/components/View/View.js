@@ -6,6 +6,8 @@ import CustomCalendar from '../CustomCalendar/CustomCalendar'
 import {updateViewDistant} from '../../services/Views.service'
 import {updateView} from '../../actions/index'
 import icalToolkit from 'ical-toolkit'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 import './View.css'
 
 export default class View extends React.Component {
@@ -33,11 +35,12 @@ export default class View extends React.Component {
     let newCalendars = []
     this.calendarsToAttach.forEach(c => newCalendars.push(c))
     updateViewDistant(this.props.id, newCalendars,'ADD_CALENDARS').then(view => {
-      console.log("VIEW UPDATED")
       console.log(view)
       updateView(view)
+      notify('SUCCESS', 'The view has been updated!')
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'An error happened while updating the view.')
     })
   }
 
@@ -46,6 +49,10 @@ export default class View extends React.Component {
     let newCalendars = [{cal: calId, visible: visible}]
     updateViewDistant(this.props.id, newCalendars, 'UPDATE_CALENDAR_MODE').then(view => {
       updateView(view)
+      notify('SUCCESS', 'The view has been updated!')
+    }).catch(err => {
+        console.log(err)
+        notify('ERROR', 'An error happened while updating the view.')
     })
   }
 
@@ -53,6 +60,9 @@ export default class View extends React.Component {
     let newCalendars = [{cal: calId}]
     updateViewDistant(this.props.id, newCalendars, 'REMOVE_CALENDAR').then(view => {
       updateView(view)
+      notify('SUCCESS', 'The calendar has been removed from this view!')
+    }).catch(err => {
+      notify('ERROR', 'An error happened while removing this calendar from the view.')
     })
 
   }
@@ -88,6 +98,7 @@ export default class View extends React.Component {
     element.href = URL.createObjectURL(icalFile)
     element.download = this.props.currentView.title+'.ics'
     element.click()
+    notify('', 'Downloading file...')
   }
 
   render(){
@@ -125,6 +136,7 @@ export default class View extends React.Component {
     })
     return(
       <div>
+        <ToastContainer className='toast'/>
         <div className='page-header'>
           <h1>{this.props.currentView.title}</h1>
         </div>

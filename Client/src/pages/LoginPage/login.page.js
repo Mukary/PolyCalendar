@@ -2,6 +2,8 @@ import React from 'react'
 import {login, setToken, setProfile, userIsLogged, loginWithGoogle} from '../../services/Auth.services'
 import {Redirect, Link} from 'react-router-dom'
 import GoogleLogin from 'react-google-login'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 
 export default class LoginPage extends React.Component {
   constructor(props){
@@ -29,7 +31,7 @@ export default class LoginPage extends React.Component {
         isLogged: true
       })
     }).catch(err => {
-      alert('Wrong email or password')
+      notify('ERROR','Wrong email or password')
     })
   }
 
@@ -42,7 +44,7 @@ export default class LoginPage extends React.Component {
       })
     }).catch(err => {
       console.log(err)
-      alert('No user found with this google account')
+      notify('ERROR', 'No user found with this google account')
     })
   }
 
@@ -61,6 +63,7 @@ export default class LoginPage extends React.Component {
         marginRight:'35%',
         marginTop:'10%',
         borderRadius:'10px'}}>
+        <ToastContainer />
         <div style={{color:'white', fontSize:'20px'}}>
           <p style={{marginLeft:'20%'}}>Email:</p>
           <input type='email' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='example@domain.com' ref={e => {this.email = e}}/>
@@ -74,7 +77,7 @@ export default class LoginPage extends React.Component {
           <GoogleLogin 
           className="btn btn-danger"
           clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
-          buttonText='Link google account'
+          buttonText='Sign in with Google'
           responseType='code'
           scope='profile'
           onSuccess={this.googleLogin.bind(this)}

@@ -1,5 +1,7 @@
 import React from 'react'
 import { register } from '../../services/Register.services'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 import {Redirect} from 'react-router-dom'
 import './register.styles.css'
 
@@ -31,10 +33,10 @@ export default class RegisterPage extends React.Component {
         })
       }).catch(err => {
         console.log(err)
-        alert('User already exists')
+        notify('ERROR', 'Inviation not found or user already exists')
       })
     } else {
-      alert('Please match the registration requirements')
+      notify('ERROR','Please match the registration requirements. The password must at least contain 1 uppercase letter, 1 digit character, 1 special character(!,@,#,$,%,^,&,*,?,_,~) and be 6-character long')
     }
   }
   checkParams() {
@@ -86,6 +88,7 @@ export default class RegisterPage extends React.Component {
         marginRight:'35%',
         marginTop:'10%',
         borderRadius:'10px'}}>
+        <ToastContainer />
         <div style={{color:'white', fontSize:'20px'}}>
           <p style={{marginLeft:'20%'}}>Firstname:</p>
           <input type='text' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='John'ref={ (e) => {this.firstname = e}}/>

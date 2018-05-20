@@ -4,6 +4,8 @@ import CheckboxCalendar from '../../components/CheckboxCalendar/CheckboxCalendar
 import ViewThumbnail from '../../components/ViewThumbnail/ViewThumbnail'
 import {addViewDistant, deleteViewDistant} from '../../services/User.services'
 import {addView, deleteView} from '../../actions/index'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 import './Views.css'
 
 export default class Views extends React.Component {
@@ -56,8 +58,10 @@ export default class Views extends React.Component {
       calendars: arr
     }).then(view => {
       addView(view)
+      notify('SUCCESS', 'The view has been created!')
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'Error happened while adding view.')
     })
   }
 
@@ -65,14 +69,17 @@ export default class Views extends React.Component {
     deleteViewDistant(viewId).then(res => {
       let newViews = this.props.views.slice().filter(view => {return view._id !== viewId})
       deleteView(newViews)
+      notify('SUCCESS', 'The view has been removed!')
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'Error happened while removing view.')
     })
   }
 
   render() {
       return(
         <div>
+          <ToastContainer />
         <button style={{marginBottom: '10px'}} className='btn btn-warning' onClick={this.displayViewForm} >{this.state.addButton}</button>
         {
           this.state.displayViewForm 

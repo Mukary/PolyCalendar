@@ -3,6 +3,8 @@ import autoBind from 'react-autobind'
 import CalendarThumbnail from '../CalendarThumbnail/CalendarThumbnail'
 import {createCalendarDistant, deleteCalendarDistant} from '../../services/Calendars.services'
 import {addCalendar, deleteCalendar} from '../../actions/index'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 import Dropzone from 'react-dropzone'
 
 export default class Calendars extends React.Component {
@@ -42,18 +44,23 @@ export default class Calendars extends React.Component {
       isFile: isFile
     }).then(calendar => {
       addCalendar(calendar)
+      notify('SUCCESS', 'Calendar has been added!')
       this.setState({
         uploadedFile: false,
         fileContent: ''
       })
+    }).catch(err => {
+      notify('ERROR', 'An error happened when adding a new calendar.')
     })
   }
 
   onDeleteCalendar(calId){
     deleteCalendarDistant(calId).then(res => {
       deleteCalendar(calId)
+      notify('SUCCESS', 'Calendar has been deleted!')
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'An error happened when deleting this calendar.')
     })
   }
 
@@ -76,12 +83,14 @@ export default class Calendars extends React.Component {
         fileContent: content,
         uploadedFile: true
       })
+      notify('SUCCESS', 'You uploaded a calendar file!')
     })
   }
 
   render() {
     return(
       <div>
+        <ToastContainer />
         <div>
         <button style={{marginBottom:'10px'}} className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
         {

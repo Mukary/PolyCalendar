@@ -11,6 +11,8 @@ import {getUserProfile,getUserViews} from '../../services/User.services'
 import {getUserCalendars} from '../../services/Calendars.services'
 import {connect} from 'react-redux'
 import {fetchUserProfile, fetchCalendars, fetchViews} from '../../actions/index'
+import {ToastContainer, style} from 'react-toastify'
+import {notify} from '../../notifications/notifications'
 import 'react-tabs/style/react-tabs.css'
 
 class ProfilePage extends React.Component {
@@ -62,9 +64,11 @@ class ProfilePage extends React.Component {
       this.setState({
         hasLinkedGoogle: true
       })
+      notify('DEFAULT', 'Your Google account has been linked!')
       window.location.reload()
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'Error encoutered with this Google account. It might have been linked already?')
     })
   }
 
@@ -75,9 +79,10 @@ class ProfilePage extends React.Component {
       this.setState({
         hasLinkedGoogle: false
       })
-      
+      notify('DEFAULT', 'Google account unlinked!')
     }).catch(err => {
       console.log(err)
+      notify('ERROR', 'Error encoutered when unlinking your Google account.')
     })
   }
 
@@ -89,53 +94,54 @@ class ProfilePage extends React.Component {
     }
     return(
       <div>
+        <ToastContainer />
         <Navbar />
         <Tabs>
-    <TabList>
-      <Tab>My Information</Tab>
-      <Tab>My Views</Tab>
-      <Tab>My Calendars</Tab>
-    </TabList>
+          <TabList>
+            <Tab>My Information</Tab>
+            <Tab>My Views</Tab>
+            <Tab>My Calendars</Tab>
+          </TabList>
 
-    <TabPanel>
-    <div className="row">
-  <div className="col-sm-6 col-md-4">
-    <div className="thumbnail">
-      <div className="caption">
-        <p>Firstname: {this.props.user.userProfile.firstname}</p>
-        <p>Lastname: {this.props.user.userProfile.lastname}</p>
-        <p>Email: {this.props.user.userProfile.email}</p>
-        <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
-        <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
-        <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
-        {
-          this.state.hasLinkedGoogle
-          ?
-          <p className="btn btn-danger" role="button" onClick={this.logoutGoogle}>Google Log out</p>
-          :
-          <GoogleLogin 
-          className="btn btn-primary"
-          clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
-          buttonText='Link google account'
-          responseType='code'
-          scope='profile https://www.googleapis.com/auth/calendar.readonly'
-          onSuccess={this.linkGoogle}
-        />
-        }
-      </div>
-    </div>
-  </div>
-</div>
-    </TabPanel>
+          <TabPanel>
+              <div className="row">
+                <div className="col-sm-6 col-md-4">
+                  <div className="thumbnail">
+                    <div className="caption">
+                      <p>Firstname: {this.props.user.userProfile.firstname}</p>
+                      <p>Lastname: {this.props.user.userProfile.lastname}</p>
+                      <p>Email: {this.props.user.userProfile.email}</p>
+                      <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
+                      <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
+                      <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
+                      {
+                        this.state.hasLinkedGoogle
+                        ?
+                        <p className="btn btn-danger" role="button" onClick={this.logoutGoogle}>Google Log out</p>
+                        :
+                        <GoogleLogin 
+                        className="btn btn-primary"
+                        clientId='493629080447-g3rop2h6jpbjrgfiur7f87quls5p8v3l.apps.googleusercontent.com'
+                        buttonText='Link google account'
+                        responseType='code'
+                        scope='profile https://www.googleapis.com/auth/calendar.readonly'
+                        onSuccess={this.linkGoogle}
+                      />
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </TabPanel>
     
-    <TabPanel>
-      <Views calendars={this.props.calendars} views={this.props.views}/>
-    </TabPanel>
+          <TabPanel>
+            <Views calendars={this.props.calendars} views={this.props.views}/>
+          </TabPanel>
     
-    <TabPanel>
-    <Calendars calendars={this.props.calendars} />
-    </TabPanel>
-  </Tabs>
+          <TabPanel>
+            <Calendars calendars={this.props.calendars} />
+          </TabPanel>
+        </Tabs>
       </div>
     )
   }
