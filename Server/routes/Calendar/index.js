@@ -37,13 +37,17 @@ module.exports = (router, controller) => {
   })
 
 
-  router.get('/calendars', middleware.ensureToken, function(req, res, err){
-    controller.getCalendars(req.data._id).then(calendars => {
-      res.status(200).send(calendars)
-    }).catch(err => {
-      console.log(err)
-      res.status(404).send('Calendars not found')
-    })
+  router.get('/users/:userid/calendars', [middleware.ensureToken, middleware.checkUserParam], function(req, res, err){
+    if(req.params.userid === req.data._id){
+      controller.getCalendars(req.params.userid).then(calendars => {
+        res.status(200).send(calendars)
+      }).catch(err => {
+        console.log(err)
+        res.status(404).send('Calendars not found')
+      })
+    } else {
+      res.status(401).send('Unauthorized')
+    }
   })
 
   router.get('/calendars/:calId', middleware.ensureToken, function(req, res, err){

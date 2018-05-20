@@ -13,7 +13,8 @@ module.exports = (router, controller) => {
   })
 
 
-  router.get('/views', middleware.ensureToken, function(req, res, err){
+  router.get('/users/:userid/views', [middleware.ensureToken, middleware.checkUserParam], function(req, res, err){
+    console.log(req.params)
     controller.getViews(req.data._id).then(views => {
       console.log(views)
       res.status(200).send(views)

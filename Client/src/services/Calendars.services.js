@@ -1,8 +1,10 @@
 import axios from 'axios'
+const profile = JSON.parse(window.localStorage.getItem('pcal_profile'))
 
 export function getUserCalendars() {
   return new Promise((resolve, reject) => {
-    axios.get(`${process.env.REACT_APP_API_URL}/calendars`,{
+    const userid = profile._id
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${userid}/calendars`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res =>{
       resolve(res.data)
