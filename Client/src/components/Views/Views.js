@@ -80,6 +80,7 @@ export default class Views extends React.Component {
       return(
         <div>
           <ToastContainer />
+        <div className='viewForm'>
         <button style={{marginBottom: '10px'}} className='btn btn-warning' onClick={this.displayViewForm} >{this.state.addButton}</button>
         {
           this.state.displayViewForm 
@@ -98,6 +99,8 @@ export default class Views extends React.Component {
            <button className='btn btn-success' onClick={this.addView}>Create</button>
           </div> : null
         }
+        </div>
+        <div className='viewsList'>
         <ul>
         {
           this.props.views.map((view, index) => {
@@ -107,6 +110,7 @@ export default class Views extends React.Component {
           })
         }
         </ul>
+        </div>
         </div>
       )    
   }

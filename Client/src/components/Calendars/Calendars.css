@@ -1,0 +1,9 @@
+.calendarForm {
+  width: 400px;
+  float: left;
+}
+
+.calendarsList {
+  float: left;
+  width: 50%;
+}

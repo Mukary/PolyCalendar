@@ -155,7 +155,7 @@ export default class View extends React.Component {
           <p>Export URL: <input className='form-control' defaultValue={`${process.env.REACT_APP_API_URL}/views/${this.props.id}/export`} type='text'/></p>
           <button className='btn btn-success' onClick={this.exportView}>Export file</button>
           <h4>List of calendars to add</h4>
-          <div className='scrollable' style={{marginBottom:'5px'}}>
+          <div className='scrollable' style={{marginBottom:'5px', height: '200px'}}>
         {
           this.props.calendars.map(c => {
             return(

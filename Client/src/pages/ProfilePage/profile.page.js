@@ -14,6 +14,7 @@ import {fetchUserProfile, fetchCalendars, fetchViews} from '../../actions/index'
 import {ToastContainer, style} from 'react-toastify'
 import {notify} from '../../notifications/notifications'
 import 'react-tabs/style/react-tabs.css'
+import './profile.page.css'
 
 class ProfilePage extends React.Component {
   constructor(props){
@@ -113,7 +114,7 @@ class ProfilePage extends React.Component {
                       <p>Email: {this.props.user.userProfile.email}</p>
                       <p>Account date creation: {new Date(this.props.user.userProfile.accountCreation).toString()}</p>
                       <p>Last connection: {new Date(this.props.user.userProfile.lastConnection).toString()}</p>
-                      <p className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
+                      <p style={{marginRight:'10px'}} className="btn btn-danger" role="button" onClick={this.logout}>Log out</p>
                       {
                         this.state.hasLinkedGoogle
                         ?

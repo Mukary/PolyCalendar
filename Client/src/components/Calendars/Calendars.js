@@ -6,6 +6,7 @@ import {addCalendar, deleteCalendar} from '../../actions/index'
 import {ToastContainer, style} from 'react-toastify'
 import {notify} from '../../notifications/notifications'
 import Dropzone from 'react-dropzone'
+import './Calendars.css'
 
 export default class Calendars extends React.Component {
   constructor(props){
@@ -91,7 +92,7 @@ export default class Calendars extends React.Component {
     return(
       <div>
         <ToastContainer />
-        <div>
+        <div className='calendarForm'>
         <button style={{marginBottom:'10px'}} className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
         {
           this.state.displayCalendarForm
@@ -110,7 +111,7 @@ export default class Calendars extends React.Component {
           </div> : null
         }
         </div>
-        <div>
+        <div className='calendarsList'>
         {
           this.props.calendars.map(x =>{
             return(<CalendarThumbnail id={x._id} title={x.title} color={x.color} onDeleteCalendar={this.onDeleteCalendar}/>)

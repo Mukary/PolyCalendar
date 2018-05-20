@@ -7,6 +7,16 @@ ul.views {
   justify-content: center;
 }
 
+.viewForm {
+  width: 400px;
+  float: left;
+}
+
+.viewsList {
+  width: 50%;
+  float: left;
+}
+
 .scrollable {
   overflow-y: scroll;
   height: 300px;

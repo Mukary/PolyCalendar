@@ -74,6 +74,7 @@ export default class RegisterPage extends React.Component {
   }
 
   render() {
+    const passwordReq = 'The password must at least contain 1 uppercase letter, 1 digit character, 1 special character(!,@,#,$,%,^,&,*,?,_,~) and be 6-character long'
     if(this.state.isRegistered) {
       return(
         <Redirect to={'/login'} />
@@ -82,13 +83,14 @@ export default class RegisterPage extends React.Component {
     return(
       <div style={{
         width:'400px', 
-        height:'600px', 
+        height:'550px', 
         backgroundColor:'#4285f4', 
         marginLeft:'35%', 
         marginRight:'35%',
         marginTop:'10%',
         borderRadius:'10px'}}>
         <ToastContainer />
+        <h1 style={{color:'white', textAlign: 'center'}}>Registration</h1>
         <div style={{color:'white', fontSize:'20px'}}>
           <p style={{marginLeft:'20%'}}>Firstname:</p>
           <input type='text' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='John'ref={ (e) => {this.firstname = e}}/>
@@ -103,7 +105,7 @@ export default class RegisterPage extends React.Component {
         </div>
         <div style={{color:'white', fontSize:'20px', marginTop:'20px'}}>
           <p style={{marginLeft:'20%'}}>Password:</p>
-          <input type='password' title='Password length is a least 6 characters and it should contain at least one uppercase letter & one number' style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='password'ref={ (e) => {this.passwordA = e}}/>
+          <input type='password' title={passwordReq} style={{width:'250px', margin:'0 auto'}} className='form-control' placeholder='password'ref={ (e) => {this.passwordA = e}}/>
         </div>
         <div style={{color:'white', fontSize:'20px', marginTop:'20px'}}>
           <p style={{marginLeft:'20%'}}>Confirm Password:</p>
