@@ -10,7 +10,7 @@ userController.create = (user) => {
   return new Promise((resolve, reject) => {
     User.findOne({"email": user.email}, (err, item) => {
       if(item) reject({
-        status: 403,
+        status: 401,
         message: 'This user already exists'
       })
       else {
@@ -37,7 +37,10 @@ userController.create = (user) => {
                 reject(err)
               } else resolve(result)
             })
-          }
+          } else reject({
+            status:404,
+            message:'Invitation not found for this email'
+          })
         })
       }
     })
