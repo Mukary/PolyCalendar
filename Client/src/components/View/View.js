@@ -138,8 +138,11 @@ export default class View extends React.Component {
           className="panel panel-info">
           <p className="panel-heading" style={{fontSize: '25px'}}>Settings</p>
           <div className="panel-body">
-          <p>Public URL: <input defaultValue={`${window.location.origin}/share/view/${this.props.id}`} type='text'/></p>
-          <button className='btn btn-success' onClick={this.exportView}>Export ICAL</button>
+          <h4>Export & Share</h4>
+          <p>Public URL: <input className='form-control' defaultValue={`${window.location.origin}/share/view/${this.props.id}`} type='text'/></p>
+          <p>Export URL: <input className='form-control' defaultValue={`${process.env.REACT_APP_API_URL}/views/${this.props.id}/export`} type='text'/></p>
+          <button className='btn btn-success' onClick={this.exportView}>Export file</button>
+          <h4>List of calendars to add</h4>
           <div className='scrollable' style={{marginBottom:'5px'}}>
         {
           this.props.calendars.map(c => {

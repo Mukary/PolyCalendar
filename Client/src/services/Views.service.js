@@ -58,3 +58,13 @@ export function addView(view){
     })
   })
 }
+
+export function getIcalView(viewId) {
+  return new Promise((resolve, reject) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/views/${viewId}/export`).then(res =>{
+      resolve(res.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
