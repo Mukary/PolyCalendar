@@ -9,7 +9,7 @@ module.exports = (router, controller) => {
 
   router.post('/register', function(req, res, err) {
   let user = req.body
-  if(Utils.passwordMatcher(user.password) && user.firstname !== '' && user.lastname !== ''){
+  if(Utils.passwordMatcher2(user.password) && user.firstname !== '' && user.lastname !== ''){
     controller.create(user).then( () => {
       return res.status(201).send('User successfully registered.')
     }).catch(err => {

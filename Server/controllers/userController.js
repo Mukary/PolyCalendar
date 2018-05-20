@@ -164,7 +164,7 @@ userController.findById = (id) => {
         resolve(user)
       else {
         reject({
-          status: 403,
+          status: 404,
           message: 'User not found'
         })
       }

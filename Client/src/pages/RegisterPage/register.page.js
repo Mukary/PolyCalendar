@@ -51,9 +51,16 @@ export default class RegisterPage extends React.Component {
   }
 
   checkPasswordStrength() {
-    const toLowerPwd = this.passwordA.value.toLowerCase()
-    const hasNumber = this.passwordA.value.match(/\d+/g)
-    return this.passwordA.value.length >= 6 && hasNumber !== null && toLowerPwd === this.passwordA.value
+    let upperCase = 0
+    let specialChar = 0
+    let digitChar = 0
+    const password = this.passwordA.value
+    for(let i=0; i<password.length; i++){
+      if (password[i].match(/[A-Z]/g)) upperCase++
+      if (password[i].match(/[0-9]/g)) digitChar++
+      if (password[i].match(/(.*[!,@,#,$,%,^,&,*,?,_,~])/)) specialChar++
+    }
+    return (password.length >= 6) && (upperCase > 0) && (specialChar > 0) && (digitChar > 0)
   }
 
   checkEmail() {
