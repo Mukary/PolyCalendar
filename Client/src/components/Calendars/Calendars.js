@@ -6,6 +6,7 @@ import {addCalendar, deleteCalendar} from '../../actions/index'
 import {ToastContainer, style} from 'react-toastify'
 import {notify} from '../../notifications/notifications'
 import Dropzone from 'react-dropzone'
+import Modal from 'react-responsive-modal'
 import './Calendars.css'
 
 export default class Calendars extends React.Component {
@@ -16,7 +17,9 @@ export default class Calendars extends React.Component {
       displayCalendarForm: false,
       uploadMode: 'URL',
       fileContent: '',
-      uploadedFile: false
+      uploadedFile: false,
+      deleteConfirmation: false,
+      calendarId: ''
     }
     autoBind(this)
   }
@@ -55,7 +58,12 @@ export default class Calendars extends React.Component {
     })
   }
 
-  onDeleteCalendar(calId){
+  onDeleteCalendar(){
+    const calId = this.state.calendarId
+    this.setState({
+      deleteConfirmation: false,
+      calendarId: ''
+    })
     deleteCalendarDistant(calId).then(res => {
       deleteCalendar(calId)
       notify('SUCCESS', 'Calendar has been deleted!')
@@ -88,9 +96,29 @@ export default class Calendars extends React.Component {
     })
   }
 
+  onCloseModal() {
+    this.setState({
+      deleteConfirmation: false,
+      calendarId: ''
+    })
+  }
+
+  confirmDelete(calId) {
+    this.setState({
+      deleteConfirmation: true,
+      calendarId: calId
+    })
+  }
+
   render() {
     return(
       <div>
+        <Modal open={this.state.deleteConfirmation} onClose={this.onCloseModal} center>
+          <p>If you delete this calendar it won't be available in views that are using it.</p>
+          <p>Are you sure ?</p>
+          <button style={{marginRight:'10px'}} className="btn btn-success" onClick={this.onDeleteCalendar}>Yes</button>
+          <button className="btn btn-danger" onClick={this.onCloseModal}>No</button>
+        </Modal>
         <ToastContainer />
         <div className='calendarForm'>
         <button style={{marginBottom:'10px'}} className={this.state.displayCalendarForm ? 'btn btn-danger' : 'btn btn-primary'} onClick={this.displayCalendarForm}>{this.state.displayCalendarForm ? 'Close' : 'Add Calendar'}</button>
@@ -114,7 +142,7 @@ export default class Calendars extends React.Component {
         <div className='calendarsList'>
         {
           this.props.calendars.map(x =>{
-            return(<CalendarThumbnail id={x._id} title={x.title} color={x.color} onDeleteCalendar={this.onDeleteCalendar}/>)
+            return(<CalendarThumbnail id={x._id} title={x.title} color={x.color} onDeleteCalendar={this.confirmDelete}/>)
           })
         }
         </div>
