@@ -40,7 +40,7 @@ authController.googleOAuth = (req) => {
           else {
             const profileBody = JSON.parse(profileResponse.body)
             const email = profileBody.emails[0].value
-            User.findOne({googleEmail: email}, (err, user) => {
+            User.findOne({$or:[{email: email},{googleEmail: email}]}, (err, user) => {
               if(user) return reject ('This google account is already linked to a user')
               else {
                 User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: email}}, {new: true}, (err, user) =>{
