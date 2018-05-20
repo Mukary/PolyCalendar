@@ -9,7 +9,10 @@ authController.checkUser = (userId) => {
     User.findOne({_id: userId}).then(res => {
       resolve(res)
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 4004
+      error.message = 'User not found'
+      reject(error)
     })
   })
 }
@@ -29,22 +32,42 @@ authController.googleOAuth = (req) => {
       url:'https://www.googleapis.com/oauth2/v4/token',
       form: data
     }, (err, response) => {
-        if(err) return reject(err)
+        if(err) {
+          let error = new Error()
+          error.status = 401
+          error.message = 'Couldnt retrieve token.'
+          return reject(error)
+        }
         const jBody = JSON.parse(response.body)
         const access_token = jBody.access_token
         request({
           method:'get',
           url:`https://www.googleapis.com/plus/v1/people/me?access_token=${access_token}`
         }, (err, profileResponse) => {
-          if (err) return reject(err)
+          if (err) {
+            let error = new Error()
+            error.status = 401
+            error.message = 'Problem getting people profile'
+            return reject(error)
+          }
           else {
             const profileBody = JSON.parse(profileResponse.body)
             const email = profileBody.emails[0].value
             User.findOne({$or:[{email: email},{googleEmail: email}]}, (err, user) => {
-              if(user) return reject ('This google account is already linked to a user')
+              if(user) {
+                let error = new Error()
+                error.status = 401
+                error.message = 'This google account is already linked to a user'
+                return reject (error)
+              }
               else {
                 User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: email}}, {new: true}, (err, user) =>{
-                  if(err) return reject(err)
+                  if(err) {
+                    let error = new Error()
+                    error.status = 500
+                    error.message = 'Error with database'
+                    return reject(error)
+                  }
                   else resolve({
                     code: 201,
                     message: 'Successfully linked account',
@@ -55,11 +78,21 @@ authController.googleOAuth = (req) => {
                   method:'get',
                   url:`https://www.googleapis.com/calendar/v3/users/me/calendarList?minAccessRole=owner&access_token=${access_token}`
                 }, (err, responseToken) => { 
-                 if(err) return reject(err)
+                 if(err) {
+                    let error = new Error()
+                    error.status = 401
+                    error.message = 'Cannot get calendars list with this token.'
+                    return reject(error)
+                  }
                  else {
                   const body2 = JSON.parse(responseToken.body)
                   const calendars = body2.items
-                  if(calendars == undefined) return reject('Unauthorized')
+                  if(calendars == undefined) {
+                    let error = new Error()
+                    error.status = 401
+                    error.message = 'Not authorized to read calendars'
+                    return reject(error)
+                  }
                   else {
                     let newCalendars = []
                     let calendarNum = 0
@@ -105,9 +138,14 @@ authController.googleOAuth = (req) => {
 authController.unlinkGoogleAccount = (req) => {
   return new Promise((resolve, reject) => {
     User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: ''}}, {new: true}, (err, user) => {
-      if(err) reject(err)
+      if(err) {
+        let error = new Error()
+        error.status = 500
+        error.message = 'Error with database'
+        reject(error)
+      }
       else resolve({
-        code: 201,
+        status: 201,
         message: 'Account successfully unlinked'
       })
     })

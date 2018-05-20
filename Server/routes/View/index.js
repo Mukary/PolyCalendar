@@ -8,18 +8,18 @@ module.exports = (router, controller) => {
       res.status(201).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(500).send('Couldnt create view')
+      res.status(err.status).send(err.message)
     })
   })
 
 
   router.get('/users/:userid/views', [middleware.ensureToken, middleware.checkUserParam], function(req, res, err){
-    console.log(req.params)
     controller.getViews(req.data._id).then(views => {
       console.log(views)
       res.status(200).send(views)
     }).catch(err => {
       console.log(err)
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -28,7 +28,7 @@ module.exports = (router, controller) => {
       res.status(200).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(404).send('View not found')
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -36,6 +36,8 @@ module.exports = (router, controller) => {
     controller.exportView(req.params.viewId).then(view => {
       res.setHeader('content-type', 'text/calendar')
       res.status(200).send(view)
+    }).catch(err => {
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -43,7 +45,7 @@ module.exports = (router, controller) => {
     controller.updateView(req.params.viewId, req.body.calendars, req.data._id, req.body.action).then(view => {
       res.status(200).send(view)
     }).catch(err => {
-      res.status(404).send('Couldnt update view, not found')
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -51,7 +53,7 @@ module.exports = (router, controller) => {
     controller.deleteView(req.params.viewId, req.data._id).then(x => {
       res.status(200).send('View successfully deleted')
     }).catch(err => {
-      res.status(404).send('View does not exist')
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -60,7 +62,7 @@ module.exports = (router, controller) => {
       res.status(200).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(404).send('View not found')
+      res.status(err.status).send(err.message)
     })
   })
 }

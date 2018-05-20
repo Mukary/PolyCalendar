@@ -10,7 +10,7 @@ module.exports = (router, controller) => {
       res.status(200).send('User authenticated')
     }).catch(err => {
       console.log(err)
-      res.status(403).send('Access forbidden')
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -20,7 +20,7 @@ module.exports = (router, controller) => {
       res.status(response.code).send(response)
     }).catch(err => {
       console.log(err)
-      res.status(401).send('Unauthorized')
+      res.status(err.status).send(err.message)
     })
   })
 
@@ -28,7 +28,7 @@ module.exports = (router, controller) => {
     controller.unlinkGoogleAccount(req).then(response => {
       res.status(response.code).send(response.message)
     }).catch(err => {
-      res.status(400).send('Bad Request')
+      res.status(err.status).send(err.message)
     })
   })
 }

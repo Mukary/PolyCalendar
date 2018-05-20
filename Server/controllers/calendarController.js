@@ -15,7 +15,12 @@ calendarController.create = (calendar, events, owner) => {
       events: []
     })
     newCalendar.save((err, cal) => {
-      if(err) reject(err)
+      if(err) {
+        let error = new Error()
+        error.status = 500
+        error.message = 'Error when saving calendar'
+        reject(error)
+      }
       else {
         for(let event in events){
           let newEvent = new Event({
@@ -25,7 +30,12 @@ calendarController.create = (calendar, events, owner) => {
             description: events[event].description
           })
           newEvent.save((err, e) => {
-            if(err) reject(err)
+            if(err) {
+              let error = new Error()
+              error.status = 500
+              error.message = 'Error when saving calendar'
+              reject(error)
+            }
             else calendarController.addEventToCalendar(cal._id, e)
           })
         }
@@ -40,7 +50,10 @@ calendarController.download = (calId) => {
     Calendar.findOne({_id: calId, isFile:true}).then(calendar => {
       resolve(calendar.fileContent)
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 500
+      error.message = 'Error with database when getting calendar'
+      reject(error)
     })
   })
 }
@@ -48,7 +61,12 @@ calendarController.download = (calId) => {
 calendarController.addEventToCalendar = (calId, event) => {
   return new Promise((resolve, reject) => {
     Calendar.findOneAndUpdate({_id: calId}, {$push: {events: event}}, {new: true}, function(err, res){
-      if(err) reject(err)
+      if(err) {
+        let error = new Error()
+        error.status = 500
+        error.message = 'Error when saving event'
+        reject(error)
+      }
     })
   })
 }
@@ -58,7 +76,10 @@ calendarController.getCalendars = (owner) => {
     Calendar.find({owner: owner}).populate('events').then(calendars => {
       resolve(calendars)
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 500
+      error.message = 'Error when getting calendars'
+      reject(error)
     })
   })
 }
@@ -66,9 +87,18 @@ calendarController.getCalendars = (owner) => {
 calendarController.getCalendar = (calId, owner) => {
   return new Promise((resolve, reject) => {
     Calendar.findOne({_id: calId, owner: owner}).populate('events').then(calendar => {
-      resolve(calendar)
+      if(calendar) resolve(calendar)
+      else {
+        let error = new Error()
+        error.status = 404
+        error.message = 'Calendar not found'
+        reject(error)
+      }
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 500
+      error.message = 'Error when getting calendar'
+      reject(error)
     })
   })
 }
@@ -80,7 +110,10 @@ calendarController.update = (newName, calId, owner) => {
         resolve(calendar)
       })
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 500
+      error.message = 'Error when updating calendar'
+      reject(error)
     })
   })
 }
@@ -94,10 +127,16 @@ calendarController.deleteCalendar = (calId, owner) => {
         })
         resolve(x)
       }).catch(err => {
-        reject(err)
+        let error = new Error()
+        error.status = 500
+        error.message = 'Error when deleting calendar in view'
+        reject(error)
       })
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 500
+      error.message = 'Error when deleting calendar'
+      reject(error)
     })
   })
 }

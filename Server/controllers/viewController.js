@@ -13,7 +13,12 @@ viewController.create = (view, owner) => {
       calendars: view.calendars
     })
     newView.save((err, item) => {
-      if(err) reject(err)
+      if(err) {
+        let error = new Error()
+        error.status = 400
+        error.message = 'Bad request'
+        reject(error)
+      }
       resolve(item)
     })
   })
@@ -24,7 +29,10 @@ viewController.getViews = (owner) => {
     View.find({owner: owner}).then(views => {
       resolve(views)
     }).catch(err => {
-      reject(err)
+      let error = new Error()
+      error.status = 400
+      error.message = 'Bad request'
+      reject(error)
     })
   })
 }
@@ -34,7 +42,12 @@ viewController.getView = (viewId, owner) => {
     View.findOne({_id: viewId, owner: owner}).populate('calendars.cal').exec(function(err, res){
       if(err) reject(err)
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-        if(err) reject(err)
+        if(err) {
+          let error = new Error()
+          error.status = 400
+          error.message = 'Bad request'
+          reject(error)
+        }
         else resolve(res)
       })
     })
@@ -46,7 +59,12 @@ viewController.exportView = (viewId) => {
     View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
       if(err) reject(err)
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-        if(err) reject(err)
+        if(err) {
+          let error = new Error()
+          error.status = 400
+          error.message = 'Bad request'
+          reject(error)
+        }
         else {
           let builder = icalToolkit.createIcsFileBuilder()
           builder.spacers = false //Add space in ICS file, better human reading. Default: true
@@ -82,9 +100,19 @@ viewController.exportView = (viewId) => {
 viewController.getSharedView = (viewId) => {
   return new Promise((resolve, reject) => {
     View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
-      if(err) reject(err)
+      if(err) {
+        let error = new Error()
+        error.status = 400
+        error.message = 'Bad request'
+        reject(error)
+      }
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-        if(err) reject(err)
+        if(err) {
+          let error = new Error()
+          error.status = 400
+          error.message = 'Bad request'
+          reject(error)
+        }
         else resolve(res)
       })
     })
@@ -100,19 +128,35 @@ viewController.updateView = (viewId, calendars,owner, action) => {
         })
         view.save().then(view => {
           View.findOne({_id:view._id}).populate('calendars.cal').exec(function(err, res){
-            if(err) reject(err)
+            if(err) {
+              let error = new Error()
+              error.status = 400
+              error.message = 'Bad request'
+              reject(error)
+            }
             Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-              if(err) reject(err)
+              if(err) {
+                let error = new Error()
+                error.status = 400
+                error.message = 'Bad request'
+                reject(error)
+              }
               else resolve(res)
             })
           })
         }).catch(err => {
           console.log('Error while updating view')
-          reject(err)
+          let error = new Error()
+          error.status = 400
+          error.message = 'Bad request'
+          reject(error)
         })
       }).catch(err => {
         console.log('Could not find view to update')
-        reject(err)
+        let error = new Error()
+        error.status = 404
+        error.message = 'View not found'
+        reject(error)
       })
     }
     if(action === 'UPDATE_CALENDAR_MODE'){
@@ -122,29 +166,55 @@ viewController.updateView = (viewId, calendars,owner, action) => {
         "calendars.$.visible": visible
       }}).then(view => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
-          if(err) reject(err)
+          if(err) {
+            let error = new Error()
+            error.status = 400
+            error.message = 'Bad request'
+            reject(error)
+          }
           Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-            if(err) reject(err)
+            if(err) {
+              let error = new Error()
+              error.status = 400
+              error.message = 'Bad request'
+              reject(error)
+            }
             else resolve(res)
           })
         })
       }).catch(err => {
-        reject(err)
+        let error = new Error()
+        error.status = 400
+        error.message = 'Bad request'
+        reject(error)
       })
     }
     if(action === 'REMOVE_CALENDAR'){
       let calId = calendars[0].cal
       View.update({_id: viewId, owner: owner}, {$pull: {calendars: {cal: calId}}}).then(u => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
-          if(err) reject(err)
+          if(err) {
+            let error = new Error()
+            error.status = 400
+            error.message = 'Bad request'
+            reject(err)
+          }
           Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
-            if(err) reject(err)
+            if(err) {
+              let error = new Error()
+              error.status = 400
+              error.message = 'Bad request'
+              reject(err)
+            }
             else resolve(res)
           })
         })
       }).catch(err => {
         console.log(err)
-        reject(err)
+        let error = new Error()
+        error.status = 400
+        error.message = 'Bad request'
+        reject(error)
       })
     }
   })
@@ -155,6 +225,9 @@ viewController.deleteView = (viewId, owner) => {
     View.remove({_id: viewId, owner:owner}).then(x => {
       resolve(x)
     }).catch(err => {
+      let error = new Error()
+      error.status = 400
+      error.message = 'Error when deleting view'
       reject(err)
     })
   })

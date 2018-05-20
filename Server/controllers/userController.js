@@ -26,7 +26,7 @@ userController.create = (user) => {
             let newUser = new User(user)
             newUser.save((err, item) => {
               if(err){
-                reject(err)
+                reject({status:500, message:'Error when saving user'})
               }
               resolve(item)
             })
@@ -34,7 +34,7 @@ userController.create = (user) => {
               {"email": user.email}
             ).exec(function(err, result){
               if(err) {
-                reject(err)
+                reject({status: 500, message: 'Error when removing invitation'})
               } else resolve(result)
             })
           } else reject({
@@ -150,7 +150,7 @@ userController.findByEmail = (email) => {
     User.findOne({"email": email}, (err, user) => {
       if(user)
          reject({
-          status: 403,
+          status: 401,
           message: 'This user already exists'
         })
       else {

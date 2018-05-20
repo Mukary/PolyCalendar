@@ -14,7 +14,7 @@ module.exports = (router, controller) => {
       return res.status(201).send('User successfully registered.')
     }).catch(err => {
       console.log(err)
-      return res.status(404).send('Not invitation found for this email')
+      return res.status(err.status).send(err.message)
     })
   } else {
     return res.status(400).send('Bad request')
