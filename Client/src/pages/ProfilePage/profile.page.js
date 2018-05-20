@@ -38,6 +38,8 @@ class ProfilePage extends React.Component {
     })
     getUserCalendars().then(calendars =>  {
       fetchCalendars(calendars)
+    }).catch(err => {
+        console.log(err)
     })
     if(userIsLogged()){
       this.setState({
@@ -66,7 +68,11 @@ class ProfilePage extends React.Component {
         hasLinkedGoogle: true
       })
       notify('DEFAULT', 'Your Google account has been linked!')
-      window.location.reload()
+      getUserCalendars().then(calendars =>  {
+        fetchCalendars(calendars)
+      }).catch(err => {
+          console.log(err)
+      })
     }).catch(err => {
       console.log(err)
       notify('ERROR', 'Error encoutered with this Google account. It might have been linked already?')
@@ -80,6 +86,13 @@ class ProfilePage extends React.Component {
       this.setState({
         hasLinkedGoogle: false
       })
+      const googleCookie = window.gapi.auth2.getAuthInstance()
+      console.log(googleCookie)
+      if (googleCookie != null) {
+        googleCookie.signOut().then(
+            googleCookie.disconnect()
+        )
+    }
       notify('DEFAULT', 'Google account unlinked!')
     }).catch(err => {
       console.log(err)

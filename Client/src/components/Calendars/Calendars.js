@@ -47,6 +47,7 @@ export default class Calendars extends React.Component {
       fileContent: this.state.fileContent,
       isFile: isFile
     }).then(calendar => {
+      console.log(calendar)
       addCalendar(calendar)
       notify('SUCCESS', 'Calendar has been added!')
       this.setState({

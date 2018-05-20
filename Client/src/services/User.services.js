@@ -1,5 +1,4 @@
 import axios from 'axios'
-const profile = JSON.parse(window.localStorage.getItem('pcal_profile'))
 
 export function getUserProfile(userId) {
   return new Promise((resolve, reject) => {
@@ -15,7 +14,8 @@ export function getUserProfile(userId) {
 
 export function getUserViews() {
   return new Promise((resolve, reject) => {
-    const userid = profile._id
+    let profile = JSON.parse(window.localStorage.getItem('pcal_profile'))
+    let userid = profile._id
     axios.get(`${process.env.REACT_APP_API_URL}/users/${userid}/views`,{
       headers: {'Authorization': `Bearer ${window.localStorage.getItem('pcal_token')}`}
     }).then(res => {
