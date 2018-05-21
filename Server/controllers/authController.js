@@ -118,12 +118,10 @@ authController.unlinkGoogleAccount = (req) => {
   return new Promise((resolve, reject) => {
     User.findOneAndUpdate({_id: req.data._id}, {$set: {googleEmail: ''}}, {new: true}, (err, user) => {
       if(err) {
+        console.log(err)
         reject(err)
       }
-      else resolve({
-        status: 201,
-        message: 'Account successfully unlinked'
-      })
+      else resolve("Successfully unlinked account")
     })
   })
 }

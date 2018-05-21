@@ -25,7 +25,7 @@ module.exports = (router, controller) => {
 
   router.post('/logoutGoogle', middleware.ensureToken, function(req, res, err){
     controller.unlinkGoogleAccount(req).then(response => {
-      res.status(response.code).send(response.message)
+      res.status(201).send('Successfully unlinked account')
     }).catch(err => {
       res.status(400).send('Something went wrong when unlinking account')
     })
