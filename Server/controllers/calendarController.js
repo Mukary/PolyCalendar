@@ -27,7 +27,8 @@ calendarController.create = (calendar, events, owner) => {
             summary: events[event].summary,
             start: events[event].start,
             end: events[event].end,
-            description: events[event].description
+            description: events[event].description,
+            location: events[event].location
           })
           newEvent.save((err, e) => {
             if(err) {

@@ -54,6 +54,7 @@ export default class CustomCalendar extends React.Component {
               <p>Description: {this.state.currentEvent.description} </p>
               <p>Start: {new Date(this.state.currentEvent.start).toString()}</p>
               <p>End: {new Date(this.state.currentEvent.end).toString()}</p>
+              <p>Event location: {this.state.currentEvent.location}</p>
             </div>
             :
             null
