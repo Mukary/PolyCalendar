@@ -11,7 +11,7 @@ module.exports = (router, controller) => {
         res.status(201).send(calendar)
       }).catch(err => {
           console.log(err)
-          res.status(err.status).send(err.message)
+          res.status(400).send('Couldnt create calendar')
       })
     } else {
       let events = {}
@@ -21,7 +21,7 @@ module.exports = (router, controller) => {
           res.status(201).send(calendar)
         }).catch(err => {
           console.log(err)
-          res.status(err.status).send(err.message)
+          res.status(400).send('Couldnt create calendar')
         })
       })
     }
@@ -32,7 +32,7 @@ module.exports = (router, controller) => {
       res.status(200).send(calendar)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(400).send('Couldnt update calendar')
     })
   })
 
@@ -43,7 +43,7 @@ module.exports = (router, controller) => {
         res.status(200).send(calendars)
       }).catch(err => {
         console.log(err)
-        res.status(err.status).send(err.message)
+        res.status(404).send('Not found')
       })
     } else {
       res.status(401).send('Unauthorized')
@@ -54,7 +54,7 @@ module.exports = (router, controller) => {
     controller.getCalendar(req.params.calId, req.data._id).then(calendar => {
       res.status(200).send(calendar)
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(404).send('Calendar not found')
     })
   })
 
@@ -64,7 +64,7 @@ module.exports = (router, controller) => {
       res.setHeader('Content-disposition', 'attachment; filename=basic.ics')
       res.status(200).send(fileContent)
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(404).send('Not found')
     })
   })
 
@@ -72,7 +72,7 @@ module.exports = (router, controller) => {
     controller.deleteCalendar(req.params.calId, req.data._id).then(x => {
       res.status(200).send('Calendar successfully deleted')
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(400).send('Calendar does not exist')
     })
   })
 }

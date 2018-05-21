@@ -8,7 +8,7 @@ module.exports = (router, controller) => {
       res.status(201).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(400).send('Couldnt create view')
     })
   })
 
@@ -19,7 +19,7 @@ module.exports = (router, controller) => {
       res.status(200).send(views)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(404).send('Not Found')
     })
   })
 
@@ -28,7 +28,7 @@ module.exports = (router, controller) => {
       res.status(200).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(404).send('Not Found')
     })
   })
 
@@ -37,7 +37,7 @@ module.exports = (router, controller) => {
       res.setHeader('content-type', 'text/calendar')
       res.status(200).send(view)
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(404).send('Not Found')
     })
   })
 
@@ -45,7 +45,7 @@ module.exports = (router, controller) => {
     controller.updateView(req.params.viewId, req.body.calendars, req.data._id, req.body.action).then(view => {
       res.status(200).send(view)
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(400).send('Couldnt update view')
     })
   })
 
@@ -53,7 +53,7 @@ module.exports = (router, controller) => {
     controller.deleteView(req.params.viewId, req.data._id).then(x => {
       res.status(200).send('View successfully deleted')
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(404).send('View does not exist. Cannot delete it')
     })
   })
 
@@ -62,7 +62,7 @@ module.exports = (router, controller) => {
       res.status(200).send(view)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(404).send('Not Found')
     })
   })
 }

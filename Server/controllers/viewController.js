@@ -14,10 +14,7 @@ viewController.create = (view, owner) => {
     })
     newView.save((err, item) => {
       if(err) {
-        let error = new Error()
-        error.status = 400
-        error.message = 'Bad request'
-        reject(error)
+        reject(err)
       }
       resolve(item)
     })
@@ -29,10 +26,7 @@ viewController.getViews = (owner) => {
     View.find({owner: owner}).then(views => {
       resolve(views)
     }).catch(err => {
-      let error = new Error()
-      error.status = 400
-      error.message = 'Bad request'
-      reject(error)
+      reject(err)
     })
   })
 }
@@ -43,10 +37,7 @@ viewController.getView = (viewId, owner) => {
       if(err) reject(err)
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
         if(err) {
-          let error = new Error()
-          error.status = 400
-          error.message = 'Bad request'
-          reject(error)
+          reject(err)
         }
         else resolve(res)
       })
@@ -60,10 +51,7 @@ viewController.exportView = (viewId) => {
       if(err) reject(err)
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
         if(err) {
-          let error = new Error()
-          error.status = 400
-          error.message = 'Bad request'
-          reject(error)
+          reject(err)
         }
         else {
           let builder = icalToolkit.createIcsFileBuilder()
@@ -101,17 +89,11 @@ viewController.getSharedView = (viewId) => {
   return new Promise((resolve, reject) => {
     View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
       if(err) {
-        let error = new Error()
-        error.status = 400
-        error.message = 'Bad request'
-        reject(error)
+        reject(err)
       }
       Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
         if(err) {
-          let error = new Error()
-          error.status = 400
-          error.message = 'Bad request'
-          reject(error)
+          reject(err)
         }
         else resolve(res)
       })
@@ -129,34 +111,22 @@ viewController.updateView = (viewId, calendars,owner, action) => {
         view.save().then(view => {
           View.findOne({_id:view._id}).populate('calendars.cal').exec(function(err, res){
             if(err) {
-              let error = new Error()
-              error.status = 400
-              error.message = 'Bad request'
-              reject(error)
+              reject(err)
             }
             Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
               if(err) {
-                let error = new Error()
-                error.status = 400
-                error.message = 'Bad request'
-                reject(error)
+                reject(err)
               }
               else resolve(res)
             })
           })
         }).catch(err => {
           console.log('Error while updating view')
-          let error = new Error()
-          error.status = 400
-          error.message = 'Bad request'
-          reject(error)
+          reject(err)
         })
       }).catch(err => {
         console.log('Could not find view to update')
-        let error = new Error()
-        error.status = 404
-        error.message = 'View not found'
-        reject(error)
+        reject(err)
       })
     }
     if(action === 'UPDATE_CALENDAR_MODE'){
@@ -167,26 +137,17 @@ viewController.updateView = (viewId, calendars,owner, action) => {
       }}).then(view => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
           if(err) {
-            let error = new Error()
-            error.status = 400
-            error.message = 'Bad request'
-            reject(error)
+            reject(err)
           }
           Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
             if(err) {
-              let error = new Error()
-              error.status = 400
-              error.message = 'Bad request'
-              reject(error)
+              reject(err)
             }
             else resolve(res)
           })
         })
       }).catch(err => {
-        let error = new Error()
-        error.status = 400
-        error.message = 'Bad request'
-        reject(error)
+        reject(err)
       })
     }
     if(action === 'REMOVE_CALENDAR'){
@@ -194,16 +155,10 @@ viewController.updateView = (viewId, calendars,owner, action) => {
       View.update({_id: viewId, owner: owner}, {$pull: {calendars: {cal: calId}}}).then(u => {
         View.findOne({_id: viewId}).populate('calendars.cal').exec(function(err, res){
           if(err) {
-            let error = new Error()
-            error.status = 400
-            error.message = 'Bad request'
             reject(err)
           }
           Event.populate(res, {path: 'calendars.cal.events'}, function(err, res){
             if(err) {
-              let error = new Error()
-              error.status = 400
-              error.message = 'Bad request'
               reject(err)
             }
             else resolve(res)
@@ -211,10 +166,7 @@ viewController.updateView = (viewId, calendars,owner, action) => {
         })
       }).catch(err => {
         console.log(err)
-        let error = new Error()
-        error.status = 400
-        error.message = 'Bad request'
-        reject(error)
+        reject(err)
       })
     }
   })
@@ -225,9 +177,6 @@ viewController.deleteView = (viewId, owner) => {
     View.remove({_id: viewId, owner:owner}).then(x => {
       resolve(x)
     }).catch(err => {
-      let error = new Error()
-      error.status = 400
-      error.message = 'Error when deleting view'
       reject(err)
     })
   })

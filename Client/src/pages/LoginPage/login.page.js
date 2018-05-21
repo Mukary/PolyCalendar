@@ -76,7 +76,7 @@ export default class LoginPage extends React.Component {
           <button className='btn btn-success' onClick={this.signIn.bind(this)}>Sign in</button>
           <GoogleLogin 
           className="btn btn-danger"
-          clientId={process.env.GOOGLE_CLIENT_ID}
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           buttonText='Sign in with Google'
           responseType='code'
           scope='profile'

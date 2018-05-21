@@ -9,8 +9,7 @@ module.exports = (router, controller) => {
     controller.checkUser(req.data._id).then(user => {
       res.status(200).send('User authenticated')
     }).catch(err => {
-      console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(401).send('Unauthorized')
     })
   })
 
@@ -20,7 +19,7 @@ module.exports = (router, controller) => {
       res.status(response.code).send(response)
     }).catch(err => {
       console.log(err)
-      res.status(err.status).send(err.message)
+      res.status(401).send('Unauthorized')
     })
   })
 
@@ -28,7 +27,7 @@ module.exports = (router, controller) => {
     controller.unlinkGoogleAccount(req).then(response => {
       res.status(response.code).send(response.message)
     }).catch(err => {
-      res.status(err.status).send(err.message)
+      res.status(400).send('Something went wrong when unlinking account')
     })
   })
 }

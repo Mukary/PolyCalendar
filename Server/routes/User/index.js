@@ -14,7 +14,7 @@ module.exports = (router, controller) => {
       return res.status(201).send('User successfully registered.')
     }).catch(err => {
       console.log(err)
-      return res.status(err.status).send(err.message)
+      return res.status(400).send('Couldnt register user, wrong information')
     })
   } else {
     return res.status(400).send('Bad request')
@@ -26,7 +26,7 @@ router.post('/login', function(req, res, err) {
   controller.login(userConnecting).then(user => {
     return res.status(201).json(user)
   }).catch(err => {
-    return res.status(err.status).send(err.message)
+    return res.status(404).send('User not found')
   })
 })
 
@@ -36,7 +36,7 @@ router.post('/loginGoogle', function(req, res, err){
       return res.status(201).json(user)
     }).catch(err => {
       console.log(err)
-      return res.status(err.status).send(err.message)
+      return res.status(401).send('Error with google account')
     })
   } else {
     return res.status(400).send('Missing Google OAuth code')

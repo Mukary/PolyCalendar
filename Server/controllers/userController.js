@@ -26,7 +26,7 @@ userController.create = (user) => {
             let newUser = new User(user)
             newUser.save((err, item) => {
               if(err){
-                reject({status:500, message:'Error when saving user'})
+                reject(err)
               }
               resolve(item)
             })
@@ -34,13 +34,10 @@ userController.create = (user) => {
               {"email": user.email}
             ).exec(function(err, result){
               if(err) {
-                reject({status: 500, message: 'Error when removing invitation'})
+                reject(err)
               } else resolve(result)
             })
-          } else reject({
-            status:404,
-            message:'Invitation not found for this email'
-          })
+          } else reject('Invite not found')
         })
       }
     })
@@ -63,15 +60,10 @@ userController.login = (userConnecting) => {
             token: token
           })
         } else {
-          let error = new Error()
-          error.message = 'Invalid email or password'
-          error.status = 403
-          return reject(error)
+          return reject('Invalid email or password')
         }
       } else {
-        let error = new Error('User '+userConnecting.email+' does not exist')
-        error.status = 404
-        return reject(error)
+        return reject('User not found')
       }
     })
   })
@@ -93,10 +85,7 @@ userController.loginWithGoogle = (req) => {
       form: data
     },(err, response) => {
       if(err) {
-        let error = new Error()
-        error.message = 'Invalid credentials'
-        error.status = 401
-        return reject(error)
+        return reject(err)
       }
       else {
         const resBody = JSON.parse(response.body)
@@ -106,10 +95,7 @@ userController.loginWithGoogle = (req) => {
           url: `https://www.googleapis.com/plus/v1/people/me?access_token=${access_token}`
         }, (err, profileResponse) => {
           if(err) {
-            let errorProfile = new Error()
-            errorProfile.message = 'Invalid token'
-            errorProfile.status = 401
-            return reject(errorProfile)
+            return reject(err)
           }
           else {
             const profileBody = JSON.parse(profileResponse.body)
@@ -120,10 +106,7 @@ userController.loginWithGoogle = (req) => {
                 User.findOneAndUpdate({"email": user.email}, 
                   {$set:{lastConnection: new Date()}}, function(err, d){
                     if(err){
-                      let errorUpdate = new Error()
-                      errorUpdate.message = 'Error updating user information'
-                      errorUpdate.status = 500
-                      return reject(errorUpdate)
+                      return reject(err)
                     }
                     else return resolve({
                       _id: user._id,
@@ -132,10 +115,7 @@ userController.loginWithGoogle = (req) => {
                     })
                 })
               } else {
-                let errorUser = new Error()
-                errorUser.message = 'User not found'
-                errorUser.status = 404
-                return reject(errorUser)
+                return reject('User not found')
               }
             })
           }
@@ -149,10 +129,7 @@ userController.findByEmail = (email) => {
   return new Promise((resolve, reject) => {
     User.findOne({"email": email}, (err, user) => {
       if(user)
-         reject({
-          status: 401,
-          message: 'This user already exists'
-        })
+         reject('User already exists')
       else {
         resolve(email)
       }
@@ -166,10 +143,7 @@ userController.findById = (id) => {
       if(user)
         resolve(user)
       else {
-        reject({
-          status: 404,
-          message: 'User not found'
-        })
+        reject('User not found')
       }
     })
   })

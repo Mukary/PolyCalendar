@@ -135,7 +135,7 @@ class ProfilePage extends React.Component {
                         :
                         <GoogleLogin 
                         className="btn btn-primary"
-                        clientId={process.env.GOOGLE_CLIENT_ID}
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         buttonText='Link google account'
                         responseType='code'
                         scope='profile https://www.googleapis.com/auth/calendar.readonly'
