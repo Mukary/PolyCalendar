@@ -54,8 +54,8 @@ router.post('/invite', function(req, res, err) {
     let transporter = nodemailer.createTransport({
         service: 'gmail', // true for 465, false for other ports
         auth: {
-          user: 'polytechcalendar@gmail.com', // generated ethereal user
-          pass: 'awiproject34' // generated ethereal password
+          user: 'xxx@gmail.com', // generated ethereal user
+          pass: 'xxx' // generated ethereal password
     }
 });
 
