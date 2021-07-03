@@ -16,7 +16,7 @@
     "ical-toolkit": "^1.0.9",
     "jsonwebtoken": "^8.2.0",
     "mongoose": "^5.0.11",
-    "nodemailer": "^4.6.3",
+    "nodemailer": "^6.4.16",
     "request": "^2.85.0",
     "sha256": "^0.2.0"
   },
